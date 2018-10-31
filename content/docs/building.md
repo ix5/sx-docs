@@ -42,7 +42,7 @@ apt update
 apt install bison g++-multilib git gperf libxml2-utils make zlib1g-dev zip liblz4-tool libncurses5
 apt install openjdk-8-jdk
 apt install ccache
-apt install rsync
+apt install rsync libssl-dev aapt
 ```
 Cross-reference with the
 [official build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)
