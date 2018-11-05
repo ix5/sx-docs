@@ -6,8 +6,8 @@ description = "Information about Sony Xperia devices and AOSP"
 Paginate = 4
 
 [permalinks]
-#post = "/:title/"
-docs = "/:title/"
+post = "/posts/:title/"
+docs = "/docs/:title/"
 
 [Params]
   author = "ix5"

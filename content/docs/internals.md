@@ -3,7 +3,7 @@ title = "Device internals"
 description = "Understanding the foundations"
 date = 2018-10-19T22:15:22+02:00
 weight = 20
-draft = false
+draft = true
 bref = "Kernel, hardware, recovery"
 toc = true
 +++

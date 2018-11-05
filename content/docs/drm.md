@@ -3,7 +3,7 @@ title = "Sony DRM"
 description = ""
 date = 2018-10-19T22:26:47+02:00
 weight = 20
-draft = false
+draft = true
 bref = ""
 toc = true
 +++
