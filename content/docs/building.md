@@ -8,16 +8,14 @@ bref = "How to build AOSP for Xperia devices"
 toc = true
 +++
 
-This is just a build manual.
-
-*(For Linux)*
-
 ## Ubuntu chroot
 
-Since Google use Ubuntu as a reference build environment, it is advisable you
-use it as well to avoid incompatibility problems. A build chroot takes about
-1-1.5GB of space and will save you from headaches, e.g. when Android modules
-aren't compiled against your host glibc.
+Since Google use Ubuntu as a reference build environment, it is advisable you use it as well to avoid incompatibility problems.
+
+If you're not on Ubuntu already, you can set up a Ubuntu chroot build environment instead.
+
+A build chroot takes about 1-1.5GB of space and will save you from headaches,
+e.g. when Android modules aren't compiled against your host glibc.
 
 Install `debootstrap`, then run
 ```
@@ -78,9 +76,9 @@ The `user` target doesn't include root. You'll need to look into
 `vendorsetup.sh` for your device if you want to use it.
 
 ## Optimize the build
-A full build will take about two hours on a beefed-out recent system(Core i7 8th
-gen 4 cores, 16GB RAM, good SSD). That time can however be cut down to around an
-hour by utilizing `ccache` and parallelizing the build.
+A full build will take about two to three hours on a beefed-out recent
+system(Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
+cut down to around an hour by utilizing `ccache` and parallelizing the build.
 
 It is recommendable to use a ccache size of around 50-100GB, depending on
 whether you plan to build different ROMS or for multiple devices.
@@ -89,7 +87,8 @@ prebuilds/misc/linux-x86/ccache/ccache -M 50G
 ```
 Then set the environment variable with `export USE_CCACHE=1`. This variable
 needs to be set anew every time you re-login to your builder chroot, so it is
-advisable to put `export USE_CCACHE=1" into the `.bashrc` in `/home/builder`.
+advisable to put `export USE_CCACHE=1" into the `.bashrc` in your home directory
+(or `/home/builder` if you're in a chroot).
 
 To use parallel compilation, you need to find out how many threads your CPU has
 via `nproc`. Then use that number for `make -j<nr-of-threads>`

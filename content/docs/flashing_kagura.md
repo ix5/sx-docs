@@ -1,6 +1,6 @@
 +++
 title = "Flashing AOSP on Xperia XZ"
-description = ""
+description = "Rough guide"
 date = 2018-10-19T22:26:47+02:00
 weight = 20
 draft = false
