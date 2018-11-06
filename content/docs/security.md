@@ -67,14 +67,15 @@ methods, some of which can be found in the Magisk repositories.
 **Enforcing vs permissive:** You can set SELinux to permissive, which means it
 will only log policy violations instead of blocking them. Again, ok for
 development, not ok to risk your users' safety by lazily setting it to
-`permissive`.  
-<mark>For developers:</mark> A good guide to quickly fix issues is to read `adb
+`permissive`.
+
+<mark>For developers:</mark> A good way to quickly fix issues is to read `adb
 logcat` and watch out for lines that look like this:
 ```
 avc: denied { action } for pid=...
 ```
 Then read this guide:
-[How to write sepolicy to fix a denial](https://gist.github.com/MSF-Jarvis/ec52b48eb2df1688b7cbe32bcd39ee5f)
+[How to write sepolicy to fix a denial](https://gist.github.com/MSF-Jarvis/ec52b48eb2df1688b7cbe32bcd39ee5f).
 
 **Priv-app permissions**: Privileged apps residing in `/system/priv-app` can
 have access to system functions which normal apps(e.g. from the Play Store) can

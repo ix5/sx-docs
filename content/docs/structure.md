@@ -10,7 +10,7 @@ toc = true
 
 ## AOSP layout
 
-When you set up your Android directory with `repo ini`, what happens is the
+When you set up your Android directory with `repo init`, what happens is the
 Google `repo` tool creates a hidden `.repo` folder, which by default has a
 `manifest.xml` file.
 
@@ -29,9 +29,9 @@ Let's take this example:
 ```
 This would just `git clone` the git repo from https://github.com/sonyxperiadev/hardware-qcom-gps-sdm845
 into `hardware/qcom/gps`. Every time you run `repo sync` it would fetch the
-latest version from the branch `aosp/android-9.0.0_r11`.
+latest version of the branch `aosp/android-9.0.0_r11` from GitHub.
 
-Instead of editing `manifests.xml`, you can instead put your modifications
+Instead of editing `manifest.xml`, you can instead put your modifications
 inside `.repo/local_manifests/`. This way, if the AOSP default manifest changes,
 you do not have to re-apply your changes manually.
 

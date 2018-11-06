@@ -2,7 +2,6 @@ baseURL = "https://sx.ix5.org/info/"
 languageCode = "en-us"
 title = "Sony Xperia Corner"
 theme = "kube"
-description = "Information about Sony Xperia devices and AOSP"
 Paginate = 4
 
 [permalinks]
@@ -12,8 +11,15 @@ docs = "/docs/:title/"
 [Params]
   author = "ix5"
   # email = "myemail@myaddress.xxx"
+  description = "Information about Sony Xperia devices and AOSP"
+  subdescription = "Not in any way affiliated with Sony"
 
 #[[menu.main]]
 #    name = "Posts"
 #    weight = -100
 #    url = "/posts/"
+
+[[menu.main]]
+    name = "Disclaimer"
+    weight = -100
+    url = "/disclaimer/"

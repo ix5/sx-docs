@@ -8,24 +8,49 @@ bref = "How to build AOSP for Xperia devices"
 toc = true
 +++
 
+This guide will asume you follow the
+[official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0),
+but add some extra tips.
+
+## Initialize your build directory
+Create a `~/android/build-env` folder, `cd` into it and run the provided
+`repo init` command (assuming you installed `repo` into `~/.local/bin/repo`).
+
+Clone the `local_manifests` git repo as instructed and run
+`repo_update.sh`. Your build directory will now be ready for a first build.
+
+<div class="message focus">
+<b>ix5:</b> If you want to recreate my own builds, use
+<code>
+git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations'
+</code>
+instead.  After you run <code>repo_update.sh</code> also run
+<code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
+</div>
+
 ## Ubuntu chroot
 
+<div class="message success">
 Since Google use Ubuntu as a reference build environment, it is advisable you use it as well to avoid incompatibility problems.
+<b>If you're on Ubuntu already, you can skip this step.</b>
+</div>
 
-If you're not on Ubuntu already, you can set up a Ubuntu chroot build environment instead.
+If you're on another system like Fedora or Arch Linux, you can set up a Ubuntu
+chroot build environment instead.
 
 A build chroot takes about 1-1.5GB of space and will save you from headaches,
 e.g. when Android modules aren't compiled against your host glibc.
 
 Install `debootstrap`, then run
 ```
-debootstrap --variant=buildd --arch=amd64 bionic ubuntu-android
+debootstrap --variant=buildd --arch=amd64 bionic ~/ubuntu-android
 ```
 chroot into the newly created builder system, either via `chroot` or just using
-`systemd-nspawn`:
+`systemd-nspawn` (Assuming you created your android build environment via `repo
+init` in `~/android/build-env`):
 ```
 sudo systemd-nspawn \
---bind=/home/<your-username>/dev/android/build-env/:/home/builder/build-env/ \
+--bind=/home/<your-username>/android/build-env/:/home/builder/build-env/ \
   -D /home/<your-username>/dev/android/ubuntu-android
 
 useradd -m -s /bin/bash builder
@@ -39,37 +64,35 @@ add-apt-repository universe
 apt update
 apt install bison g++-multilib git gperf libxml2-utils make zlib1g-dev zip liblz4-tool libncurses5
 apt install openjdk-8-jdk
+# Optional:
 apt install ccache
 apt install rsync libssl-dev aapt
 ```
-Cross-reference with the
-[official build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)
+Cross-reference the needed packages with the
+[official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)
 should this document be out of date.
 
+*If you're building in a chroot:*
 Exit out of the build system by typing `exit` (and pressing `Ctrl-]` three times
 for `nspawn`), then re-launch your build system and log in as your builder user.
 If you want to share your own ccache etc. with your build environment, `bind`
 the appropriate directories.
 ```
 sudo systemd-nspawn \
---bind=/home/<your-username>/dev/android/build-env/:/home/builder/build-env/ \
+--bind=/home/<your-username>/android/build-env/:/home/builder/build-env/ \
   --bind=/home/<your-username>/.ccache/:/home/builder/.ccache/ \
   --bind=/home/<your-username>/.local/bin/repo:/usr/local/bin/repo \
   --bind=/home/<your-username>/.repoconfig/:/home/builder/.repoconfig/ \
-  -D /home/<your-username>/dev/android/ubuntu-android \
+  -D /home/<your-username>/ubuntu-android \
   --user=builder
 ```
-
-## Prepare the sources
-Prepare the sources for building with `repo sync` and run Sony's
-`repo_update.sh`. Confirm everything went without errors, and apply your own
-patches if you like.
+(Assuming you installed `repo` into `~/.local/bin/repo`).
 
 ## Prepare build environment
-Run `source build/envsetup.sh` and then `lunch`. Select your device from the
-list. It will look like `aosp_f83xx-...` where `f83xx` is the model number of
-your device. You can choose between `debug` and `userdebug` builds, see [Choose
-a target](https://source.android.com/setup/build/building#choose-a-target).
+Run `source build/envsetup.sh` inside your build environment and then `lunch`.
+Select your device from the list. It will look like `aosp_f83xx-...` where
+`f83xx` is the model number of your device. You can choose between `debug` and
+`userdebug` builds, see [Choose a target](https://source.android.com/setup/build/building#choose-a-target).  
 For your own usage, `userdebug` is most likely what you want.
 
 The `user` target doesn't include root. You'll need to look into
@@ -78,7 +101,8 @@ The `user` target doesn't include root. You'll need to look into
 ## Optimize the build
 A full build will take about two to three hours on a beefed-out recent
 system(Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
-cut down to around an hour by utilizing `ccache` and parallelizing the build.
+cut down for successive builds to around an hour by utilizing `ccache` and
+parallelizing the build.
 
 It is recommendable to use a ccache size of around 50-100GB, depending on
 whether you plan to build different ROMS or for multiple devices.
@@ -101,12 +125,17 @@ flash`
 
 ## Distributing
 If you want to share the fruits of your labor, you can create compressed
-flashable .zip files.
+flashable .zip files. Use `make otapackage` instead of `make`. This will create
+a flashable zip file in `out/target/product/<device-codename>` named something
+like `aosp_f8331-ota-eng.hostname-2018-10-19`. You can flash this file via `adb
+sideload` or use a custom recovery like TWRP.
 
+<!--
 Create the directory `dist_output` and use `make dist DIST_DIR=dist_output -j
 <nr-of-threads>` to produce a `brotli`-compressed zip file named something like
 `aosp_f8331-ota-eng.hostname-2018-10-19`. You can flash this file via `adb
 sideload` or use a custom recovery like TWRP.
+-->
 
 After you have tested your build on your own device, you can share the file
 freely, given that it contains free/libre software under the GPL and other free

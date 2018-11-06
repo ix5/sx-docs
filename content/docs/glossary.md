@@ -10,3 +10,7 @@ toc = false
 
 CAF: Codeaurora forum
 Open-source initiative from Qualcomm.
+
+FOTAKernel
+
+TWRP, recovery
