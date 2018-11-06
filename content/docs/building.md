@@ -16,18 +16,6 @@ but add some extra tips.
 Create a `~/android/build-env` folder, `cd` into it and run the provided
 `repo init` command (assuming you installed `repo` into `~/.local/bin/repo`).
 
-Clone the `local_manifests` git repo as instructed and run
-`repo_update.sh`. Your build directory will now be ready for a first build.
-
-<div class="message focus">
-<b>ix5:</b> If you want to recreate my own builds, use
-<code>
-git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations'
-</code>
-instead.  After you run <code>repo_update.sh</code> also run
-<code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
-</div>
-
 ## Ubuntu chroot
 
 <div class="message success">
@@ -87,6 +75,20 @@ sudo systemd-nspawn \
   --user=builder
 ```
 (Assuming you installed `repo` into `~/.local/bin/repo`).
+
+## Applying needed patches
+
+Clone the Sony `local_manifests` git repo as instructed and run
+`repo_update.sh`. Your build directory will now be ready for a first build.
+
+<div class="message focus">
+<b>Felix:</b> If you want to recreate my own builds, use
+<code>
+git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations'
+</code>
+instead.  After you run <code>repo_update.sh</code> also run
+<code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
+</div>
 
 ## Prepare build environment
 Run `source build/envsetup.sh` inside your build environment and then `lunch`.

@@ -44,19 +44,40 @@ Every directory with an `Android.mk` or `Android.bp` file in it will get conside
 Most interesting to new developers might be the `frameworks`, `hardware`,
 `kernel` and `packages` folders.
 
+### Overlays
+You can change e.g. `frameworks/base` manually and edit xml files there or add a
+default wallpaper. But this means you have to fork the whole framework. It is
+much easier to just add an `overlay` to your build which will overwrite whatever
+is in `frameworks/base`. This way, you don't have to keep up to date with
+changes in the framework code. See
+[this example](https://git.ix5.org/felix/vendor-sony-ix5/src/commit/3bbeeb0d66b0951bd1c5ffe33ac642bcff353d71/ix5.mk#L54).
+
 ## Getting started
 
 **You'll need:**
 
-- `local_manifests` from Sony
+- [`local_manifests`](http://github.com/sonyxperiadev/local_manifests) from Sony
+  (or [`local_manifests`](https://git.ix5.org/felix/local-manifests-ix5/) from
+  me)
 - `device-sony-common` from Sony
 - `device-sony-<board>` from Sony where `<board>` is your phone platform, e.g.
-  `tone` for Xperia XZ
+  `device-sony-tone` for Xperia XZ
 - `device-sony-<model-codename>` from Sony where `<model-codename>` is the
-  codename of your device, e.g. `kagura` for Xperia XZ
-- `repo` from Google
-- `repo_update.sh` script from Sony
+  codename of your device, e.g. `device-sony-kagura` for Xperia XZ
+- [`repo`](http://commondatastorage.googleapis.com/git-repo-downloads/repo) from Google
+- [`repo_update.sh`](https://github.com/sonyxperiadev/repo_update) script from Sony
+- (Optional) my own additional script to apply patches called
+  [`ix5_repo_update`](https://git.ix5.org/felix/ix5_repo_update)
 - (Optional) Your own script to apply your own patches
+
+You can then start tweaking and adding things. For example, you could add more
+prebuilt apps into your build or add some xml files that e.g. [enable swipe-up
+gestures by default](https://git.ix5.org/felix/vendor-sony-ix5/src/commit/3bbeeb0d66b0951bd1c5ffe33ac642bcff353d71/overlay/common/frameworks/base/core/res/res/values/config.xml#L28).
+I would recommend you put your own changes into a separate `vendor/your-name`
+directory instead of directly modifying `device/sony/common`.
+You will need to include your own vendor directory,
+see [this commit](https://git.ix5.org/felix/device-sony-common/commit/b115cc3f7f98c1d26a6bd8b84422706128e3d0b7)
+for an example.
 
 ### Caveats
 
@@ -79,5 +100,6 @@ Most interesting to new developers might be the `frameworks`, `hardware`,
   [repo_update.sh](https://github.com/sonyxperiadev/repo_update)
   from sonyxperiadev for inspiration.
 - Use overlays instead of modifying android_frameworks_base
-- If you want to theme, it may be easier to create a magisk module than to
-  recompile your whole build. Also look into Runtime Resource Overlays(RROs).
+- If you want to theme, it may be easier to create a magisk module or substratum
+  theme than to recompile your whole build. Also look into Runtime Resource
+  Overlays(RROs).
