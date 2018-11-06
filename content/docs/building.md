@@ -112,12 +112,13 @@ whether you plan to build different ROMS or for multiple devices.
 prebuilds/misc/linux-x86/ccache/ccache -M 50G
 ```
 Then set the environment variable with `export USE_CCACHE=1`. This variable
-needs to be set anew every time you re-login to your builder chroot, so it is
-advisable to put `export USE_CCACHE=1" into the `.bashrc` in your home directory
-(or `/home/builder` if you're in a chroot).
+needs to be set anew every time you open a new terminal, so it is
+advisable to put `export USE_CCACHE=1` at the end of your `.bashrc` in your home
+directory (or `/home/builder/.bashrc` if you're in a chroot).
 
 To use parallel compilation, you need to find out how many threads your CPU has
-via `nproc`. Then use that number for `make -j<nr-of-threads>`
+via `nproc`. Then use that number for `make -j<nr-of-threads>`. For most
+computers it will be the number of CPU cores times 2, e.g. "8" for a 4-core CPU.
 
 ## Building
 Run `make -j <nr-of-threads>`. If everything went smoothly, you'll have a folder
