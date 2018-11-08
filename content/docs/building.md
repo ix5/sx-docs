@@ -55,6 +55,10 @@ apt install openjdk-8-jdk
 # Optional:
 apt install ccache
 apt install rsync libssl-dev aapt
+# Kernel recompilation:
+apt install bc autoconf automake autopoint autotools-dev bsdmainutils
+gawk groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool
+# gettext gettext-base dh-autoreconf dh-strip-nondeterminism
 ```
 Cross-reference the needed packages with the
 [official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)
@@ -144,3 +148,11 @@ After you have tested your build on your own device, you can share the file
 freely, given that it contains free/libre software under the GPL and other free
 licenses. The license also means you have to divulge your build sources.
 So put your patches into a git repo and share them with the world.
+
+## Speedier development
+- Use `m module.name -j $(nproc)` to only rebuild a single module. You can then
+  `adb push` or even `adb sync` the changes directly to your device
+- Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
+
+# Extra References
+[AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists)
