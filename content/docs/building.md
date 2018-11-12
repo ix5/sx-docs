@@ -154,5 +154,7 @@ So put your patches into a git repo and share them with the world.
   `adb push` or even `adb sync` the changes directly to your device
 - Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
 
-# Extra References
+---
+
+## Extra References
 [AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists)

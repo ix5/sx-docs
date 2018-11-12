@@ -1,0 +1,19 @@
+{{ define "title"}} {{ .Title}} {{end}}
+{{ define "header"}} {{ partial "header" .}} {{end}}
+
+{{ define "main" }}
+
+<div id="hero" class="wrap">
+  <h1>Reports from the trenches</h1>
+  <blockquote itemprop="description">Tips and tricks from the developers</blockquote>
+</div>
+<ul id="posts">
+
+ {{ range .Paginator.Pages.ByWeight }} {{ partial "page-summary" . }} {{ end }}
+  <section>{{ partial "pagination" .}}</section>
+</ul>
+
+{{ end }}
+{{ define "footer" }}
+  {{ partial "footer" . }}
+{{ end }}

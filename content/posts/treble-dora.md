@@ -5,7 +5,6 @@ draft: true
 author: sjll
 ---
 
-<!--
 TARGET_COPY_OUT_VENDOR := system/vendor
 This setting refers to the location where the files is output.
 We could only set it with system/vendor and /vendor.
@@ -55,4 +54,3 @@ https://github.com/cryptomilk/android_device_sony_lilac
 
 This is a lineage ROM for XZ1 Compact. It is based on the sony offical ROM.
 It supports treble, but I have a problem, I don't know how to create sepolicy files.
--->

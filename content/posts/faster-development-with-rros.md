@@ -1,7 +1,10 @@
 ---
-title: "Faster Development with Runtime Resource Overlays"
+title: "Faster Development with RROs"
 date: 2018-11-11T23:41:34+01:00
-draft: false
+description: "Runtime Resource Overlays make customizing Android much easier and
+more portable"
+author: Felix
+draft: true
 ---
 
 # TODO:
