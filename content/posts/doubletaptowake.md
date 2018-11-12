@@ -1,9 +1,9 @@
-+++
+---
 title: "Implementing double-tap to wake"
 date: 2018-11-07T01:18:00+01:00
 draft: true
 author: Felix
-+++
+---
 
 ## The journey
 

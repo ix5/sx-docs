@@ -5,7 +5,7 @@ theme = "kube"
 Paginate = 4
 
 [permalinks]
-post = "/posts/:title/"
+posts = "/post/:title/"
 docs = "/docs/:title/"
 
 [Params]
@@ -14,10 +14,15 @@ docs = "/docs/:title/"
   description = "Information about Sony Xperia devices and AOSP"
   subdescription = "Not in any way affiliated with Sony"
 
-#[[menu.main]]
-#    name = "Posts"
-#    weight = -100
-#    url = "/posts/"
+[[menu.main]]
+    name = "Docs"
+    weight = -100
+    url = "/"
+
+[[menu.main]]
+    name = "Posts"
+    weight = -100
+    url = "/posts/"
 
 [[menu.main]]
     name = "Disclaimer"

@@ -43,6 +43,12 @@ powering down the device, then holding down Volume-Down and the Power button.
 Wait until the first vibration, release the buttons, the TWRP logo will appear
 after about 15 seconds.
 
+**Wipe data** (optional, but highly recommended): Wipe `/data`, `/cache` and
+Dalvik cache in TWRP. If you are coming from stock firmware, you absolutely need
+to do this. You might be able to skip this step if you are coming from a
+previous Pie build, but if you run into problems you need to at least wipe the
+caches, if not `/data` as well.
+
 **Flash dualsim patcher from TWRP** (optional): If you have a dualsim device,
 use [DualSim patcher for any custom ROM](https://forum.xda-developers.com/xperia-xz/how-to/f8332-dualsim-patcher-custom-rom-t3842672).
 
