@@ -97,7 +97,7 @@ instead.  After you run <code>repo_update.sh</code> also run
 ## Prepare build environment
 Run `source build/envsetup.sh` inside your build environment and then `lunch`.
 Select your device from the list. It will look like `aosp_f83xx-...` where
-`f83xx` is the model number of your device. You can choose between `debug` and
+`f83xx` is the model number of your device. You can choose between `eng` and
 `userdebug` builds, see [Choose a target](https://source.android.com/setup/build/building#choose-a-target).  
 For your own usage, `userdebug` is most likely what you want.
 
