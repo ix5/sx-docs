@@ -4,9 +4,10 @@ date: 2018-11-11T23:41:34+01:00
 description: "Runtime Resource Overlays make customizing Android much easier and
 more portable"
 author: Felix
-draft: true
+draft: false
 ---
 
+<!--
 # TODO:
 
 - Is signing system apks necessary on our builds?
@@ -14,6 +15,7 @@ draft: true
 - How to disable temporarily?
 - Easier way to setup build tools
 - Setting prioriy via OMS? How does it get calculated?
+-->
 
 ## What are RROs?
 
@@ -54,6 +56,7 @@ for `framework-res`.
 - Push overlay.apk into /system/vendor/overlay
 - Check installed overlays with `cmd overlay list`
 - Enable own overlay with `cmd overlay enable [--user 0] <my-overlay>`
+- May need to set priority via `cmd overlay set-priority lowest|highest <number> ...`
 
 ## Security
 

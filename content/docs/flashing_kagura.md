@@ -26,11 +26,23 @@ Flash latest stock Oreo .ftf ([see list](https://forum.xda-developers.com/xperia
 via [FlashTool](https://forum.xda-developers.com/showthread.php?t=920746).
 You can access flashmode by powering down the device, then holding Volume-Down
 and then connecting the USB cable.
+<div class="message">
+If you have previously upgraded to the latest stock firmware(<code>.192</code>)
+and only tested out e.g. OmniROM, there is no need to re-flash the stock
+firmware and you can skip this step.
+</div>
 
 ### 2. Flash OEM binaries
+Flash oem binaries version 3.
+Download them from the
+[Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries)
+The filename will be `SW_binaries_for_Xperia_Android_9.0_2.3.2_v3_tone.zip`.
+Unzip it and flash the resulting `.img` file with fastboot.
+<!--
 Flash oem binaries version 1: Version 2 is buggy, and *calling does not work.*
 Download oem version 1 from the
 [Sony Software Binaries Archives](https://developer.sony.com/file/download/software-binaries-for-aosp-pie-android-9-0-kernel-4-9-tone-v1/)
+-->
 
 ### 3. Flash TWRP Recovery
 Flash TWRP ([AdrianDC's one](https://basketbuild.com/filedl/devs?dev=AdrianDC&dl=AdrianDC/Kagura/TWRP-Recovery/twrp-3.2.1-20171219-boot-kagura.img)).
@@ -39,10 +51,11 @@ fastboot flash recovery twrp-3.2.1-20171219-boot-kagura.img
 ```
 (You need to use AdrianDC's one because the official TWRP builds can not mount /data).
 
-### 4. Download latest stable build
-Get the latest build from [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/).
-The latest stable build will be marked in
-[this xda thread](https://forum.xda-developers.com/xperia-xz/development/xz-aosp-pie-builds-t3864985/post78111505)
+### 4. Download latest (semi-stable) build
+Get the latest build from [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp).
+The latest semi-stable build is 2018-11-16(there are no *stable* builds yet).
+It will be marked in [this xda thread](https://forum.xda-developers.com/xperia-xz/development/xz-aosp-pie-builds-t3864985/post78111505)
+as well.
 
 ### 5. Flash the ROM zip file from TWRP
 You can access the TWRP recovery by powering down the device, then holding down
@@ -70,6 +83,11 @@ without GApps.
 Flash [Magisk v17.1 or later](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445).
 Then install Magisk Manager app. But read carefully which modules are
 compatible!
+
+## Optional Goodies
+The included AOSP Camera cannot record video as of now. You can instead try
+OpenCamera, Snap Camera(from LineageOS), or one of the numerous
+[Google Camera ports](https://www.celsoazevedo.com/files/android/google-camera/).
 
 ## Caveats
 **Adding fingerprint crashes device:** You need to tap your finger onto the

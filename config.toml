@@ -6,7 +6,7 @@ Paginate = 4
 
 [permalinks]
 posts = "/post/:title/"
-docs = "/docs/:title/"
+docs = "/:title/"
 
 [Params]
   author = "ix5"
