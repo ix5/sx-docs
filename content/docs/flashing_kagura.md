@@ -90,16 +90,18 @@ firmware and you can skip this step.
 </div>
 
 You can access S1 flash mode by powering down the device completely, then holding
-<kbd>VOLUME-DOWN</kbd> and then connecting the USB cable.
+<kbd>VOLUME-DOWN</kbd> while connecting the USB cable. The notification LED
+should turn green and you can stop holding the volume button.
 
 Flash the latest available Oreo .FTF stock firmware using Androxyde's
-[FlashTool](https://forum.xda-developers.com/showthread.php?t=920746)
-(Guide for flashing FTF with FlashTool: https://forum.xda-developers.com/showthread.php?t=2658952)).
+[FlashTool](https://forum.xda-developers.com/showthread.php?t=920746).  
+(Guide for flashing FTF with FlashTool: [xda: How to use Flashtool](https://forum.xda-developers.com/showthread.php?t=2658952))
 
 
 ### 5. Flash TWRP Recovery
 You can access fastboot mode by powering down the device completely, then holding
-<kbd>VOLUME-UP</kbd> and then connecting the USB cable.
+<kbd>VOLUME-UP</kbd> while connecting the USB cable. The notification LED should
+turn blue and you can stop holding the volume button.
 
 Flash the TWRP recovery from the command line:
 <pre><code>fastboot flash <span style="color:red">recovery</span> twrp-3.2.1-20171219-boot-kagura.img</code></pre>
@@ -126,17 +128,20 @@ appears, release all buttons.
 
 ##### 7.1 Wipe data (optional, but highly recommended)
 
-<!-- Wipe `/data`, `/cache` and Dalvik cache in TWRP. -->
-If you are coming from stock firmware, you absolutely need to do this. You might
-be able to skip this step if you are coming from a previous Pie build, but if
-you run into problems you need to at least wipe the caches, if not `/data` as
-well.
+Wipe `/data`, `/cache` and Dalvik cache in TWRP:
 
 - When booted into TWRP, swipe from left to right to enable system
   modifications.  Do not proceed with system partition marked as "Read only"!
 - Click "Wipe" and choose to perform a factory reset. Swipe to proceed.
   (This will keep the files on your internal storage but delete all your app
   data).
+
+  <div class="message">
+  If you are coming from stock firmware, you absolutely need to do this. You might
+  be able to skip this step if you are coming from a previous Pie build, but if
+  you run into problems you need to at least wipe the caches, if not `/data` as
+  well.
+  </div>
 
 ##### 7.2 Flash the AOSP ROM
 
@@ -148,7 +153,7 @@ well.
   modifications.  Do not proceed with system partition marked as "Read only"!
 - Connect your phone to your computer via USB. The Phone should appear in your
   devices-list to the left in Windows Explorer.
-- Transfer AOSP ROM, Magisk and GApps zip-files to the phone's internal storage.
+- Transfer AOSP ROM zip-file to the phone's internal storage.
 - Click "Install"-tile and select the AOSP ROM file
 - Swipe from left to right to start the flashing procedure.
 
@@ -194,13 +199,13 @@ OpenCamera, Snap Camera(from LineageOS), or one of the numerous
 ## Troubleshooting
 
 If your phone can't boot past the white Sony logo or freezes on Android
-boot-animation, try to simultaneously press POWER + VOL UP until first
-vibration. This will reboot your phone.
+boot-animation, try to simultaneously press <kbd>POWER</kbd> + <kbd>VOLUME-UP</kbd>
+until the first vibration. This will reboot your phone.
 
 If you need to re-enter TWRP, your phone must first be powered off. You can
 always force this no matter where and when by long-pressing
 <kbd>POWER</kbd> + <kbd>VOL-UP</kbd> until you feel three vibrations. Then
-release buttons and boot to TWRP.
+release buttons and boot to TWRP with <kbd>POWER</kbd> + <kbd>VOLUME-DOWN</kbd>.
 
 ##### Formatting /data
 If you still cannot boot the AOSP builds, try formatting your `/data` partition.
