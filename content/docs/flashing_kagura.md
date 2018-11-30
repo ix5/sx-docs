@@ -207,6 +207,11 @@ always force this no matter where and when by long-pressing
 <kbd>POWER</kbd> + <kbd>VOL-UP</kbd> until you feel three vibrations. Then
 release buttons and boot to TWRP with <kbd>POWER</kbd> + <kbd>VOLUME-DOWN</kbd>.
 
+##### Magisk
+If you cannot boot and have Magisk modules installed, it might be that they are
+incompatible with this ROM. Before reporting a bug, please remove all Magisk
+modules(by flashing the Magisk uninstall zip) and try booting again.
+
 ##### Formatting /data
 If you still cannot boot the AOSP builds, try formatting your `/data` partition.
 Back up all your photos etc. to your computer as this will wipe your internal
