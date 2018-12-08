@@ -1,3 +1,13 @@
++++
+title = "How to un-fuck git"
+description = ""
+date = 2018-11-19T22:26:47+02:00
+weight = 20
+draft = true
+bref = ""
+toc = false
++++
+
 ## Un-fuck git
 
 .repo/projects/prebuilts/build-tools.git/shallow should point to a commit

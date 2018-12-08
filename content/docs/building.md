@@ -58,6 +58,7 @@ apt install rsync libssl-dev aapt
 # Kernel recompilation:
 apt install bc autoconf automake autopoint autotools-dev bsdmainutils
 gawk groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool
+kmod
 # gettext gettext-base dh-autoreconf dh-strip-nondeterminism
 ```
 Cross-reference the needed packages with the

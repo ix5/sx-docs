@@ -233,7 +233,7 @@ scanner and let it get scanned like you normally would.
 <div class="message warning">
   <h5>Attention!</h5>
 Please also read the
-<a style="color: #1764de;" href="https://etherpad.net/p/r.2c613f4824d5e9f7764e4c7c45972aac">full bug list</a>!
+<a style="color: #1764de;" href="https://sx.ix5.org/bugs-sx">full bug list</a>!
 </div>
 
 ---
