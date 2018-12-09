@@ -2,7 +2,7 @@
 title = "Security"
 description = "Security, verified boot and encryption"
 date = 2018-10-19T22:15:22+02:00
-weight = 20
+weight = 10
 draft = false
 bref = "Security, verified boot and encryption"
 toc = true

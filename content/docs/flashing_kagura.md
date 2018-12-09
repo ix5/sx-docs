@@ -2,7 +2,7 @@
 title = "Flashing AOSP on Xperia XZ"
 description = "Definitve guide"
 date = 2018-10-19T22:26:47+02:00
-weight = 20
+weight = 10
 draft = false
 bref = "Definitve guide"
 toc = false
