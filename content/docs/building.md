@@ -57,9 +57,11 @@ apt install ccache
 apt install rsync libssl-dev aapt
 # Kernel recompilation:
 apt install bc autoconf automake autopoint autotools-dev bsdmainutils
-gawk groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool
-kmod
-# gettext gettext-base dh-autoreconf dh-strip-nondeterminism
+gawk groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool kmod
+# For selinux:
+apt install setools python-networkx policycoreutils
+# For JACK(it needs curl and lsof)
+apt install curl lsof
 ```
 Cross-reference the needed packages with the
 [official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)

@@ -4,7 +4,7 @@ date: 2018-11-11T23:41:34+01:00
 description: "Runtime Resource Overlays make customizing Android much easier and
 more portable"
 author: Felix
-draft: false
+draft: true
 ---
 
 <!--
@@ -52,7 +52,8 @@ for `framework-res`.
 - Faster feedback from testers, empowering people with limited knowledge or
   resources to still participate
 - Generate standalone RRO overlay
-- Check example repo
+- Check example repo (TODO)
+- TODO: Need to find out how to generate/get proper ids for public idmap!
 - Push overlay.apk into /system/vendor/overlay
 - Check installed overlays with `cmd overlay list`
 - Enable own overlay with `cmd overlay enable [--user 0] <my-overlay>`

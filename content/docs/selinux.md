@@ -8,6 +8,59 @@ bref = "How to configure"
 toc = false
 +++
 
+## General
+(from SEAndroid-Aalto presentation):
+
+> Subjects are primarily processes. Processes that participate in the access
+> control are assigned a domain
+
+> Objects are e.g. files, sockets.. Objects that participate in the access
+> control are assigned a type
+
+```
+ X          N        allow   M                 Y
+processes  domains   rules  types          objects
+                                 --------------[]
+                                /      --------[]
+[]---\        /-------------[]---- ---/--------[]
+[]    ------[]------/-------[]--- ---/---------[]
+[]----------[]\----/--------[]-\----/----------[]
+[]      /  -[]-\------------[]--\--------------[]
+[]-----/  /   \ \              \/\             []
+[]       /     \------------[]--\-\------------[]
+[]------/-                       --\-----------[]
+                                    -----------[]
+```
+
+> An object is always an OS primitive of some sort. This is not a policy issue,
+> this is reality. An object therefore belongs to one or more classes which are
+> predefined by the system proper. A class can be e.g. file, socket, character
+> device, ....
+
+```
+Objects   Classes      Permissions
+[]--           /-----------[]
+[]--\-------[]-------------[]
+[]-/          \------------[]
+[]-
+```
+
+> A class is associated with a fixed set of permissions (e.g read, write,
+> open..), often closely mapped to system call functionality. Again, the set of
+> available permission is predefined, policy does not change that But! An allow
+> rule includes also the class, and within that the permissions allowed by the
+> rule. Class and permission names are ”well known” as defined by NSA / SELinux
+
+In general: `allow [domain] [type] : [class] {[ allowed permissions ]}`
+
+- `[domain]`: Subject(a process in a domain)
+- `[type]`: Object(a file or other resource)
+- `[class]`: Resource class(from predefined set)
+- `[allowed_permissions]`: Class-specific permissions that are allowed by this
+  rule
+
+## Misc
+
 Directories:
 
 - `system/sepolicy`
@@ -23,8 +76,8 @@ Directories:
 
 Sepolicy macros
 
-Testing it out: either `mka sepolicy` or `make bootimage`
-But faster: `make -j $(nproc) sepolicy_tests`!
+Testing it out: either `mka selinux_policy` or `make bootimage`
+But to only check if the policy is valid: `make -j $(nproc) sepolicy_tests`!
 
 ```
 PRODUCT_FULL_TREBLE_OVERRIDE := false
@@ -58,16 +111,39 @@ find out/target/product/kagura/ -iname "*file_context*" -exec rm -rv {} \;
 - https://stackoverflow.com/questions/33779286/selinux-policy-definition-for-android-system-service-how-to-setup
 - https://www.all-things-android.com/content/understanding-se-android-policy-files
 - https://android.stackexchange.com/questions/120061/how-selinux-protects-android-from-rooting
+- https://www.whitewinterwolf.com/posts/2016/08/15/examine-android-selinux-policy/
+- https://serverfault.com/questions/521078/how-can-i-query-for-all-selinux-rules-default-file-contexts-etc-affecting-a-type
 
 - https://selinuxproject.org/page/ObjectClassesPerms
 - https://selinuxproject.org/page/PolicyLanguage
 - https://selinuxproject.org/page/AVCRules
-- https://selinuxproject.org/page/XpermRules
+- https://selinuxproject.org/page/XpermRules (allowxperm etc, important for
+  defining ioctls!)
+
+# Testing
+
+Install needed tools:
+```
+apt install setools python-networkx policycoreutils
+```
 
 Tips:
 
 - `restorecon -R /path`
 - `ls -Z /path` or `ls -Z /path/file`
+- `ps -AZ`
+- Always try to find out what the macros mean!
+  Check `system/sepolicy/pulic/{te_macros,global_macros}` and any file you might
+  find that explains a thing that does not fall within the standard
+  `rule_name source_type target_type : class perm_set;` schema.
+  Especially `binder_use()` and similar macros pull in `neverallow`s and things
+  you might not expect.
+- Have a copy of the `te_macros` and `global_macros` printed out!
+- `load_policy` to reload policy on device
+- `sesearch` and `seinfo` tools to examine policy(must be installed on host, not
+  available on standard android device)
+- Check paths with `matchpathcon -P <policy_file> -f <file_contexts_file>
+  /my/path`
 
 Examples:
 
@@ -104,8 +180,55 @@ Google's guides:
 - https://source.android.com/security/selinux/customize
 - https://source.android.com/security/selinux/implement
 
+## Gotchas
 
-## How we tamed QcRilAm
+- Confusing domains, types vs attributes(?), labels, objects, contexts, ...
+- `service_manager` (from `add_service(domain, service)`) vs `servicemanager`
+  (from `binder_use(domain)`). Yes, this is extremely confusing!
+- Confusing public/vendor and private policy folders/"APIs"
+- Confusing objects(mostly files) and running subjects like "apps"(the Java
+  ones) or "services"(mostly C binaries that run from /system/bin or
+  /vendor/bin, but can also be Java apps OR HAL/HIDL implementations)
+- Things can be active(searching/finding something) or passive(being labeled
+  something and then being interacted with). Attributes are mostly passive,
+  while subjects and their actions are active.
+
+## seapp
+
+Is `seapp_contexts` a labeling mechanism? Or a sanity check through neverallows?
+Can you leave out everything apart from `name=com.my.app`?
+
+`seinfo` is mainly used to enforce signing requirements, e.g. you have
+`mac_permissions.xml`(MAC = Mandatory Access Control) that specifies that
+anything with `seinfo=platform` has to be signed by the platform key:
+```
+<?xml version="1.0" encoding="utf-8"?><policy>
+[...]
+<!-- Platform dev key in AOSP -->
+<signer signature="@PLATFORM" >
+  <seinfo value="platform" />
+</signer>
+</policy>
+```
+
+
+From domain.te:
+
+> Only `service_manager_types` can be added to `service_manager`
+> `# TODO: rework this: neverallow * ~service_manager_type:service_manager { add find };`
+
+From init.te:
+
+> Init never adds or uses services via `service_manager`
+> `neverallow init service_manager_type:service_manager { add find };`
+
+
+## Taming a service: QcRilAm
+
+<!-- TODO: Changeme to reflect seapp_contexts version! -->
+```
+u:r:platform_app:s0:c512,c768  u0_a62        2045   585 3685212  80452 SyS_epoll_wait      0 S com.sony.qcrilam
+```
 
 QcRilAm is our own little app/service that proxies requests from rild to
 `android.hardware.radio.am`. It was written by oshmoun and is needed to get
