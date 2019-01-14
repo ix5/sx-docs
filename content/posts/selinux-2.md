@@ -22,16 +22,22 @@ draft = true
 # Platform witout a vendor partition
 TARGET_COPY_OUT_VENDOR := system/vendor
 # Force split
+# (not working yet without real split vendor part)
 #BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+
+# Test split sepolicy on older devices:
+PRODUCT_SEPOLICY_SPLIT_OVERRIDE := true
 
 # Test full treble
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 
+# Change to permissive to test
+BOARD_USE_ENFORCING_SELINUX := false
+
+# (not working without real split vendor part because symlinks and ld.config)
 BOARD_VNDK_VERSION := current
 PRODUCT_SHIPPING_API_LEVEL ?= 26
 PRODUCT_USE_VNDK_OVERRIDE := true
 # Include vndk/vndk-sp/ll-ndk modules
 PRODUCT_PACKAGES += vndk_package
-# Test split sepolicy on older devices:
-PRODUCT_SEPOLICY_SPLIT_OVERRIDE := true
 ```
