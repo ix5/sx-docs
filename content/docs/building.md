@@ -16,6 +16,12 @@ but add some extra tips.
 Create a `~/android/build-env` folder, `cd` into it and run the provided
 `repo init` command (assuming you installed `repo` into `~/.local/bin/repo`).
 
+```
+repo init -u https://android.googlesource.com/platform/manifest \
+  -b android-9.0.0_r21 -g default,-x86,-mips,-darwin,-notdefault
+```
+(use the appropriate branch tag instead of `r21`)
+
 ## Ubuntu chroot
 
 <div class="message success">
