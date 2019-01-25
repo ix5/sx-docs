@@ -1,49 +1,44 @@
 ---
 title: "WiFi notes"
 date: 2019-01-01T08:18:00+01:00
-draft: true
+draft: false
+bref: "Notes from debugging and testing WiFi/tethering"
 author: Felix
 ---
 
-# Tethering 5Ghz
+*Sorry this is such a mess, this is more of a braindump...*
 
-`getAvailable5gNonDFSChannels`
+---
 
-DFS = Dynamic Frequency selction
+## Terms
+- `DFS` = Dynamic Frequency selction
+- `STA` = Station mode = Client
+- `AP` = Access point = Router
 
-# Other
-STA = Station mode = Client
-AP = Access point = Router
-
-wifi_concurrency_cfg.txt
-```
-ENABLE_STA_SAP_CONCURRENCY:1
-SAP_INTERFACE_NAME:softap0
-SAP_CHANNEL:6
-```
-
-# CHRE
+## CHRE
 > This daemon loads the Context Hub Runtime Environment (CHRE) dynamic modules
 > onto the SLPI using FastRPC, and exposes a sockets interface for clients on
 > the applications processor to interact CHRE
 
-# More tethering
-frameworks/opt/net/wifi/service/java/com/android/server/wifi/WificondControl.java
-frameworks/opt/net/wifi/service/java/com/android/server/wifi/SoftApManager.java
-frameworks/opt/net/wifi/service/java/com/android/server/wifi/util/ApConfigUtil.java
+## Tethering 5Ghz
 
+Uses `getAvailable5gNonDFSChannels` internally, discards DFS frequencies.
 
-# Needed patches
+## More tethering
+- `frameworks/opt/net/wifi/service/java/com/android/server/wifi/WificondControl.java`
+- `frameworks/opt/net/wifi/service/java/com/android/server/wifi/SoftApManager.java`
+- `frameworks/opt/net/wifi/service/java/com/android/server/wifi/util/ApConfigUtil.java`
+
+## Needed patches
 
 external/libnl/lib/msg.c
 ```
 -static void print_hdr(FILE *ofd, struct nl_msg *msg)
 +// Needs to be non-static to be used elsewhere
 +void print_hdr(FILE *ofd, struct nl_msg *msg)
-````
+```
 
-external/wpa_supplicant_8
--> lots of different ones, see patch
+external/wpa_supplicant_8: see [wpa_supplicant_8.patch](/info/files/wpa_supplicant_8.patch)
 
 frameworks/base
 ```
@@ -143,7 +138,7 @@ index 740792b..5099e4e 100644
 +#update_config=1
 ```
 
-# BRCMFMAC
+## BRCMFMAC
 device/sony/kagura
 ```
 diff --git a/device.mk b/device.mk
@@ -155,7 +150,7 @@ index eff2375..1c908d2 100644
      device/sony/kagura/overlay
  
 +# declare brcmfmac as the wifi driver
-+#WIFI_DRIVER_BUILT := brcmfmac
++WIFI_DRIVER_BUILT := brcmfmac
 +
  # Device Specific Permissions
  PRODUCT_COPY_FILES := \
@@ -173,7 +168,7 @@ index eff2375..1c908d2 100644
  PRODUCT_PACKAGES += \
  ```
 
-# Misc
+## Miscellaneous notes
 
 `system/connectivity/wificond/net/netlink_utils.h`
 ```
@@ -268,4 +263,11 @@ kernel netlink.h
 
 static inline void *nla_data(const struct nlattr *nla) {
 	return (char *) nla + NLA_HDRLEN; }
+```
+
+wifi_concurrency_cfg.txt
+```
+ENABLE_STA_SAP_CONCURRENCY:1
+SAP_INTERFACE_NAME:softap0
+SAP_CHANNEL:6
 ```

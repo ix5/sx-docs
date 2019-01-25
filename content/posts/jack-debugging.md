@@ -1,18 +1,21 @@
 ---
-title: "Debugging JACK"
+title: "Fixing JACK"
 date: 2018-12-30T09:18:00+01:00
-draft: true
+draft: false
 author: Felix
 ---
 
-## Some common errors and how to fix them
+*Thankfully, JACK was dropped from the Android build system in version 9.0 Pie.
+In case you're stuck with Oreo, here are some tips.*
+
+---
 
 On Android 8.x, JACK needs some extra packages. check with `jack-diagnose`
 
 In a bare buildroot, these might be missing, so install them:
 ```
 apt install curl lsof
-``
+```
 
 In a buildroot, if somehow installing the JACK .jar files into `~/.jack-server`
 fails, run this on the host and bind-mount `~/.jack-server` into the target:

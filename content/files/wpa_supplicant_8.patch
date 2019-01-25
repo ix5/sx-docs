@@ -1,0 +1,1091 @@
+diff --git a/src/ap/ap_drv_ops.c b/src/ap/ap_drv_ops.c
+index 8f4d8398..f8771fd1 100644
+--- a/src/ap/ap_drv_ops.c
++++ b/src/ap/ap_drv_ops.c
+@@ -534,19 +534,39 @@ int hostapd_set_freq(struct hostapd_data *hapd, enum hostapd_hw_mode mode,
+ {
+ 	struct hostapd_freq_params data;
+ 
++	wpa_printf(MSG_ERROR, "%s: freq=%d chnl=%d ht_en=%d vht_en=%d, sec_chnl_ofst=%d, vht_opr_chwdth=%d, cntr_sgmnt0=%d, 1=%d",
++				__func__, freq, channel, ht_enabled, vht_enabled,
++				sec_channel_offset, vht_oper_chwidth, center_segment0, center_segment1);
++
++	/* enum hostapd_hw_mode { */
++	/* 	HOSTAPD_MODE_IEEE80211B, */
++	/* 	HOSTAPD_MODE_IEEE80211G, */
++	/* 	HOSTAPD_MODE_IEEE80211A, */
++	/* 	HOSTAPD_MODE_IEEE80211AD, */
++	/* 	HOSTAPD_MODE_IEEE80211ANY, */
++	/* 	NUM_HOSTAPD_MODES */
++	/* }; */
++
+ 	if (hostapd_set_freq_params(&data, mode, freq, channel, ht_enabled,
+ 				    vht_enabled, sec_channel_offset,
+ 				    vht_oper_chwidth,
+ 				    center_segment0, center_segment1,
+ 				    hapd->iface->current_mode ?
+-				    hapd->iface->current_mode->vht_capab : 0))
++				    hapd->iface->current_mode->vht_capab : 0)) {
++		wpa_printf(MSG_ERROR, "hostapd_set_freq_params(), returning -1");
+ 		return -1;
++	}
+ 
+-	if (hapd->driver == NULL)
++	if (hapd->driver == NULL) {
++		wpa_printf(MSG_ERROR, "hapd->driver is NULL, returning 0");
+ 		return 0;
++	}
+ 	if (hapd->driver->set_freq == NULL)
++		wpa_printf(MSG_ERROR, "hapd->driver->set_freq is NULL, returning 0");
+ 		return 0;
+-	return hapd->driver->set_freq(hapd->drv_priv, &data);
++	int ret = hapd->driver->set_freq(hapd->drv_priv, &data);
++	wpa_printf(MSG_ERROR, "hapd->driver->set_freq: ret=%d", ret);
++	return ret;
+ }
+ 
+ int hostapd_set_rts(struct hostapd_data *hapd, int rts)
+@@ -575,12 +595,17 @@ int hostapd_sta_set_flags(struct hostapd_data *hapd, u8 *addr,
+ }
+ 
+ 
++// TODO: Check the driver
+ int hostapd_set_country(struct hostapd_data *hapd, const char *country)
+ {
+ 	if (hapd->driver == NULL ||
+-	    hapd->driver->set_country == NULL)
++	    hapd->driver->set_country == NULL) {
++		wpa_printf(MSG_ERROR, "%s: driver/drv->set_country=NULL", __func__);
+ 		return 0;
+-	return hapd->driver->set_country(hapd->drv_priv, country);
++	}
++	int ret = hapd->driver->set_country(hapd->drv_priv, country);
++	wpa_printf(MSG_ERROR, "%s: driver->set_country=%d", __func__, ret);
++	return ret;
+ }
+ 
+ 
+@@ -598,9 +623,23 @@ struct hostapd_hw_modes *
+ hostapd_get_hw_feature_data(struct hostapd_data *hapd, u16 *num_modes,
+ 			    u16 *flags, u8 *dfs_domain)
+ {
++	// hapd->driver is a wpa_driver_ops
++	// defined in external/wpa_supplicant_8/src/drivers/driver.h
++	// has name and desc as chars
++	// Seems we're using the following drivers:
++	// driver_nl80211.o -> this one has get_hw_feature_data(),
++	// 					    points to nl80211_get_hw_feature_data
++	// driver_common.o
++	// driver_nl80211_monitor.o
++	// driver_nl80211_android.o
++	// driver_nl80211_capa.o -> this one has nl80211_get_hw_feature_data()
++	// driver_nl80211_scan.o
++	// driver_nl80211_event.o
+ 	if (hapd->driver == NULL ||
+ 	    hapd->driver->get_hw_feature_data == NULL)
+ 		return NULL;
++	wpa_printf(MSG_ERROR, "driver name = %s", hapd->driver->name);
++	wpa_printf(MSG_ERROR, "driver desc = %s", hapd->driver->desc);
+ 	return hapd->driver->get_hw_feature_data(hapd->drv_priv, num_modes,
+ 						 flags, dfs_domain);
+ }
+diff --git a/src/ap/ap_drv_ops.h b/src/ap/ap_drv_ops.h
+index bf8169dd..39f4e36b 100644
+--- a/src/ap/ap_drv_ops.h
++++ b/src/ap/ap_drv_ops.h
+@@ -205,9 +205,14 @@ static inline int hostapd_drv_set_acl(struct hostapd_data *hapd,
+ static inline int hostapd_drv_set_ap(struct hostapd_data *hapd,
+ 				     struct wpa_driver_ap_params *params)
+ {
+-	if (hapd->driver == NULL || hapd->driver->set_ap == NULL)
++	if (hapd->driver == NULL || hapd->driver->set_ap == NULL) {
++		wpa_printf(MSG_ERROR, "%s: driver/drv->set_country=NULL", __func__);
+ 		return 0;
+-	return hapd->driver->set_ap(hapd->drv_priv, params);
++	}
++	int ret =  hapd->driver->set_ap(hapd->drv_priv, params);
++	wpa_printf(MSG_ERROR, "%s: driver->set_ap=%s",
++			__func__, strerror(errno));
++	return ret;
+ }
+ 
+ static inline int hostapd_drv_set_radius_acl_auth(struct hostapd_data *hapd,
+diff --git a/src/ap/beacon.c b/src/ap/beacon.c
+index 3ea28a76..b88fb710 100644
+--- a/src/ap/beacon.c
++++ b/src/ap/beacon.c
+@@ -31,6 +31,8 @@
+ #include "dfs.h"
+ #include "taxonomy.h"
+ 
++#include <errno.h>
++
+ 
+ #ifdef NEED_AP_MLME
+ 
+@@ -1436,13 +1438,19 @@ int ieee802_11_set_beacon(struct hostapd_data *hapd)
+ 				    iconf->vht_oper_chwidth,
+ 				    iconf->vht_oper_centr_freq_seg0_idx,
+ 				    iconf->vht_oper_centr_freq_seg1_idx,
+-				    iface->current_mode->vht_capab) == 0)
++				    iface->current_mode->vht_capab) == 0) {
+ 		params.freq = &freq;
++	}
+ 
++	// This is important!
+ 	res = hostapd_drv_set_ap(hapd, &params);
++	// TODO
+ 	hostapd_free_ap_extra_ies(hapd, beacon, proberesp, assocresp);
++	// Fuck it
++	//ret = 0;
+ 	if (res)
+-		wpa_printf(MSG_ERROR, "Failed to set beacon parameters");
++		wpa_printf(MSG_ERROR, "Failed to set beacon parameters: %s",
++				strerror(errno));
+ 	else
+ 		ret = 0;
+ fail:
+diff --git a/src/ap/hostapd.c b/src/ap/hostapd.c
+index 12911dfd..aa6b4ce6 100644
+--- a/src/ap/hostapd.c
++++ b/src/ap/hostapd.c
+@@ -1795,7 +1795,7 @@ static int hostapd_setup_interface_complete_sync(struct hostapd_iface *iface,
+ #endif /* NEED_AP_MLME */
+ 
+ 		iface->freq = hostapd_hw_get_freq(hapd, iface->conf->channel);
+-		wpa_printf(MSG_DEBUG, "Mode: %s  Channel: %d  "
++		wpa_printf(MSG_ERROR, "Mode: %s  Channel: %d  "
+ 			   "Frequency: %d MHz",
+ 			   hostapd_hw_mode_txt(iface->conf->hw_mode),
+ 			   iface->conf->channel, iface->freq);
+@@ -1803,6 +1803,7 @@ static int hostapd_setup_interface_complete_sync(struct hostapd_iface *iface,
+ #ifdef NEED_AP_MLME
+ 		/* Handle DFS only if it is not offloaded to the driver */
+ 		if (!(iface->drv_flags & WPA_DRIVER_FLAGS_DFS_OFFLOAD)) {
++			wpa_printf(MSG_ERROR, "hostapd.c: dfs offload");
+ 			/* Check DFS */
+ 			res = hostapd_handle_dfs(iface);
+ 			if (res <= 0) {
+@@ -1812,12 +1813,13 @@ static int hostapd_setup_interface_complete_sync(struct hostapd_iface *iface,
+ 			}
+ 		} else {
+ 			/* If DFS is offloaded to the driver */
++			// TODO: Offload.. interesting
+ 			res_dfs_offload = hostapd_handle_dfs_offload(iface);
+ 			if (res_dfs_offload <= 0) {
+ 				if (res_dfs_offload < 0)
+ 					goto fail;
+ 			} else {
+-				wpa_printf(MSG_DEBUG,
++				wpa_printf(MSG_ERROR,
+ 					   "Proceed with AP/channel setup");
+ 				/*
+ 				 * If this is a DFS channel, move to completing
+@@ -1832,13 +1834,14 @@ static int hostapd_setup_interface_complete_sync(struct hostapd_iface *iface,
+ 
+ #ifdef CONFIG_MESH
+ 		if (iface->mconf != NULL) {
+-			wpa_printf(MSG_DEBUG,
++			wpa_printf(MSG_ERROR,
+ 				   "%s: Mesh configuration will be applied while joining the mesh network",
+ 				   iface->bss[0]->conf->iface);
+ 			delay_apply_cfg = 1;
+ 		}
+ #endif /* CONFIG_MESH */
+ 
++		wpa_printf(MSG_ERROR, "delay_apply_cfg: %d", delay_apply_cfg);
+ 		if (!delay_apply_cfg &&
+ 		    hostapd_set_freq(hapd, hapd->iconf->hw_mode, iface->freq,
+ 				     hapd->iconf->channel,
+@@ -1852,6 +1855,7 @@ static int hostapd_setup_interface_complete_sync(struct hostapd_iface *iface,
+ 				   "kernel driver");
+ 			goto fail;
+ 		}
++		wpa_printf(MSG_ERROR, "%s: Channel set for kernel driver!", __func__);
+ 	}
+ 
+ 	if (iface->current_mode) {
+diff --git a/src/ap/hw_features.c b/src/ap/hw_features.c
+index 84e74eef..c53f82db 100644
+--- a/src/ap/hw_features.c
++++ b/src/ap/hw_features.c
+@@ -78,12 +78,16 @@ int hostapd_get_hw_features(struct hostapd_iface *iface)
+ 	int i, j;
+ 	u16 num_modes, flags;
+ 	struct hostapd_hw_modes *modes;
++	// u8 = uint8_t
+ 	u8 dfs_domain;
+ 
+ 	if (hostapd_drv_none(hapd))
+ 		return -1;
+ 	modes = hostapd_get_hw_feature_data(hapd, &num_modes, &flags,
+ 					    &dfs_domain);
++	// Returned domain is 0!!!
++	wpa_printf(MSG_ERROR, "%s: dfs_domain=%d", __func__, dfs_domain);
++
+ 	if (modes == NULL) {
+ 		hostapd_logger(hapd, NULL, HOSTAPD_MODULE_IEEE80211,
+ 			       HOSTAPD_LEVEL_DEBUG,
+@@ -115,6 +119,8 @@ int hostapd_get_hw_features(struct hostapd_iface *iface)
+ 			 * IBSS).
+ 			 * Use radar channels only if the driver supports DFS.
+ 			 */
++			/* Fuck it, just enable the channel */
++			//dfs = 1;
+ 			if ((feature->channels[j].flag &
+ 			     HOSTAPD_CHAN_RADAR) && dfs_enabled) {
+ 				dfs = 1;
+@@ -126,6 +132,11 @@ int hostapd_get_hw_features(struct hostapd_iface *iface)
+ 				    HOSTAPD_CHAN_NO_IR)) {
+ 				feature->channels[j].flag |=
+ 					HOSTAPD_CHAN_DISABLED;
++				//wpa_printf(MSG_ERROR, "%s: would have disabled channel=%d",
++				//		__func__, j);
++				// | = bitwise inclusive OR
++				/* feature->channels[j].flag |= */
++				/* 	HOSTAPD_CHAN_DISABLED; */
+ 			}
+ 
+ 			if (feature->channels[j].flag & HOSTAPD_CHAN_DISABLED)
+@@ -137,6 +148,8 @@ int hostapd_get_hw_features(struct hostapd_iface *iface)
+ 				   feature->channels[j].chan,
+ 				   feature->channels[j].freq,
+ 				   feature->channels[j].max_tx_power,
++				   // dfs_info() ?????
++				   // Hopefully it's "available"...
+ 				   dfs ? dfs_info(&feature->channels[j]) : "");
+ 		}
+ 	}
+@@ -702,10 +715,12 @@ static int hostapd_is_usable_chan(struct hostapd_iface *iface,
+ 	if (!iface->current_mode)
+ 		return 0;
+ 
++	// num_channels seems too short then, doesn't include dfs channels
+ 	for (i = 0; i < iface->current_mode->num_channels; i++) {
+ 		chan = &iface->current_mode->channels[i];
+-		if (chan->chan != channel)
++		if (chan->chan != channel) {
+ 			continue;
++		}
+ 
+ 		if (!(chan->flag & HOSTAPD_CHAN_DISABLED))
+ 			return 1;
+@@ -718,6 +733,7 @@ static int hostapd_is_usable_chan(struct hostapd_iface *iface,
+ 			   chan->flag & HOSTAPD_CHAN_RADAR ? " RADAR" : "");
+ 	}
+ 
++	// Unusable
+ 	wpa_printf(MSG_INFO, "Channel %d (%s) not allowed for AP mode",
+ 		   channel, primary ? "primary" : "secondary");
+ 	return 0;
+@@ -861,6 +877,8 @@ int hostapd_select_hw_mode(struct hostapd_iface *iface)
+ 	if (iface->num_hw_features < 1)
+ 		return -1;
+ 
++	/* hostapd_iface = struct, defined in external/wpa_supplicant_8/src/ap/hostapd.h */
++
+ 	if ((iface->conf->hw_mode == HOSTAPD_MODE_IEEE80211G ||
+ 	     iface->conf->ieee80211n || iface->conf->ieee80211ac) &&
+ 	    iface->conf->channel == 14) {
+@@ -871,6 +889,9 @@ int hostapd_select_hw_mode(struct hostapd_iface *iface)
+ 	}
+ 
+ 	iface->current_mode = NULL;
++	// Go through iface->num_hw_features
++	wpa_printf(MSG_ERROR, "%s: iface->num_hw_features=%d",
++				__func__, iface->num_hw_features);
+ 	for (i = 0; i < iface->num_hw_features; i++) {
+ 		struct hostapd_hw_modes *mode = &iface->hw_features[i];
+ 		if (mode->mode == iface->conf->hw_mode) {
+@@ -909,6 +930,7 @@ int hostapd_select_hw_mode(struct hostapd_iface *iface)
+ 
+ const char * hostapd_hw_mode_txt(int mode)
+ {
++	// why only 11a here?
+ 	switch (mode) {
+ 	case HOSTAPD_MODE_IEEE80211A:
+ 		return "IEEE 802.11a";
+diff --git a/src/drivers/driver.h b/src/drivers/driver.h
+index a6307e3b..2ea3de6d 100644
+--- a/src/drivers/driver.h
++++ b/src/drivers/driver.h
+@@ -4975,6 +4975,7 @@ union wpa_event_data {
+ 		 * hostapd_data->drv_priv to determine which BSS should process
+ 		 * the frame.
+ 		 */
++		// TODO: Interesting...
+ 		void *drv_priv;
+ 
+ 		/**
+diff --git a/src/drivers/driver_nl80211.c b/src/drivers/driver_nl80211.c
+index 2ce03ed7..00055e9b 100644
+--- a/src/drivers/driver_nl80211.c
++++ b/src/drivers/driver_nl80211.c
+@@ -351,20 +351,26 @@ static int send_and_recv(struct nl80211_global *global,
+ 	if (err < 0)
+ 		goto out;
+ 
++	// We are getting here, since -22=EINVAL is returned instead of
++	// ENOMEM
+ 	err = 1;
+ 
++	// Those aren't doing anything until nl_recvmsgs
+ 	nl_cb_err(cb, NL_CB_CUSTOM, error_handler, &err);
+ 	nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, &err);
+ 	nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ack_handler, &err);
+ 
++	// NULL
++	// Mhh, maybe we're not validing and we should before sending?
+ 	if (valid_handler)
+ 		nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM,
+ 			  valid_handler, valid_data);
+ 
+ 	while (err > 0) {
++		// TODO: Add print logic here
+ 		int res = nl_recvmsgs(nl_handle, cb);
+ 		if (res < 0) {
+-			wpa_printf(MSG_INFO,
++			wpa_printf(MSG_ERROR,
+ 				   "nl80211: %s->nl_recvmsgs failed: %d",
+ 				   __func__, res);
+ 		}
+@@ -383,6 +389,7 @@ int send_and_recv_msgs(struct wpa_driver_nl80211_data *drv,
+ 		       int (*valid_handler)(struct nl_msg *, void *),
+ 		       void *valid_data)
+ {
++	// valid_handler=NULL, valid_data=NULL
+ 	return send_and_recv(drv->global, drv->global->nl, msg,
+ 			     valid_handler, valid_data);
+ }
+@@ -435,6 +442,9 @@ static int nl_get_multicast_id(struct nl80211_global *global,
+ 	msg = nlmsg_alloc();
+ 	if (!msg)
+ 		return -ENOMEM;
++	/* genetlink.h */
++	/* void *genlmsg_put(struct sk_buff *skb, u32 portid, u32 seq, */
++	/* 		  struct genl_family *family, int flags, u8 cmd); */
+ 	if (!genlmsg_put(msg, 0, 0, genl_ctrl_resolve(global->nl, "nlctrl"),
+ 			 0, 0, CTRL_CMD_GETFAMILY, 0) ||
+ 	    nla_put_string(msg, CTRL_ATTR_FAMILY_NAME, family)) {
+@@ -454,6 +464,8 @@ void * nl80211_cmd(struct wpa_driver_nl80211_data *drv,
+ {
+ 	if (TEST_FAIL())
+ 		return NULL;
++	wpa_printf(MSG_ERROR, "nl80211: running nl80211_cmd(flags=%d cmd=%d)",
++				flags, cmd);
+ 	return genlmsg_put(msg, 0, 0, drv->global->nl80211_id,
+ 			   0, flags, cmd, 0);
+ }
+@@ -1505,6 +1517,12 @@ static int wpa_driver_nl80211_set_country(void *priv, const char *alpha2_arg)
+ 	if (!msg)
+ 		return -ENOMEM;
+ 
++	//char fake_alpha2[2] = "DE";
++	//// Fuck it, hardcode it here
++	//alpha2[0] = fake_alpha2[0];
++	//alpha2[1] = fake_alpha2[1];
++	/* alpha2[0] = "D"; */
++	/* alpha2[1] = "E"; */
+ 	alpha2[0] = alpha2_arg[0];
+ 	alpha2[1] = alpha2_arg[1];
+ 	alpha2[2] = '\0';
+@@ -3802,6 +3820,7 @@ static int nl80211_set_multicast_to_unicast(struct i802_bss *bss,
+ }
+ 
+ 
++// ap_drv_ops.h hostapd_drv_set_ap(drv_priv, params)
+ static int wpa_driver_nl80211_set_ap(void *priv,
+ 				     struct wpa_driver_ap_params *params)
+ {
+@@ -3821,24 +3840,26 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 
+ 	beacon_set = params->reenable ? 0 : bss->beacon_set;
+ 
+-	wpa_printf(MSG_DEBUG, "nl80211: Set beacon (beacon_set=%d)",
+-		   beacon_set);
++	// ret beacon_set=0 -> reenable
++	wpa_printf(MSG_ERROR, "nl80211 %s: Set beacon (beacon_set=%d)",
++		   __func__, beacon_set);
+ 	if (beacon_set)
+ 		cmd = NL80211_CMD_SET_BEACON;
+ 	else if (!drv->device_ap_sme && !drv->use_monitor &&
+ 		 !nl80211_get_wiphy_data_ap(bss))
+ 		return -ENOBUFS;
++	// -> u8 cmd = NL80211_CMD_NEW_BEACON;
+ 
+-	wpa_hexdump(MSG_DEBUG, "nl80211: Beacon head",
++	wpa_hexdump(MSG_ERROR, "nl80211: Beacon head",
+ 		    params->head, params->head_len);
+-	wpa_hexdump(MSG_DEBUG, "nl80211: Beacon tail",
++	wpa_hexdump(MSG_ERROR, "nl80211: Beacon tail",
+ 		    params->tail, params->tail_len);
+-	wpa_printf(MSG_DEBUG, "nl80211: ifindex=%d", bss->ifindex);
+-	wpa_printf(MSG_DEBUG, "nl80211: beacon_int=%d", params->beacon_int);
+-	wpa_printf(MSG_DEBUG, "nl80211: beacon_rate=%u", params->beacon_rate);
+-	wpa_printf(MSG_DEBUG, "nl80211: rate_type=%d", params->rate_type);
+-	wpa_printf(MSG_DEBUG, "nl80211: dtim_period=%d", params->dtim_period);
+-	wpa_hexdump_ascii(MSG_DEBUG, "nl80211: ssid",
++	wpa_printf(MSG_ERROR, "nl80211: ifindex=%d", bss->ifindex);
++	wpa_printf(MSG_ERROR, "nl80211: beacon_int=%d", params->beacon_int);
++	wpa_printf(MSG_ERROR, "nl80211: beacon_rate=%u", params->beacon_rate);
++	wpa_printf(MSG_ERROR, "nl80211: rate_type=%d", params->rate_type);
++	wpa_printf(MSG_ERROR, "nl80211: dtim_period=%d", params->dtim_period);
++	wpa_hexdump_ascii(MSG_ERROR, "nl80211: ssid",
+ 			  params->ssid, params->ssid_len);
+ 	if (!(msg = nl80211_bss_msg(bss, 0, cmd)) ||
+ 	    nla_put(msg, NL80211_ATTR_BEACON_HEAD, params->head_len,
+@@ -3849,9 +3870,12 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	    nl80211_put_beacon_rate(msg, drv->capa.flags, params) ||
+ 	    nl80211_put_dtim_period(msg, params->dtim_period) ||
+ 	    nla_put(msg, NL80211_ATTR_SSID, params->ssid_len, params->ssid))
++	{
++		wpa_printf(MSG_ERROR, "nl80211: nla_put failed!");
+ 		goto fail;
++	}
+ 	if (params->proberesp && params->proberesp_len) {
+-		wpa_hexdump(MSG_DEBUG, "nl80211: proberesp (offload)",
++		wpa_hexdump(MSG_ERROR, "nl80211: proberesp (offload)",
+ 			    params->proberesp, params->proberesp_len);
+ 		if (nla_put(msg, NL80211_ATTR_PROBE_RESP, params->proberesp_len,
+ 			    params->proberesp))
+@@ -3859,29 +3883,30 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	}
+ 	switch (params->hide_ssid) {
+ 	case NO_SSID_HIDING:
+-		wpa_printf(MSG_DEBUG, "nl80211: hidden SSID not in use");
++		// Not in use
++		wpa_printf(MSG_ERROR, "nl80211: hidden SSID not in use");
+ 		if (nla_put_u32(msg, NL80211_ATTR_HIDDEN_SSID,
+ 				NL80211_HIDDEN_SSID_NOT_IN_USE))
+ 			goto fail;
+ 		break;
+ 	case HIDDEN_SSID_ZERO_LEN:
+-		wpa_printf(MSG_DEBUG, "nl80211: hidden SSID zero len");
++		wpa_printf(MSG_ERROR, "nl80211: hidden SSID zero len");
+ 		if (nla_put_u32(msg, NL80211_ATTR_HIDDEN_SSID,
+ 				NL80211_HIDDEN_SSID_ZERO_LEN))
+ 			goto fail;
+ 		break;
+ 	case HIDDEN_SSID_ZERO_CONTENTS:
+-		wpa_printf(MSG_DEBUG, "nl80211: hidden SSID zero contents");
++		wpa_printf(MSG_ERROR, "nl80211: hidden SSID zero contents");
+ 		if (nla_put_u32(msg, NL80211_ATTR_HIDDEN_SSID,
+ 				NL80211_HIDDEN_SSID_ZERO_CONTENTS))
+ 			goto fail;
+ 		break;
+ 	}
+-	wpa_printf(MSG_DEBUG, "nl80211: privacy=%d", params->privacy);
++	wpa_printf(MSG_ERROR, "nl80211: privacy=%d", params->privacy);
+ 	if (params->privacy &&
+ 	    nla_put_flag(msg, NL80211_ATTR_PRIVACY))
+ 		goto fail;
+-	wpa_printf(MSG_DEBUG, "nl80211: auth_algs=0x%x", params->auth_algs);
++	wpa_printf(MSG_ERROR, "nl80211: auth_algs=0x%x", params->auth_algs);
+ 	if ((params->auth_algs & (WPA_AUTH_ALG_OPEN | WPA_AUTH_ALG_SHARED)) ==
+ 	    (WPA_AUTH_ALG_OPEN | WPA_AUTH_ALG_SHARED)) {
+ 		/* Leave out the attribute */
+@@ -3895,7 +3920,7 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 			goto fail;
+ 	}
+ 
+-	wpa_printf(MSG_DEBUG, "nl80211: wpa_version=0x%x", params->wpa_version);
++	wpa_printf(MSG_ERROR, "nl80211: wpa_version=0x%x", params->wpa_version);
+ 	ver = 0;
+ 	if (params->wpa_version & WPA_PROTO_WPA)
+ 		ver |= NL80211_WPA_VERSION_1;
+@@ -3905,7 +3930,7 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	    nla_put_u32(msg, NL80211_ATTR_WPA_VERSIONS, ver))
+ 		goto fail;
+ 
+-	wpa_printf(MSG_DEBUG, "nl80211: key_mgmt_suites=0x%x",
++	wpa_printf(MSG_ERROR, "nl80211: key_mgmt_suites=0x%x",
+ 		   params->key_mgmt_suites);
+ 	num_suites = 0;
+ 	if (params->key_mgmt_suites & WPA_KEY_MGMT_IEEE8021X)
+@@ -3924,7 +3949,7 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	     nla_put_flag(msg, NL80211_ATTR_CONTROL_PORT_NO_ENCRYPT)))
+ 		goto fail;
+ 
+-	wpa_printf(MSG_DEBUG, "nl80211: pairwise_ciphers=0x%x",
++	wpa_printf(MSG_ERROR, "nl80211: pairwise_ciphers=0x%x",
+ 		   params->pairwise_ciphers);
+ 	num_suites = wpa_cipher_to_cipher_suites(params->pairwise_ciphers,
+ 						 suites, ARRAY_SIZE(suites));
+@@ -3933,7 +3958,7 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 		    num_suites * sizeof(u32), suites))
+ 		goto fail;
+ 
+-	wpa_printf(MSG_DEBUG, "nl80211: group_cipher=0x%x",
++	wpa_printf(MSG_ERROR, "nl80211: group_cipher=0x%x",
+ 		   params->group_cipher);
+ 	suite = wpa_cipher_to_cipher_suite(params->group_cipher);
+ 	if (suite &&
+@@ -3941,19 +3966,20 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 		goto fail;
+ 
+ 	if (params->ht_opmode != -1) {
++		// OFF
+ 		switch (params->smps_mode) {
+ 		case HT_CAP_INFO_SMPS_DYNAMIC:
+-			wpa_printf(MSG_DEBUG, "nl80211: SMPS mode - dynamic");
++			wpa_printf(MSG_ERROR, "nl80211: SMPS mode - dynamic");
+ 			smps_mode = NL80211_SMPS_DYNAMIC;
+ 			break;
+ 		case HT_CAP_INFO_SMPS_STATIC:
+-			wpa_printf(MSG_DEBUG, "nl80211: SMPS mode - static");
++			wpa_printf(MSG_ERROR, "nl80211: SMPS mode - static");
+ 			smps_mode = NL80211_SMPS_STATIC;
+ 			break;
+ 		default:
+ 			/* invalid - fallback to smps off */
+ 		case HT_CAP_INFO_SMPS_DISABLED:
+-			wpa_printf(MSG_DEBUG, "nl80211: SMPS mode - off");
++			wpa_printf(MSG_ERROR, "nl80211: SMPS mode - off");
+ 			smps_mode = NL80211_SMPS_OFF;
+ 			break;
+ 		}
+@@ -3962,7 +3988,8 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	}
+ 
+ 	if (params->beacon_ies) {
+-		wpa_hexdump_buf(MSG_DEBUG, "nl80211: beacon_ies",
++		// Not used
++		wpa_hexdump_buf(MSG_ERROR, "nl80211: beacon_ies",
+ 				params->beacon_ies);
+ 		if (nla_put(msg, NL80211_ATTR_IE,
+ 			    wpabuf_len(params->beacon_ies),
+@@ -3970,7 +3997,8 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 			goto fail;
+ 	}
+ 	if (params->proberesp_ies) {
+-		wpa_hexdump_buf(MSG_DEBUG, "nl80211: proberesp_ies",
++		// Not used
++		wpa_hexdump_buf(MSG_ERROR, "nl80211: proberesp_ies",
+ 				params->proberesp_ies);
+ 		if (nla_put(msg, NL80211_ATTR_IE_PROBE_RESP,
+ 			    wpabuf_len(params->proberesp_ies),
+@@ -3978,7 +4006,8 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 			goto fail;
+ 	}
+ 	if (params->assocresp_ies) {
+-		wpa_hexdump_buf(MSG_DEBUG, "nl80211: assocresp_ies",
++		// Not used
++		wpa_hexdump_buf(MSG_ERROR, "nl80211: assocresp_ies",
+ 				params->assocresp_ies);
+ 		if (nla_put(msg, NL80211_ATTR_IE_ASSOC_RESP,
+ 			    wpabuf_len(params->assocresp_ies),
+@@ -3987,17 +4016,19 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 	}
+ 
+ 	if (drv->capa.flags & WPA_DRIVER_FLAGS_INACTIVITY_TIMER)  {
+-		wpa_printf(MSG_DEBUG, "nl80211: ap_max_inactivity=%d",
++		// Not used
++		wpa_printf(MSG_ERROR, "nl80211: ap_max_inactivity=%d",
+ 			   params->ap_max_inactivity);
+ 		if (nla_put_u16(msg, NL80211_ATTR_INACTIVITY_TIMEOUT,
+ 				params->ap_max_inactivity))
+ 			goto fail;
+ 	}
+ 
++	// Unused?
+ #ifdef CONFIG_P2P
+ 	if (params->p2p_go_ctwindow > 0) {
+ 		if (drv->p2p_go_ctwindow_supported) {
+-			wpa_printf(MSG_DEBUG, "nl80211: P2P GO ctwindow=%d",
++			wpa_printf(MSG_ERROR, "nl80211: P2P GO ctwindow=%d",
+ 				   params->p2p_go_ctwindow);
+ 			if (nla_put_u8(msg, NL80211_ATTR_P2P_CTWINDOW,
+ 				       params->p2p_go_ctwindow))
+@@ -4010,14 +4041,19 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ #endif /* CONFIG_P2P */
+ 
+ 	if (params->pbss) {
+-		wpa_printf(MSG_DEBUG, "nl80211: PBSS");
++		// Not used
++		wpa_printf(MSG_ERROR, "nl80211: PBSS");
+ 		if (nla_put_flag(msg, NL80211_ATTR_PBSS))
+ 			goto fail;
+ 	}
+ 
++	// Some flags in msg must be wrong...
++	/* return send_and_recv(drv->global, drv->global->nl, msg, */
++	/* 		     valid_handler, valid_data); */
+ 	ret = send_and_recv_msgs(drv, msg, NULL, NULL);
+ 	if (ret) {
+-		wpa_printf(MSG_DEBUG, "nl80211: Beacon set failed: %d (%s)",
++		/* nl80211: Beacon set failed: -22 (Invalid argument) */
++		wpa_printf(MSG_ERROR, "nl80211 send_and_recv_msgs: Beacon set failed: %d (%s)",
+ 			   ret, strerror(-ret));
+ 	} else {
+ 		bss->beacon_set = 1;
+@@ -4028,17 +4064,17 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 						 params->multicast_to_unicast);
+ 		if (beacon_set && params->freq &&
+ 		    params->freq->bandwidth != bss->bandwidth) {
+-			wpa_printf(MSG_DEBUG,
++			wpa_printf(MSG_ERROR,
+ 				   "nl80211: Update BSS %s bandwidth: %d -> %d",
+ 				   bss->ifname, bss->bandwidth,
+ 				   params->freq->bandwidth);
+ 			ret = nl80211_set_channel(bss, params->freq, 1);
+ 			if (ret) {
+-				wpa_printf(MSG_DEBUG,
++				wpa_printf(MSG_ERROR,
+ 					   "nl80211: Frequency set failed: %d (%s)",
+ 					   ret, strerror(-ret));
+ 			} else {
+-				wpa_printf(MSG_DEBUG,
++				wpa_printf(MSG_ERROR,
+ 					   "nl80211: Frequency set succeeded for ht2040 coex");
+ 				bss->bandwidth = params->freq->bandwidth;
+ 			}
+@@ -4065,6 +4101,7 @@ static int wpa_driver_nl80211_set_ap(void *priv,
+ 
+ 	return ret;
+ fail:
++	wpa_printf(MSG_ERROR, " nl80211 FAILED! error=%s", strerror(errno));
+ 	nlmsg_free(msg);
+ 	return -ENOBUFS;
+ }
+@@ -10341,6 +10378,7 @@ fail:
+ }
+ 
+ 
++// This is the driver used!
+ const struct wpa_driver_ops wpa_driver_nl80211_ops = {
+ 	.name = "nl80211",
+ 	.desc = "Linux nl80211/cfg80211",
+diff --git a/src/drivers/driver_nl80211.h b/src/drivers/driver_nl80211.h
+index 23cf9dbe..2fb42d5f 100644
+--- a/src/drivers/driver_nl80211.h
++++ b/src/drivers/driver_nl80211.h
+@@ -34,6 +34,7 @@ struct nl80211_global {
+ 	struct nl_cb *nl_cb;
+ 	struct nl_handle *nl;
+ 	int nl80211_id;
++	// It's probably ioctl crap again
+ 	int ioctl_sock; /* socket for ioctl() use */
+ 
+ 	struct nl_handle *nl_event;
+diff --git a/src/drivers/driver_nl80211_capa.c b/src/drivers/driver_nl80211_capa.c
+index f11a1d70..f84160dc 100644
+--- a/src/drivers/driver_nl80211_capa.c
++++ b/src/drivers/driver_nl80211_capa.c
+@@ -10,6 +10,7 @@
+ 
+ #include "includes.h"
+ #include <netlink/genl/genl.h>
++#include <netlink/msg.h>
+ 
+ #include "utils/common.h"
+ #include "common/ieee802_11_common.h"
+@@ -18,6 +19,10 @@
+ #include "common/qca-vendor-attr.h"
+ #include "driver_nl80211.h"
+ 
++#include <stdio.h>
++#include <errno.h>
++#include <string.h>
++
+ 
+ static int protocol_feature_handler(struct nl_msg *msg, void *arg)
+ {
+@@ -1768,7 +1773,7 @@ static void nl80211_set_dfs_domain(enum nl80211_dfs_regions region,
+ 	else if (region == NL80211_DFS_JP)
+ 		*dfs_domain = HOSTAPD_DFS_REGION_JP;
+ 	else
+-		*dfs_domain = 0;
++		*dfs_domain = 2;
+ }
+ 
+ 
+@@ -1788,6 +1793,14 @@ static const char * dfs_domain_name(enum nl80211_dfs_regions region)
+ 	}
+ }
+ 
++/* msg.h */
++extern void print_hdr(FILE *ofd, struct nl_msg *msg);
++//extern struct nlmsghdr *nlmsg_hdr(struct nl_msg *n);
++/* { */
++/* 	return n->nm_nlh; */
++/* } */
++
++extern int errno;
+ 
+ static int nl80211_get_reg(struct nl_msg *msg, void *arg)
+ {
+@@ -1806,24 +1819,97 @@ static int nl80211_get_reg(struct nl_msg *msg, void *arg)
+ 		[NL80211_ATTR_POWER_RULE_MAX_EIRP] = { .type = NLA_U32 },
+ 	};
+ 
++	// Dump the file to /tmp/get_reg.txt
++	//FILE *fp_reg;
++	//fp_reg = fopen("/data/vendor/wifi/get_reg.txt", O_RDWR|O_CREAT);
++	//fp_reg = fopen("/data/vendor/wifi/get_reg.txt", "rw+");
++	//fp_reg = fopen("/data/vendor/wifi/get_reg.txt", "w");
++	//if (fp_reg == NULL) {
++	//	wpa_printf(MSG_ERROR, "failed to open /data/vendor/wifi/get_reg.txt: %s",
++	//				strerror(errno));
++	//} else {
++	//	// Apparently bugged
++	//	/* static void print_hdr(FILE *ofd, struct nl_msg *msg) */
++	//	//int fp_reg_res = print_hdr(fp_reg, msg);
++	//	// from: libnl/lib/msg.c
++	//	print_hdr(fp_reg, msg);
++	//	if (errno != 0) {
++	//		wpa_printf(MSG_ERROR, "failed to dump /data/vendor/wifi/get_reg.txt: %s",
++	//					strerror(errno));
++	//	}
++	//	/* kagura:/ # cat /data/vendor/wifi/get_reg.txt */
++	//	/* 	.nlmsg_len = 512 */
++	//	/* 	.type = 19 <0x13> */
++	//	/* 	.flags = 0 <> */
++	//	/* 	.seq = 1547316531 */
++	//	/* 	.port = 478152977 */
++	//	fclose(fp_reg);
++	//}
++	/* if (fp_reg_res < 0) { */
++	/* } */
++
++	// genlmsg_attrdata(gnlh, 0) is the passed lsattr
+ 	nla_parse(tb_msg, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0),
+ 		  genlmsg_attrlen(gnlh, 0), NULL);
+ 	if (!tb_msg[NL80211_ATTR_REG_ALPHA2] ||
+ 	    !tb_msg[NL80211_ATTR_REG_RULES]) {
+-		wpa_printf(MSG_DEBUG, "nl80211: No regulatory information "
++		wpa_printf(MSG_ERROR, "nl80211: No regulatory information "
+ 			   "available");
+ 		return NL_SKIP;
+ 	}
++	// hardcode 0xe0 = 244 = de = Germany
++	//tb_msg[NL80211_ATTR_REG_ALPHA2] = 244;
++	wpa_printf(MSG_ERROR, "ALPHA2 len=%d", nla_len(tb_msg[NL80211_ATTR_REG_ALPHA2]));
++	/* -> len=3 */
++	wpa_printf(MSG_ERROR, "ALPHA2 sizeof=%lu", sizeof(
++				*(tb_msg[NL80211_ATTR_REG_ALPHA2])
++				));
++	/* -> sizeof = 4 */
++	uint8_t cust_alpha2[2] = "DE";
++	//char cust_alpha2[2] = "DE";
++	//struct nlattr cust_alpha2_nlattr = {
++	//	.nla_type = NL80211_ATTR_REG_ALPHA2,
++	//	.nla_len = lll
++	//};
++	// TODO
++	//*(tb_msg[NL80211_ATTR_REG_ALPHA2]) = *(struct nlattr *) cust_alpha2;
++	//nla_put_u8(tb_msg[NL80211_ATTR_REG_ALPHA2] + NLA_HDRLEN, cust_alpha2);
++	//wpa_printf(MSG_ERROR, "ALPHA2 size_t=%d", (size_t)nla_len(tb_msg[NL80211_ATTR_REG_ALPHA2]));
++
++	// netlink.h in kernel
++	/* static inline void *nla_data(const struct nlattr *nla) { */
++	/* 	return (char *) nla + NLA_HDRLEN; } */
++
++	//enum nl80211_dfs_regions dfs_domain;
++	// Fuck it, set it here anyway for good measure
++	//u8 cust_dfs_domain = 2;
++	//u8 cust_dfs_domain[4] = 2;
++	//u8 cust_dfs_domain = 2;
++	//dfs_domain = cust_dfs_domain;
++
++	// TODO
++	//*(tb_msg[NL80211_ATTR_DFS_REGION]) = (struct nlattr) cust_dfs_domain;
++
++	//nl80211_set_dfs_domain(cust_dfs_domain, &results->dfs_domain);
++	//nl80211_set_dfs_domain(dfs_domain, &results->dfs_domain);
++	//nl80211_set_dfs_domain(dfs_domain, &results->dfs_domain);
++
++	//tb_msg[NL80211_ATTR_DFS_REGION] = 1;
++	//wpa_printf(MSG_ERROR, "country=%s (%s)",
++	//	   (char *) nla_data(tb_msg[NL80211_ATTR_REG_ALPHA2]),
++	//	   //dfs_domain_name(cust_dfs_domain));
+ 
+ 	if (tb_msg[NL80211_ATTR_DFS_REGION]) {
+ 		enum nl80211_dfs_regions dfs_domain;
+ 		dfs_domain = nla_get_u8(tb_msg[NL80211_ATTR_DFS_REGION]);
++		// Fuck it, set to ETSI(=2)
++		// -> buuuut wait, we never get here
+ 		nl80211_set_dfs_domain(dfs_domain, &results->dfs_domain);
+-		wpa_printf(MSG_DEBUG, "nl80211: Regulatory information - country=%s (%s)",
++		wpa_printf(MSG_ERROR, "DFS: nl80211: Regulatory information - country=%s (%s)",
+ 			   (char *) nla_data(tb_msg[NL80211_ATTR_REG_ALPHA2]),
+ 			   dfs_domain_name(dfs_domain));
+ 	} else {
+-		wpa_printf(MSG_DEBUG, "nl80211: Regulatory information - country=%s",
++		wpa_printf(MSG_ERROR, "Non-DFS: nl80211: Regulatory information - country=%s",
+ 			   (char *) nla_data(tb_msg[NL80211_ATTR_REG_ALPHA2]));
+ 	}
+ 
+@@ -1841,10 +1927,12 @@ static int nl80211_get_reg(struct nl_msg *msg, void *arg)
+ 			max_eirp = nla_get_u32(tb_rule[NL80211_ATTR_POWER_RULE_MAX_EIRP]) / 100;
+ 		if (tb_rule[NL80211_ATTR_FREQ_RANGE_MAX_BW])
+ 			max_bw = nla_get_u32(tb_rule[NL80211_ATTR_FREQ_RANGE_MAX_BW]) / 1000;
+-		if (tb_rule[NL80211_ATTR_REG_RULE_FLAGS])
++		if (tb_rule[NL80211_ATTR_REG_RULE_FLAGS]) {
+ 			flags = nla_get_u32(tb_rule[NL80211_ATTR_REG_RULE_FLAGS]);
++			wpa_printf(MSG_ERROR, "nl80211: flags=%d", flags);
++		}
+ 
+-		wpa_printf(MSG_DEBUG, "nl80211: %u-%u @ %u MHz %u mBm%s%s%s%s%s%s%s%s",
++		wpa_printf(MSG_ERROR, "nl80211: %u-%u @ %u MHz %u mBm%s%s%s%s%s%s%s%s",
+ 			   start, end, max_bw, max_eirp,
+ 			   flags & NL80211_RRF_NO_OFDM ? " (no OFDM)" : "",
+ 			   flags & NL80211_RRF_NO_CCK ? " (no CCK)" : "",
+@@ -1866,13 +1954,18 @@ static int nl80211_get_reg(struct nl_msg *msg, void *arg)
+ 	{
+ 		nla_parse(tb_rule, NL80211_FREQUENCY_ATTR_MAX,
+ 			  nla_data(nl_rule), nla_len(nl_rule), reg_policy);
++		// Set channel width(?)
++		// Something with plus/minus 40 width
+ 		nl80211_reg_rule_sec(tb_rule, results);
+ 	}
+ 
++	// Why the duplicate here???
+ 	nla_for_each_nested(nl_rule, tb_msg[NL80211_ATTR_REG_RULES], rem_rule)
+ 	{
+ 		nla_parse(tb_rule, NL80211_FREQUENCY_ATTR_MAX,
+ 			  nla_data(nl_rule), nla_len(nl_rule), reg_policy);
++		/* Only difference is that rule_vht instead of rule_sec is given here */
++		/* Set channel VHT */
+ 		nl80211_reg_rule_vht(tb_rule, results);
+ 	}
+ 
+@@ -1902,31 +1995,55 @@ nl80211_get_hw_feature_data(void *priv, u16 *num_modes, u16 *flags,
+ 	struct i802_bss *bss = priv;
+ 	struct wpa_driver_nl80211_data *drv = bss->drv;
+ 	int nl_flags = 0;
++	/* nl_msg is just an empty struct? */
++	/* driver_nl80211.h: struct nl_msg; */
+ 	struct nl_msg *msg;
+ 	struct phy_info_arg result = {
+ 		.num_modes = num_modes,
+ 		.modes = NULL,
+ 		.last_mode = -1,
+ 		.failed = 0,
+-		.dfs_domain = 0,
++		.dfs_domain = 2,
+ 	};
+ 
+ 	*num_modes = 0;
+ 	*flags = 0;
+-	*dfs_domain = 0;
++	*dfs_domain = 2;
+ 
+ 	feat = get_nl80211_protocol_features(drv);
+ 	if (feat & NL80211_PROTOCOL_FEATURE_SPLIT_WIPHY_DUMP)
+ 		nl_flags = NLM_F_DUMP;
+-	if (!(msg = nl80211_cmd_msg(bss, nl_flags, NL80211_CMD_GET_WIPHY)) ||
+-	    nla_put_flag(msg, NL80211_ATTR_SPLIT_WIPHY_DUMP)) {
+-		nlmsg_free(msg);
+-		return NULL;
++
++	/* @NL80211_CMD_GET_WIPHY: request information about a wiphy or
++	 * dump request to get a list of all present wiphys. */
++	/* [NL80211_CMD_GET_WIPHY] = "get_wiphy", */
++	if (!(msg = nl80211_cmd_msg(bss, nl_flags, NL80211_CMD_GET_WIPHY))) {
++		wpa_printf(MSG_ERROR, "nl80211: nl80211_cmd_msg failed, goto error");
++		goto premature_error;
++	} else {
++		wpa_printf(MSG_ERROR,
++			"nl80211: nl80211_cmd_msg success, flags=%d, cmd=%d",
++			nl_flags, NL80211_CMD_GET_WIPHY);
+ 	}
++	if (nla_put_flag(msg, NL80211_ATTR_SPLIT_WIPHY_DUMP)) {
++		wpa_printf(MSG_ERROR, "nl80211: nla_put_flag success, goto error, msg=? %d", NL80211_ATTR_SPLIT_WIPHY_DUMP);
++		goto premature_error;
++	} else {
++		wpa_printf(MSG_ERROR,
++			"nl80211: nla_put_flag fail, continue, msg=?, flag=%d",
++			NL80211_CMD_GET_WIPHY);
++	}
++
+ 
+ 	if (send_and_recv_msgs(drv, msg, phy_info_handler, &result) == 0) {
++		// result is fucked: result.dfs_domain is 0
++
++		// HACK: Set the domain here
++		result.dfs_domain = 2;
++
+ 		nl80211_set_regulatory_flags(drv, &result);
+ 		if (result.failed) {
++			wpa_printf(MSG_ERROR, "nl80211: set_regulatory_flags failed");
+ 			int i;
+ 
+ 			for (i = 0; result.modes && i < *num_modes; i++) {
+@@ -1937,6 +2054,20 @@ nl80211_get_hw_feature_data(void *priv, u16 *num_modes, u16 *flags,
+ 			*num_modes = 0;
+ 			return NULL;
+ 		}
++		/* .num_modes = num_modes, */
++		/* .modes = NULL, */
++		/* .last_mode = -1, */
++		/* .failed = 0, */
++		/* .dfs_domain = 0, */
++		wpa_printf(MSG_ERROR,
++				"nl80211: %s success, dfs_domain=%d, num_modes=%hu, last_mode=%d",
++				"set_regulatory_flags",
++				result.dfs_domain,
++				(*result.num_modes),
++				result.last_mode
++				);
++				//(int)result.num_modes,
++				// %hu is for unsigned short
+ 
+ 		*dfs_domain = result.dfs_domain;
+ 
+@@ -1945,4 +2076,10 @@ nl80211_get_hw_feature_data(void *priv, u16 *num_modes, u16 *flags,
+ 	}
+ 
+ 	return NULL;
++
++premature_error:
++		// Doesn't happen, we succeed here
++		// carry on till send_and_recv_msgs...
++		nlmsg_free(msg);
++		return NULL;
+ }
+diff --git a/src/drivers/driver_privsep.c b/src/drivers/driver_privsep.c
+index a3f0837e..ab7cddcd 100644
+--- a/src/drivers/driver_privsep.c
++++ b/src/drivers/driver_privsep.c
+@@ -803,10 +803,17 @@ static const u8 * wpa_driver_privsep_get_mac_addr(void *priv)
+ }
+ 
+ 
++//static int wpa_driver_privsep_set_country(void *priv, const char *alpha2_arg)
+ static int wpa_driver_privsep_set_country(void *priv, const char *alpha2)
+ {
+ 	struct wpa_driver_privsep_data *drv = priv;
+-	wpa_printf(MSG_DEBUG, "%s country='%s'", __func__, alpha2);
++	//char alpha2[3];
++	//char fake_alpha2[2] = "DE";
++	// Fuck it, hardcode it here
++	//alpha2[0] = fake_alpha2[0];
++	//alpha2[1] = fake_alpha2[1];
++	//alpha2[2] = '\0';
++	wpa_printf(MSG_ERROR, "%s country='%s'", __func__, alpha2);
+ 	return wpa_priv_cmd(drv, PRIVSEP_CMD_SET_COUNTRY, alpha2,
+ 			    os_strlen(alpha2), NULL, NULL);
+ }
+diff --git a/src/drivers/drivers.mk b/src/drivers/drivers.mk
+index cd25133a..60b6f7d9 100644
+--- a/src/drivers/drivers.mk
++++ b/src/drivers/drivers.mk
+@@ -47,6 +47,9 @@ NEED_LINUX_IOCTL=y
+ NEED_RFKILL=y
+ NEED_RADIOTAP=y
+ 
++#CONFIG_LIBNL32=y
++#CONFIG_LIBNL3_ROUTE=y
++
+ ifdef CONFIG_LIBNL32
+   DRV_LIBS += -lnl-3
+   DRV_LIBS += -lnl-genl-3
+@@ -192,6 +195,10 @@ endif
+ endif
+ endif
+ 
++# Build msg.c
++#INCLUDES += external/libnl/include
++#LOCAL_SHARED_LIBRARIES += libnl
++
+ ##### COMMON VARS
+ DRV_BOTH_CFLAGS := $(DRV_CFLAGS) $(DRV_WPA_CFLAGS) $(DRV_AP_CFLAGS)
+ DRV_WPA_CFLAGS += $(DRV_CFLAGS)
+diff --git a/src/drivers/rfkill.c b/src/drivers/rfkill.c
+index 4d4d1b44..642e69d0 100644
+--- a/src/drivers/rfkill.c
++++ b/src/drivers/rfkill.c
+@@ -118,18 +118,21 @@ struct rfkill_data * rfkill_init(struct rfkill_config *cfg)
+ 		    cfg->ifname);
+ 	phy = realpath(buf, NULL);
+ 	if (!phy) {
+-		wpa_printf(MSG_INFO, "rfkill: Cannot get wiphy information");
++		wpa_printf(MSG_ERROR, "rfkill: Cannot get wiphy information");
+ 		goto fail;
+ 	}
+ 
+ 	rfkill->cfg = cfg;
++	// Why can't we open /dev/rfkill??? Is something blocking it????
++	//rfkill->fd = open("/dev/rfkill", O_RDONLY | O_NONBLOCK);
+ 	rfkill->fd = open("/dev/rfkill", O_RDONLY);
+ 	if (rfkill->fd < 0) {
+-		wpa_printf(MSG_INFO, "rfkill: Cannot open RFKILL control "
+-			   "device");
++		wpa_printf(MSG_ERROR, "rfkill: Cannot open RFKILL control "
++			   "device, even with O_NONBLOCK: %s", strerror(errno));
+ 		goto fail;
+ 	}
+ 
++	// #define F_SETFL		4	/* set file->f_flags */
+ 	if (fcntl(rfkill->fd, F_SETFL, O_NONBLOCK) < 0) {
+ 		wpa_printf(MSG_ERROR, "rfkill: Cannot set non-blocking mode: "
+ 			   "%s", strerror(errno));
+diff --git a/wpa_supplicant/Android.mk b/wpa_supplicant/Android.mk
+index d57446ce..0222e790 100644
+--- a/wpa_supplicant/Android.mk
++++ b/wpa_supplicant/Android.mk
+@@ -24,6 +24,9 @@ L_CFLAGS += -DANDROID_LOG_NAME=\"wpa_supplicant\"
+ 
+ L_CFLAGS += -Wall -Werror
+ 
++# FIXME: BAD BAD BAD
++L_CFLAGS += -Wformat-security
++
+ # Keep sometimes uninitialized warnings
+ L_CFLAGS += -Wno-error-sometimes-uninitialized
+ 
+diff --git a/wpa_supplicant/wpa_supplicant.c b/wpa_supplicant/wpa_supplicant.c
+index ee5710f1..ac1331e9 100644
+--- a/wpa_supplicant/wpa_supplicant.c
++++ b/wpa_supplicant/wpa_supplicant.c
+@@ -5367,11 +5367,49 @@ static int wpa_supplicant_init_iface(struct wpa_supplicant *wpa_s,
+ 		return -1;
+ #endif /* CONFIG_TDLS */
+ 
++	if ((wpa_s->conf->country[0] && wpa_s->conf->country[1])) {
++	    wpa_dbg(wpa_s, MSG_ERROR, "%s: country[0-1] non-empty! %c %c",
++	    		__func__,
++	    		wpa_s->conf->country[0],
++	    		wpa_s->conf->country[1]
++	    		);
++	}
+ 	if (wpa_s->conf->country[0] && wpa_s->conf->country[1] &&
+ 	    wpa_drv_set_country(wpa_s, wpa_s->conf->country)) {
+-		wpa_dbg(wpa_s, MSG_DEBUG, "Failed to set country");
++		wpa_dbg(wpa_s, MSG_ERROR, "Failed to set country");
+ 		return -1;
+ 	}
++	//if ((wpa_s->conf->country[0] && wpa_s->conf->country[1])) {
++	//	//char errormsg_[50];
++	//	//size_t buflen = 50;
++	//	//snprintf(errormsg_, buflen,
++	//	//		"%s: country[0-1] non-empty: %c%c",
++	//	//		__func__,
++	//	//		wpa_s->conf->country[0],
++	//	//		wpa_s->conf->country[1]
++	//	//		);
++	//	wpa_dbg(wpa_s, MSG_ERROR, "%s: country[0-1] non-empty! %c %c",
++	//			__func__,
++	//			wpa_s->conf->country[0],
++	//			wpa_s->conf->country[1]
++	//			);
++	//	//wpa_dbg(wpa_s, MSG_ERROR, &errormsg_);
++	//			/* (char *)wpa_s->conf->country[0], */
++	//			/* (char *)wpa_s->conf->country[1] */
++	//	if (!(wpa_drv_set_country(wpa_s, wpa_s->conf->country))) {
++	//		wpa_dbg(wpa_s, MSG_ERROR, "Failed to set country");
++	//		return -1;
++	//	}
++	//} else {
++	//	wpa_dbg(wpa_s, MSG_ERROR, "%s: country[0-1] empty!", __func__);
++	//	//char fake_alpha2[2] = "DE";
++	//	//wpa_s->conf->country[0] = fake_alpha2[0];
++	//	//wpa_s->conf->country[1] = fake_alpha2[1];
++	//	if (!(wpa_drv_set_country(wpa_s, wpa_s->conf->country))) {
++	//		wpa_dbg(wpa_s, MSG_ERROR, "Failed to set country");
++	//		return -1;
++	//	}
++	//}
+ 
+ #ifdef CONFIG_FST
+ 	if (wpa_s->conf->fst_group_id) {

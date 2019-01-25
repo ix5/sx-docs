@@ -2,7 +2,9 @@ baseURL = "https://sx.ix5.org/info/"
 languageCode = "en-us"
 title = "Sony Xperia Corner"
 theme = "kube"
-Paginate = 4
+Paginate = 20
+
+staticDir2 = "content/files"
 
 [permalinks]
 posts = "/post/:title/"
