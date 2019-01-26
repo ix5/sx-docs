@@ -15,3 +15,5 @@ zImage, offsets
 packing ramdisk, kernel/system match
 
 init, .rc files, permissions, debugging
+
+<!-- TODO: Find a better guide, there was some blogpost somewhere... -->

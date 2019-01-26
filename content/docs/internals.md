@@ -1,31 +1,33 @@
 +++
-title = "Device internals"
-description = "Understanding the foundations"
+title = "Sony Device internals"
 date = 2018-10-19T22:15:22+02:00
 weight = 20
-draft = true
+draft = false
 bref = "Kernel, hardware, recovery"
-toc = true
+toc = false
 +++
+<!-- description = "Understanding the foundations" -->
 
 ## Accessing special modes
-**Fastboot**: Turn off device, then hold volume-up and connect cable
+**Fastboot**: Turn off device, then hold volume-up and connect cable. LED will
+be blue.
 
-**Download mode**: Turn off device, then hold volume-down and connect cable
+**Download mode**: Turn off device, then hold volume-down and connect cable. LED
+will be green.
 
 **Recovery**: Turn off device, then hold volume-down and power button
 
 **Forced reboot**: Hold volume-up and power until the first vibration
 
-**Forced shut off** Hold volume-up and power until the second, longer vibration
+**Forced shut off** Hold volume-up and power until the second, longer
+vibration(pulses three times)
 
+<!-- ## Device internals -->
 
-## Device internals
+<!-- ## Leds, thermals, sensors -->
 
-## Leds, thermals, sensors
+<!-- ## Camera -->
 
-## Camera
+<!-- ## Proprietary modules -->
 
-## Proprietary modules
-
-## SoC/Qualcomm stuff
+<!-- ## SoC/Qualcomm stuff -->

@@ -7,7 +7,7 @@ draft = true
 
 ## Stuff:
 - Macros
-- labeling qcrilam
+- labeling qcrilam -> update selinux docs article as well!
 - weirdness for per_mgr:
   - split sepolicy, so entries in private, public and vendor
 - client and server domains

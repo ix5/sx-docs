@@ -25,13 +25,14 @@ TARGET_COPY_OUT_VENDOR := system/vendor
 # (not working yet without real split vendor part)
 #BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 
-# Test split sepolicy on older devices:
+# Test split sepolicy on older devices(kinda pointless, but good to test):
 PRODUCT_SEPOLICY_SPLIT_OVERRIDE := true
 
-# Test full treble
+# Test full treble(this will most likely result in some failures, because
+FULL_TREBLE also changes other parts like `ld.config.txt`):
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 
-# Change to permissive to test
+# Change to permissive to test for failures:
 BOARD_USE_ENFORCING_SELINUX := false
 
 # (not working without real split vendor part because symlinks and ld.config)

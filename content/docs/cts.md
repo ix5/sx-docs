@@ -1,18 +1,24 @@
 +++
 title = "CTS"
-description = "How to run CTS"
+description = "How to run Media CTS"
 date = 2018-12-14T22:35:16+01:00
 weight = 20
-draft = true
+draft = false
 bref = ""
-toc = true
+toc = false
 +++
 
-# Setup
+<!-- # Setup -->
+CTS stands for Compatibility Test suite and is a tool normally distributed to
+vendors of Android devices.
 
-# Media tests
+The CTS media tests can help benchmark your device to help you adjust the
+expected framerates, e.g. for video recording for a given codec.
 
-Download media files and push them to the device with the script
+## Media tests
+
+Download [CTS media files][ctsmedia] and push them to the device with the
+provided script.
 
 Need to adjust `CtsMediaTestCases.config` to find your media files under
 `path/to/android-cts-media` or else it will complain about missing media files:
@@ -28,13 +34,19 @@ Need to adjust `CtsMediaTestCases.config` to find your media files under
 </configuration>
 ```
 
-To run media tests:
-https://source.android.com/devices/media/oem
-Also save get_achievable_rates results
-
-https://source.android.com/compatibility/cts/run
+To run [media tests](https://source.android.com/devices/media/oem), use this
+command, the documentation on the source.android.com page is out of date:
 
 ```
 # run --plan CTS android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances
 run cts --module CtsMediaTestCases --test android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances
 ```
+
+Also make sure to save the results of `get_achievable_rates` for later.
+
+## Wrapping up
+More general info about running CTS is available at the
+[androidsource page][ctsrun].
+
+[ctsmedia]: https://source.android.com/compatibility/cts/downloads#cts-media-files
+[ctsrun]: https://source.android.com/compatibility/cts/run

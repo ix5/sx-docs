@@ -8,6 +8,8 @@ bref = ""
 toc = true
 +++
 
+<!-- TODO: Correct this so that it's actually correct about SODP -->
+
 With Sony devices, lot of functionality is proprietary technology.
 Why that is is a topic for another debate, just keep in mind Sony's mobile
 division has been shrinking markedly since 2014, by a factor of 5, while Sony's

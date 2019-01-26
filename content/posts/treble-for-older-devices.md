@@ -8,9 +8,9 @@ draft = true
 ## What is treble?
 -> see docs/treble
 
-Making FULL_TREBLE work without a /vendor partition
+# Making FULL_TREBLE work without a /vendor partition
 
-# Challenges without /vendor
+### Challenges without /vendor
 Because of the way symlinks are handled on Linux, both the source and the target
 need to be accessible. On FULL_TREBLE, e.g. only /vendor/lib is accessible and
 not /system/vendor/lib. You need to monkey-patch the relevant files, e.g.
@@ -21,14 +21,16 @@ If you are re-using the oem partition as vendor and then symlinking /vendor/odm
 to /odm to keep proprietary blobs working, you will face the same issue, since
 only /odm/lib and not /vendor/odm/lib is accessible.
 
-## Partitions
+### Partitions
 - `cache` as /vendor
 - `Qnovo` as /cache
 
-# Re-partitioning
+### Re-partitioning
 -> Re-partitioning is likely not to happen, deemed too dangerous and messes with
 people coming from and to stock, other ROMs
-Proposed partition layout for each device/storage config
+
+**Proposed partition layout for each device/storage config:**
+
 Tone:
 - dora
 - kagura
