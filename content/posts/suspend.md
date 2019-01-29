@@ -1,6 +1,6 @@
 ---
 title: "Debugging suspend ideas"
-date: 2019-01-01T08:18:00+01:00
+date: 2019-01-24T08:18:00+01:00
 draft: false
 author: Felix
 ---

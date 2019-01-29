@@ -35,9 +35,10 @@ chroot build environment instead.
 A build chroot takes about 1-1.5GB of space and will save you from headaches,
 e.g. when Android modules aren't compiled against your host glibc.
 
-Install `debootstrap`, then run
+Install `debootstrap`, then run this(`bionic` is the ubuntu version codename for
+18.04 LTS):
 ```
-debootstrap --variant=buildd --arch=amd64 bionic ~/ubuntu-android
+debootstrap --variant=buildd --arch=amd64 bionic ~/android/ubuntu-android
 ```
 chroot into the newly created builder system, either via `chroot` or just using
 `systemd-nspawn` (Assuming you created your android build environment via `repo
@@ -45,7 +46,7 @@ init` in `~/android/build-env`):
 ```
 sudo systemd-nspawn \
 --bind=/home/<your-username>/android/build-env/:/home/builder/build-env/ \
-  -D /home/<your-username>/dev/android/ubuntu-android
+  -D /home/<your-username>/android/ubuntu-android
 
 useradd -m -s /bin/bash builder
 # -> No need to add a password, nspawn will log you in automatically
@@ -84,7 +85,7 @@ sudo systemd-nspawn \
   --bind=/home/<your-username>/.ccache/:/home/builder/.ccache/ \
   --bind=/home/<your-username>/.local/bin/repo:/usr/local/bin/repo \
   --bind=/home/<your-username>/.repoconfig/:/home/builder/.repoconfig/ \
-  -D /home/<your-username>/ubuntu-android \
+  -D /home/<your-username>/android/ubuntu-android \
   --user=builder
 ```
 (Assuming you installed `repo` into `~/.local/bin/repo`).

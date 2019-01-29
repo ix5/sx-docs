@@ -75,7 +75,7 @@ you chose for `-o`).
 ## Gotchas
 In case you compiled your own kernel, don't forget to think about `.dtb` files!
 Many older devices(e.g. the Xperia XZ) need the
-[Device Tree Binaries("dtb")][dtb] appended to the kernel `zImage.
+[Device Tree Binaries("dtb")][dtb] appended to the kernel `zImage`.
 
 <!-- TODO: List the flags here -->
 

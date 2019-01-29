@@ -11,7 +11,7 @@ posts = "/post/:title/"
 docs = "/:title/"
 
 [Params]
-  author = "ix5"
+  author = "Felix"
   # email = "myemail@myaddress.xxx"
   description = "Information about Sony Xperia devices and AOSP"
   subdescription = "Not in any way affiliated with Sony"

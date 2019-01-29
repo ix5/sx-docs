@@ -8,8 +8,12 @@ bref = "How to configure"
 toc = true
 +++
 
+*Sorry this is such a mess, this is more of a braindump...*
+
+---
+
 ## General
-(from SEAndroid-Aalto presentation):
+(from [SEAndroid-Aalto presentation][seandroid-aalto]):
 
 > Subjects are primarily processes. Processes that participate in the access
 > control are assigned a domain
@@ -59,7 +63,20 @@ In general: `allow [domain] [type] : [class] {[ allowed permissions ]}`
 - `[allowed_permissions]`: Class-specific permissions that are allowed by this
   rule
 
-## Misc
+## Testing
+
+<!-- TODO: Expand testing tools info, e.g. sesearch, matchpathcon(and its gotchas for -->
+<!-- selecting policy path!!!!) -->
+Install needed tools for the host machine:
+```
+apt install setools python-networkx policycoreutils
+```
+
+**Testing it out:** either `mka selinux_policy` or `make bootimage`
+But to only check if the policy is valid: `make -j $(nproc) sepolicy_tests`!
+
+
+# Misc
 
 Directories:
 
@@ -74,31 +91,30 @@ Directories:
   `genfs_contexts`("generated" files) -> contexts need to exist!
 - `property_contexts` -> always need a corresponding type in `property.te`!
 
-Sepolicy macros
+<!--
+TODO:
+- Sepolicy macros
+- Interaction with closed-source "secure" stuff, `rild`
+- Apps, services, files, binaries
+- How to read denials
+- Where to look for reference (marlin, crosshatch, crosshatch-sepolicy),
+  permalinks to indiviual lines of policy
+- Things that can be left as-is (via `dontaudit`)
+-->
 
-Testing it out: either `mka selinux_policy` or `make bootimage`
-But to only check if the policy is valid: `make -j $(nproc) sepolicy_tests`!
 
 ```
 PRODUCT_FULL_TREBLE_OVERRIDE := false
 BOARD_USE_ENFORCING_SELINUX := true
 ```
 
+<!-- Ideally, we would like the Qualcomm blobs to function as vndbinder/vndservice -->
+<!-- programs so that we can declare `BOARD_FULL_TREBLE_OVERRIDE`(?). -->
+
 Treble and changes from Oreo to Pie
 `binder_in_vendor_violators` etc
 
 `binder`, `hwbinder`, `vndbinder`
-
-Interaction with closed-source "secure" stuff, `rild`
-
-Apps, services, files, binaries
-
-How to read denials
-
-Where to look for reference (marlin, crosshatch, crosshatch-sepolicy)  
-And permalinks to indiviual lines of policy
-
-Things that can be left as-is (via `dontaudit`)
 
 Cleaning commands:
 ```
@@ -120,12 +136,6 @@ find out/target/product/kagura/ -iname "*file_context*" -exec rm -rv {} \;
 - https://selinuxproject.org/page/XpermRules (allowxperm etc, important for
   defining ioctls!)
 
-# Testing
-
-Install needed tools:
-```
-apt install setools python-networkx policycoreutils
-```
 
 Tips:
 
@@ -142,8 +152,9 @@ Tips:
 - `load_policy` to reload policy on device
 - `sesearch` and `seinfo` tools to examine policy(must be installed on host, not
   available on standard android device)
-- Check paths with `matchpathcon -P <policy_file> -f <file_contexts_file>
-  /my/path`
+- Check paths with `matchpathcon -P <policy file dir> -f <file_contexts_file>
+  /my/path` (**Important:** `-P` needs to point to the *directory* containing
+  the `policy` file, not the policy file itself!)
 
 Examples:
 
@@ -155,6 +166,19 @@ Different app levels:
 - `seapp_contexts`
 - `platform_app.te`
 - `service_contexts`, `hwservice_contexts`
+
+From domain.te:
+
+> Only `service_manager_types` can be added to `service_manager`  
+> `# TODO: rework this:`  
+> `neverallow * ~service_manager_type:service_manager { add find };`
+
+From init.te:
+
+> Init never adds or uses services via `service_manager`  
+> `neverallow init service_manager_type:service_manager { add find };`
+
+<!-- TODO: Make this example more clear -->
 
 Or own domain via own `myapp.te`, with:
 ```
@@ -211,24 +235,14 @@ anything with `seinfo=platform` has to be signed by the platform key:
 </policy>
 ```
 
-
-From domain.te:
-
-> Only `service_manager_types` can be added to `service_manager`
-> `# TODO: rework this: neverallow * ~service_manager_type:service_manager { add find };`
-
-From init.te:
-
-> Init never adds or uses services via `service_manager`
-> `neverallow init service_manager_type:service_manager { add find };`
-
-
 ## Taming a service: QcRilAm
 
-<!-- TODO: Changeme to reflect seapp_contexts version! -->
-```
-u:r:platform_app:s0:c512,c768  u0_a62        2045   585 3685212  80452 SyS_epoll_wait      0 S com.sony.qcrilam
-```
+<!-- TODO: Changeme to reflect changed seapp_contexts version where we changed
+qcrilam to a priv-app! -->
+<!-- Or maybe even better, move this into the SELinux article series instead, maybe -->
+<!-- part 3 -->
+
+**THIS IS OUT OF DATE!**
 
 QcRilAm is our own little app/service that proxies requests from rild to
 `android.hardware.radio.am`. It was written by oshmoun and is needed to get
@@ -241,17 +255,30 @@ a service. The two talk via binder.
 vendor.qti.hardware.radio.am::IQcRilAudio           u:object_r:vnd_qcril_audio_hwservice:s0
 vendor.qti.hardware.radio.am::IQcRilAudioCallback   u:object_r:vnd_qcril_audio_hwservice:s0
 ```
+
 The HIDL service(called `vendor.qti.hardware.radio.am`) gets accessed by `rild` via
 hwbinder calls(since it is a `hardware` service).
+
 ```
 # Allow rild to access vendor.qti.hardware.radio.am HIDL services
 # rild.te
 hwbinder_use(rild)
 add_hwservice(rild, vnd_qcril_audio_hwservice)
 ```
+
 The persistent android service part of QcRilAm is a java app that will also
 appear in a user's app listing called `com.sony.qcrilam`. It only serves to run
 its one service called `com.sony.qcrilam.QcRilAmService`.
+
+Right now, it appears in the process list as a `platform_app`:
+
+```
+$ ps -AZ | grep qcrilam
+u:r:platform_app:s0:c512,c768  u0_a62        2045   585 3685212  80452 SyS_epoll_wait      0 S com.sony.qcrilam
+```
+
+To use a more restricted and thus safer domain:
+
 ```
 # Assign com.sony.qcrilam.QcRilAmService a domain
 # service_contexts
@@ -262,6 +289,8 @@ But wait! We need to define what a `qcrilam_service` is first!
 # service.te
 type qcrilam_service, service_manager_type;
 ```
+<!-- TODO: vndservice!!! -->
+
 Same goes for `vnd_qcril_audio_hwservice`:
 ```
 # hwservice.te
@@ -276,10 +305,14 @@ type qcrilam, domain;
 add_service(qcrilam, qcrilam_service)
 # the add_service() macro is equivalent to this:
 #allow qcrilam qcrilam_service:service_manager { add find };
-typeattribute qcrilam binder_in_vendor_violators;
-binder_use(qcrilam_service)
+# TODO: Not needed with vnd change!
+#typeattribute qcrilam binder_in_vendor_violators;
+#binder_use(qcrilam_service)
+vndbinder_use(qcrilam_service)
 binder_call(qcrilam, vnd_qcril_audio_hwservice)
 ```
+
+<!-- TODO: This is out of date! -->
 `com.sony.qcrilam` got assigned the `platform_app` label by SELinux
 automatically. This is a very high privilege level, as opposed to
 `untrusted_app` contexts. We want qcrilam to find its HIDL cousin via
@@ -297,8 +330,7 @@ binder_call(platform_app, rild);
 binder_call(rild, platform_app);
 ```
 
-Ideally, we would like the Qualcomm blobs to function as vndbinder/vndservice
-programs so that we can declare `BOARD_FULL_TREBLE_OVERRIDE`(?).
+# Wrapping up
 
 Something to keep in mind is: You are only allowing or disallowing things, not
 influencing the flow of programs[^1]. Even if te macros can look like little
@@ -306,3 +338,5 @@ function statements, they only dictate what gets allowed, not how a program
 behaves.
 
 [^1]: Ok that one is not 100% correct, some programs will try to do things and when they get denied switch to a different strategy. But in general, you will not incluence control flow much with sepolicy.
+
+[seandroid-aalto]: https://wiki.aalto.fi/download/attachments/100218155/SEAndroid-Aalto.pdf?version=1&modificationDate=1425973622725&api=v2

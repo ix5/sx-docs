@@ -6,7 +6,7 @@ draft = false
 +++
 
 - `lpass` = Low-Power Audio SubSystem
-- `mdss` = audio memory stuff for adsp
+- `mpss` = audio memory stuff for adsp
   (mpa and mpss are the addresses for venus/adsp hexagon stuff)
 - `kgsl` = adreno, kernel graphics support layer
 - `cdsp` is the term for adsp on newer snapdragon processors
