@@ -1,11 +1,11 @@
-+++
-title = "DSP file relabling for SODP"
-description = "Fix wrong SELinux labels"
-date = 2019-01-29T12:33:55+01:00
-bref = "Fix wrong SELinux labels"
-draft = false
+---
+title: "DSP file relabling for SODP"
+description: "Fix wrong SELinux labels"
+date: 2019-01-29T12:33:55+01:00
+bref: "Fix wrong SELinux labels"
+draft: false
 author: Felix
-+++
+---
 
 If you have previously flashed *any* version of a Sony-Open-Devices-based ROM
 from before **December 17th 2018**, your `dsp` partition might have wrong
@@ -37,8 +37,8 @@ as well when flashed via `Emma` or `FlashTool`.
 When stellirin rewrote the SODP sepolicy in late 2017, they
 [chose to use `qdsp_file`][rewrite-qdsp] instead of `adsprpcd_file` for `/dsp`.
 A few lines of code [were added in `init.$device.rc`][tone-init] - which gets
-run under the label `vendor_init` to re-mount the dsp partition and update it to
-use the `qdsp_file` label.
+run under the label `vendor_init` - to re-mount the dsp partition and update it
+to use the `qdsp_file` label.
 
 Because re-labeling these files as `vendor_init` is a
 [neverallow in Pie][relabel-neverallow], we noticed that we should rather be

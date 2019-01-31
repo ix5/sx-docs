@@ -22,7 +22,13 @@ will be green.
 **Forced shut off** Hold volume-up and power until the second, longer
 vibration(pulses three times)
 
-<!-- ## Device internals -->
+## Device internals
+
+### kagura
+```
+kagura:/ # cat /sys/devices/soc0/soc_id
+246
+```
 
 <!-- ## Leds, thermals, sensors -->
 
