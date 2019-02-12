@@ -1,7 +1,7 @@
-+++
-title = ""
-description = ""
-date = {{ .Date }}
-draft = false
-+++
+---
+title: ""
+description: ""
+date: {{ .Date }}
+draft: false
+---
 
