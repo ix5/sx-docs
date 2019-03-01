@@ -5,7 +5,6 @@ date = 2018-10-19T20:24:24+02:00
 weight = 20
 draft = true
 bref = ""
-toc = true
 +++
 
 Sony Xperia devices participating in the Sony Open Devices Program(SODP) are

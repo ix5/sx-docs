@@ -51,15 +51,15 @@ Use `mkbootimg` with the appropriate flags. To find out the values for
 files, e.g. `boot.img-base` should contain the text `80000000`.
 
 ```
-$CMDLINE="androidboot.bootdevice=7464900.sdhci msm_rtb.filter=0x3F \
+CMDLINE="androidboot.bootdevice=7464900.sdhci msm_rtb.filter=0x3F \
   ehci-hcd.park=3 coherent_pool=8M sched_enable_power_aware=1 \
   user_debug=31 cgroup.memory=nokmem printk.devkmsg=on \
   androidboot.hardware=kagura buildvariant=userdebug \
   androidboot.selinux=permissive"
-$BASE="80000000" 
-$PAGESIZE="4096"
-$RAMDISK="boot.img-ramdisk.gz"
-$KERNEL="boot.img-zImage"
+BASE="80000000" 
+PAGESIZE="4096"
+RAMDISK="boot.img-ramdisk.gz"
+KERNEL="boot.img-zImage"
 mkbootimg \
   --cmdline "$CMDLINE" \
   --base "$BASE" \

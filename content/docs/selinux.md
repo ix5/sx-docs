@@ -23,7 +23,7 @@ toc = true
 
 ```
  X          N        allow   M                 Y
-processes  domains   rules  types          objects
+subjects   domains   rules  types          objects
                                  --------------[]
                                 /      --------[]
 []---\        /-------------[]---- ---/--------[]

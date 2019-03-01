@@ -96,6 +96,23 @@ index 47350c11f95..8da96d1e9a2 100644
      if (err < 0) {
 ```
 
+```
+diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
+index 47350c11f95..9ade11af60a 100644
+--- a/services/core/jni/com_android_server_AlarmManagerService.cpp
++++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
+@@ -338,6 +338,8 @@ static jlong android_server_AlarmManagerService_init(JNIEnv*, jobject)
+ 
+     for (size_t i = 0; i < fds.size(); i++) {
+         fds[i] = timerfd_create(android_alarm_to_clockid[i], 0);
++        ALOGE("%s: Created timerfd no=%d for clock %d at fd=%d",
++                __func__, (int)i, android_alarm_to_clockid[i], fds[i]);
+         if (fds[i] < 0) {
+             log_timerfd_create_error(android_alarm_to_clockid[i]);
+             close(epollfd);
+```
+
+
 However, looking at the log statements, it seems no alarms(type 5 or 6) are
 being set, only timers of type 2 and 3.
 
@@ -127,6 +144,39 @@ Unfortunately, the suspend still only last 5 seconds, so this was a dead end.
 
 ---
 
+<!-- TODO: -->
+Another approach: kernel bcmdhd, there's a 5 second timeout in there, but it's not it
+either
+
+Better timerfd patch:
+```
+diff --git a/fs/timerfd.c b/fs/timerfd.c
+index 147b72349d3b..0aefe5e55097 100644
+--- a/fs/timerfd.c
++++ b/fs/timerfd.c
+@@ -430,14 +430,17 @@ SYSCALL_DEFINE2(timerfd_create, int, clockid, int, flags)
+ 
+        instance = atomic_inc_return(&instance_count);
+        get_task_comm(task_comm_buf, current);
+-       snprintf(file_name_buf, sizeof(file_name_buf), "[timerfd%d_%.*s]",
+-                instance, (int)sizeof(task_comm_buf), task_comm_buf);
++       /* snprintf(file_name_buf, sizeof(file_name_buf), "[timerfd%d_%.*s]", */
++       /*       instance, (int)sizeof(task_comm_buf), task_comm_buf); */
+ 
+        ufd = anon_inode_getfd(file_name_buf, &timerfd_fops, ctx,
+                               O_RDWR | (flags & TFD_SHARED_FCNTL_FLAGS));
+        if (ufd < 0)
+                kfree(ctx);
+ 
++       snprintf(file_name_buf, sizeof(file_name_buf), "[timerfd%d-fd%d_%.*s]",
++               instance, ufd, (int)sizeof(task_comm_buf), task_comm_buf);
++
+        return ufd;
+ }
+```
+
+---
+
 To be continued in ["Android Kernel Suspend and Tracing"]({{< relref "tracing.md" >}}).
 
-[timerfd-commit]: (https://github.com/sonyxperiadev/kernel/commit/c1c412fc03c9817dac8cae3353bce1c32af3196a)
+[timerfd-commit]: https://github.com/sonyxperiadev/kernel/commit/c1c412fc03c9817dac8cae3353bce1c32af3196a

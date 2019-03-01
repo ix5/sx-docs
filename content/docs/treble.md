@@ -20,3 +20,9 @@ toc = true
 - split images, policy, vndk
 - manifest, compatibility matrix
 - vendorized blobs, binder
+
+## Misc
+vintf and hal tools:
+
+- https://source.android.com/devices/architecture/vintf/resources
+- `lshal`
