@@ -103,6 +103,9 @@ a lot about the tracing system, which is really neat.
 For more info, check [Android source: ftrace][src-android-ftrace] and
 [ftrace: trace your kernel functions!][jvns-ftrace].
 
+### (Addendum)
+Idea: `echo 1 > /sys/kernel/debug/clk/debug_suspend`
+
 [^1]: See the [documentation in wakeup.c](https://github.com/sonyxperiadev/kernel/blob/aosp/LE.UM.2.3.2.r1.4/drivers/base/power/wakeup.c#L490-L525)
 [src-android-ftrace]: https://source.android.com/devices/tech/debug/ftrace
 [jvns-ftrace]: https://jvns.ca/blog/2017/03/19/getting-started-with-ftrace/

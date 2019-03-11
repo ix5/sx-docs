@@ -12,7 +12,7 @@ if-else and convoluted stuff as you'd be drawn to if using makefiles.
 As a downside, they're an "Android-ism" and make it harder for people to port
 your software to a project that is not Android.
 
-Use `make -j 8 blueprint_tools` inside the AOSP tree to build the `androidmk` go
+Use `make blueprint_tools` inside the AOSP tree to build the `androidmk` go
 binary.
 
 You can then copy the binary from `out/soong/host/linux-x86/bin/androidmk` to
