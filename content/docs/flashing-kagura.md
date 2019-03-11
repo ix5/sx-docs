@@ -45,7 +45,7 @@ folder as fastboot.exe).
   It should should be something ending in `.184` or `.192` for your region.
   See this [list of latest stock firmware files](https://forum.xda-developers.com/xperia-xz/how-to/xperia-xz-roll-android-7-0-nougat-39-2-t3510600).
 - Download [AdrianDC's TWRP recovery](https://basketbuild.com/filedl/devs?dev=AdrianDC&dl=AdrianDC/Kagura/TWRP-Recovery/twrp-3.2.1-20171219-boot-kagura.img)
-- Download Sony OEM binaries from the
+- Download Sony OEM binaries for `tone` on Android Pie, Kernel 4.9 from the
   [Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries).  
   The filename will be `SW_binaries_for_Xperia_Android_9.0_2.3.2_v$VERSION_tone.zip`.
 - Download the latest AOSP build from

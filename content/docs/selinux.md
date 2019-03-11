@@ -12,6 +12,9 @@ toc = true
 
 ---
 
+<!-- TODO: Rewrite this to just be a dense reference, point to indiviual articles and -->
+<!-- https://selinuxproject.org/ -->
+
 ## General
 (from [SEAndroid-Aalto presentation][seandroid-aalto]):
 

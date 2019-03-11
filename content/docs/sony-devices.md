@@ -1,5 +1,5 @@
 ---
-title: "Sony devices"
+title: "Sony Devices"
 description: "Overview of SODP devices"
 date: 2019-02-10T21:21:51+01:00
 weight: 20

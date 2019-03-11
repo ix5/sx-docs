@@ -1,12 +1,12 @@
-+++
-title = "Structure"
-description = "How to lay out your own build project"
-date = 2018-10-19T22:15:22+02:00
-weight = 20
-draft = false
-bref = "How to lay out your source strucure"
-toc = true
-+++
+---
+title: "Structure"
+description: "How to lay out your own build project"
+date: 2018-10-19T22:15:22+02:00
+weight: 20
+draft: false
+bref: "How to lay out your source strucure"
+toc: true
+---
 
 ## AOSP layout
 

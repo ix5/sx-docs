@@ -130,6 +130,9 @@ needs to be set anew every time you open a new terminal, so it is
 advisable to put `export USE_CCACHE=1` at the end of your `.bashrc` in your home
 directory (or `/home/builder/.bashrc` if you're in a chroot).
 
+`ccache` compression might also save a lot of disk space for you. Set
+`export CCACHE_COMPRESS=1` in your `.bashrc`.
+
 To use parallel compilation, you need to find out how many threads your CPU has
 via `nproc`. Then use that number for `make -j<nr-of-threads>`. For most
 computers it will be the number of CPU cores times 2, e.g. "8" for a 4-core CPU.
