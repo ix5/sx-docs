@@ -2,6 +2,6 @@
 title: ""
 description: ""
 date: {{ .Date }}
-draft: false
+draft: true
 ---
 
