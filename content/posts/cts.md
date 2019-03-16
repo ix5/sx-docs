@@ -1,8 +1,7 @@
 ---
 title: "Quick: Media CTS"
 description: "How to run Media Compatibility Test Suite"
-date: 2018-12-14T22:35:16+01:00
-weight: 20
+date: 2019-03-01T08:18:00+01:00
 draft: false
 bref: "How to run Media CTS"
 author: Felix

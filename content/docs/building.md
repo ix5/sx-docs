@@ -133,6 +133,16 @@ directory (or `/home/builder/.bashrc` if you're in a chroot).
 `ccache` compression might also save a lot of disk space for you. Set
 `export CCACHE_COMPRESS=1` in your `.bashrc`.
 
+<div class="message warning">
+On Android Q, you need to install the <code>ccache</code> package and set
+<code>CCACHE_EXEC</code> manually to e.g. <code>/usr/bin/ccache</code>. The
+reason for this is that Google no longer ships a prebuilt <code>ccache</code>
+with Android.  
+For more info, see <a style="color: #1764de;"href="/info/post/android-q-changes">Android Q changes</a> and 
+<a style="color: #1764de;"href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
+build/core/ccache.mk</a>.
+</div>
+
 To use parallel compilation, you need to find out how many threads your CPU has
 via `nproc`. Then use that number for `make -j<nr-of-threads>`. For most
 computers it will be the number of CPU cores times 2, e.g. "8" for a 4-core CPU.
@@ -167,7 +177,7 @@ So put your patches into a git repo and share them with the world.
   `adb push` or even `adb sync` the changes directly to your device
 - Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
 
----
+<!-- ## Extra References -->
+<!-- [AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists) -->
 
-## Extra References
-[AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists)
+[ccache-q]: 

@@ -96,7 +96,8 @@ in your *Device Compatibility Matrix.*
 
 You can also be alerted if you have defined HALs in your manifest but not told
 the framework about them in your *Compatibility Matrix* with
-`VINTF_ENFORCE_NO_UNUSED_HALS := true`.
+`VINTF_ENFORCE_NO_UNUSED_HALS := true`. This invokes `assemble_vintf` in strict
+mode when checking at build time.
 
 c.f. [AssembleVintf.cpp][assemblevintf](simplified here):
 ```
@@ -114,6 +115,36 @@ bool checkDualFile(const HalManifest& manifest, const CompatibilityMatrix& matri
                       << "not specified in framework compatibility matrix: " << std::endl
                       << "    " << android::base::Join(unused, "\n    ") << std::endl
 ```
+
+The other place `PRODUCT_ENFORCE_VINTF_MANIFEST` has an effect is with the
+Android [HIDL service manager][servicemanagement] (configured via
+[transport/Android.bp][libhidl-transport]).
+If `ENFORCE_VINTF_MANIFEST` is defined, `bool vintfLegacy = false;`
+applies.
+```
+getRawServiceInternal(descriptor, instance, bool retry, bool getStub) {
+    [...]
+    #ifdef ENFORCE_VINTF_MANIFEST
+    bool vintfLegacy = false;
+    #else
+    bool vintfLegacy = (transport == Transport::EMPTY);
+    #endif
+    bool vintfHwbinder = (transport == Transport::HWBINDER);
+    bool vintfPassthru = (transport == Transport::PASSTHROUGH);
+    for (int tries = 0; !getStub && (vintfHwbinder || vintfLegacy); tries++) {
+        if (getStub || vintfPassthru || vintfLegacy) {
+            Return<sp<IBase>> ret = sm->get(descriptor, instance);
+            [...]
+            waiter->done(); // exit loop
+        }
+    }
+    if (getStub || vintfPassthru || vintfLegacy) {
+        sp<IServiceManager> pm = getPassthroughServiceManager();
+    }
+```
+`ENFORCE_VINTF_MANIFEST` closes a loophole in `getRawServiceInternal` which
+means `libhidltransport` will no longer fetch services which are not `hwbinder`
+or `passthrough`, i.e. `EMPTY` transports will no longer be fetched.
 
 To list all HALs and HAL services activity on-device, use the `lshal` command.
 
@@ -147,7 +178,9 @@ More on [implementing SELinux on source.android.com][sepolicy-source].
 [systemcore-androidmk]: https://android.googlesource.com/platform/system/core/+/93d837f3a90acec007647f21ed4573f044fa6f1e/rootdir/Android.mk#220
 [linker-source]: https://source.android.com/devices/architecture/vndk/linker-namespace
 [vintf-develop]: https://source.android.com/devices/architecture/vintf/dm#develop-new-devices
-[assemblevintf]: https://android.googlesource.com/platform/system/libvintf/+/refs/tags/android-9.0.0_r31/AssembleVintf.cpp#266
+[assemblevintf]: https://android.googlesource.com/platform/system/libvintf/+/9adf115f40240d1f8bfd0266c2445f7a9b3e0262/AssembleVintf.cpp#266
+[libhidl-transport]: https://android.googlesource.com/platform/system/libhidl/+/22a3454d4f78075e261aa64991f75c724a8bd99d/transport/Android.bp#76
+[servicemanagement]: https://android.googlesource.com/platform/system/libhidl/+/7637124c991c36700956159e57f11c755f94f60a/transport/ServiceManagement.cpp#689
 [vintf-source]: https://source.android.com/devices/architecture/vintf
 [sepolicy-source]: https://source.android.com/security/selinux/build#android-o
 [not-full-treble]: https://android.googlesource.com/platform/system/sepolicy/+/0fa3d2766f4d9d84dd01d2e2d75d366734cfcc5f/public/te_macros#462

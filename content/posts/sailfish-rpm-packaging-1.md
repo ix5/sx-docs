@@ -31,6 +31,8 @@ sense to use the following pattern:
 
 [droid-hal-device.inc][dhd-name]
 ```rpm
+%define rpm_device f8331
+[...]
 Summary: 	Droid HAL package for %{rpm_device}
 Name: 		droid-hal-%{rpm_device}
 Version: 	0.0.6
@@ -40,20 +42,22 @@ BuildRequires:  systemd
 %description
 %{summary}.
 ```
-The main name for all packages is `droid-hal-%{rpm_device}`, e.g.
+The main name (or *stem*) for all packages is `droid-hal-%{rpm_device}`, e.g.
 `droid-hal-f8331`.
 
 Then, [further down the file][dhd-package], the sub-packages inherit the stem:
-```
+```rpm
 %package devel
-# Requires: %%{name} = %%{version}-%%{release}
 Provides: droid-hal-devel
 Summary: Development files for droid-hal device: %{rpm_device}
 %description devel
 Device specific droid headers for %{rpm_device}.
 Needed by libhybris
 ```
-Thus, `%package devel` gets expanded to `droid-hal-f8331-devel`.
+
+The `%package` macro takes the *stem* and prepends it.
+Thus, with `Name = droid-hal-f8331`, `%package devel` gets expanded to
+`droid-hal-f8331-devel`.
 
 [dhd-name]: https://github.com/mer-hybris/droid-hal-device/blob/31c62347e952ff7ac2da79c29020e92ed8a56008/droid-hal-device.inc#L128
 [dhd-package]: https://github.com/mer-hybris/droid-hal-device/blob/31c62347e952ff7ac2da79c29020e92ed8a56008/droid-hal-device.inc#L176

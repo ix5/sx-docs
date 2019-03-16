@@ -1,6 +1,6 @@
 ---
 title: "Bluetooth A2DP offloading notes"
-date: 2019-01-01T08:18:00+01:00
+date: 2019-03-12T08:18:00+01:00
 draft: true
 author: Felix
 ---
