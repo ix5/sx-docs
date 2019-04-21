@@ -5,7 +5,7 @@ date: 2019-02-10T21:21:51+01:00
 weight: 20
 draft: false
 bref: "Overview of SODP devices"
-toc: false
+toc: true
 ---
 
 ### SDM845 devices (tama board, 2018)
@@ -81,3 +81,6 @@ kagura:/ # cat /sys/devices/soc0/soc_id
 <!-- ## Proprietary modules -->
 
 <!-- ## SoC/Qualcomm stuff -->
+
+<!-- ## Firmware -->
+<!-- TERM=xterm mono UnSIN.exe file.sin -->
