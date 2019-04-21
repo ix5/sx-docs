@@ -224,12 +224,6 @@ storage completely.
 - Click "Wipe" and choose the lower-right button to format /data. Return to
   "home screen".
 
-## Caveats
-**Adding fingerprint crashes device:** You need to tap your finger onto the
-scanner once during the initial "How-to" screen, then *wait for 3 animations*
-when the "Lift, then touch again" screen is shown. Then put your finger on the
-scanner and let it get scanned like you normally would.
-
 <div class="message warning">
   <h5>Attention!</h5>
 Please also read the
