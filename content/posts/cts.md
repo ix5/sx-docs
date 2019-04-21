@@ -37,9 +37,11 @@ To run [media tests](https://source.android.com/devices/media/oem), use this
 command, the documentation on the source.android.com page is out of date:
 
 ```
-# run --plan CTS android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances
-run cts --module CtsMediaTestCases --test android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances
+run cts \
+  --module CtsMediaTestCases \
+  --test android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances
 ```
+<!-- run -\-plan CTS android.media.cts.MediaCodecCapabilitiesTest#testGetMaxSupportedInstances -->
 
 Also make sure to save the results of `get_achievable_rates` for later.
 

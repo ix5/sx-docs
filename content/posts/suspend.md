@@ -26,11 +26,12 @@ wakeup_source_activate: epoll_system_server_file:[timerfd7_system_server] state=
 commit: [fs: Improve eventpoll logging to stop indicting timerfd][timerfd-commit])
 
 system_server(a.k.a. SystemServer in frameworks/base) seems to set
-alarms(`CLOCK_REALTIME_ALARM` and `CLOCK_BOOTTIME_ALARM`) that have the
-capability to wake up the system only in `AlarmManagerService`.
+alarms(`CLOCK_REALTIME_ALARM=8` and `CLOCK_BOOTTIME_ALARM=9`) that have the
+capability to wake up the system only in [AlarmManagerService][alarmmanager].
 
 ```
-diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
+diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp \
+  b/services/core/jni/com_android_server_AlarmManagerService.cpp
 index 47350c11f95..8da96d1e9a2 100644
 --- a/services/core/jni/com_android_server_AlarmManagerService.cpp
 +++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
@@ -97,7 +98,8 @@ index 47350c11f95..8da96d1e9a2 100644
 ```
 
 ```
-diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
+diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp \
+  b/services/core/jni/com_android_server_AlarmManagerService.cpp
 index 47350c11f95..9ade11af60a 100644
 --- a/services/core/jni/com_android_server_AlarmManagerService.cpp
 +++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
@@ -112,14 +114,16 @@ index 47350c11f95..9ade11af60a 100644
              close(epollfd);
 ```
 
-
-However, looking at the log statements, it seems no alarms(type 5 or 6) are
+However, after letting the device run and looking at the `dmesg` log statements,
+it seems no alarms of type `CLOCK_REALTIME_ALARM` or `CLOCK_BOOTTIME_ALARM` are
 being set, only timers of type 2 and 3.
 
 Next idea would be `min_futurity`, `listener_timeout`, `allow_while_idle_short_time`
-All of these are set to 5 seconds. So test increasing them to 10 seconds:
+All of these are seem suspicious since they're set to exactly 5 seconds. So test
+increasing them to 10 seconds:
 ```
-diff --git a/services/core/java/com/android/server/AlarmManagerService.java b/services/core/java/com/android/server/AlarmManagerService.java
+diff --git a/services/core/java/com/android/server/AlarmManagerService.java \
+  b/services/core/java/com/android/server/AlarmManagerService.java
 index 20bb7fb4789..76bf5de75e4 100644
 --- a/services/core/java/com/android/server/AlarmManagerService.java
 +++ b/services/core/java/com/android/server/AlarmManagerService.java
@@ -180,3 +184,4 @@ index 147b72349d3b..0aefe5e55097 100644
 To be continued in ["Android Kernel Suspend and Tracing"]({{< relref "tracing.md" >}}).
 
 [timerfd-commit]: https://github.com/sonyxperiadev/kernel/commit/c1c412fc03c9817dac8cae3353bce1c32af3196a
+[alarmmanager]: https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-9.0.0_r31/services/core/jni/com_android_server_AlarmManagerService.cpp
