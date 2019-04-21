@@ -157,7 +157,7 @@ files in the root directory ramdisk.
 
 With `PRODUCT_SEPOLICY_SPLIT_OVERRIDE` set, the `sepolicy` binary will be split
 up into *platform*(system) and *vendor* policy files. They policy is also no
-longer a binary file but rather uses the new `.cil` plain-text format. 
+longer a binary file but rather uses the new `.cil` plain-text format.
 
 The *platform* `.cil` policy and context files will be pushed to
 `/system/etc/selinux/`, while the *vendor* `.cil` policy and context files will
@@ -169,7 +169,101 @@ Another change in behaviour when enabling the split is the effect of
 simply ignored, i.e.  all the policy that you inclosed in
 `not_full_treble(allow ...)` statements is ignored.
 
+There are also a lot of new `neverallow`s introduced, so your policies might
+need updating. Finally, three [violator` attributes][sepolicy-violators] are now
+banned:
+
+- `binder_in_vendor_violators`
+- `socket_between_core_and_vendor_violators`
+- `vendor_executes_system_violators`
+
 More on [implementing SELinux on source.android.com][sepolicy-source].
+
+## Compatible Properties
+`PRODUCT_COMPATIBLE_PROPERTY` enables the whitelist for "compatible" properties,
+meaning vendor services only get access to `vendor`-namespaced properties (with
+some expections).
+
+Manual override in `device.mk`:
+```
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+```
+
+Enabled by default for [SHIPPING_API_LEVEL >= 28][compatible-apilevel].
+
+**Side effects:**
+
+- service `ril-daemon` -> `vendor.ril-daemon`
+  (see [hardware/ril/rild/Android.mk][rild-mk]: [rild.legacy.rc][rild-legacy-rc]
+  with `service ril-daemon` when non-compatible, [rild.rc][rild-rc] with
+  `service vendor.ril-daemon` when using compatible)
+- prop `rild.libpath` -> `vendor.rild.libpath` (see [rild/rild.c][rild-c])
+- prop `rild.libargs` -> `vendor.rild.libargs`
+- `compatible_property_only()` and `not_compatible_property()` sepolicy macros
+
+In `init`, only whitelisted [properties are "actionable"][init-actionable],
+meaning they are allowed as triggers for e.g. `on property:vendor.prop=1`.
+
+The whitelist - **for init only** - can be disabled at runtime by setting:
+```
+PRODUCT_ACTIONABLE_COMPATIBLE_PROPERTY_DISABLE := true
+```
+
+The whitelist resides in
+[system/core/init/stable_properties.h][compatible-whitelist] and consists of a
+list of allowed prefixes and a list of allowed full property names.
+
+<div class="message warning">
+These lists of properties are lifted straight from the `android-9.0.0_r34`
+branch and might not be complete, considering development for Android Q is in
+full swing. Please confirm the correctness yourself instead of relying on this
+article.
+</div>
+
+Allowed prefixes(`kPartnerPrefixes`):
+
+- `init.svc.vendor.`
+- `ro.vendor.`
+- `persist.vendor.`
+- `vendor.`
+- `init.svc.odm.`
+- `ro.odm.`
+- `persist.odm.`
+- `odm.`
+- `ro.boot.`
+
+Allowed exported actionable properties(`kExportedActionableProperties`):
+
+- `dev.bootcomplete`
+- `init.svc.console`
+- `init.svc.mediadrm`
+- `init.svc.surfaceflinger`
+- `init.svc.zygote`
+- `persist.bluetooth.btsnoopenable`
+- `persist.sys.crash_rcu`
+- `persist.sys.usb.usbradio.config`
+- `persist.sys.zram_enabled`
+- `ro.board.platform`
+- `ro.bootmode`
+- `ro.build.type`
+- `ro.crypto.state`
+- `ro.crypto.type`
+- `ro.debuggable`
+- `sys.boot_completed`
+- `sys.boot_from_charger_mode`
+- `sys.retaildemo.enabled`
+- `sys.shutdown.requested`
+- `sys.usb.config`
+- `sys.usb.configfs`
+- `sys.usb.ffs.mtp.ready`
+- `sys.usb.ffs.ready`
+- `sys.user.0.ce_available`
+- `sys.vdso`
+- `vold.decrypt`
+- `vold.post_fs_data_done`
+- `vts.native_server.on`
+- `wlan.driver.status`
+
 
 [^1]: Exception: When using `system-as-root`, the `sepolicy` binary was not on the boot ramdisk but rather on the root of the `system` partition.  For more, see [Gotcha: sepolicy for system-as-root devices][sepolicy-ab].
 
@@ -182,7 +276,15 @@ More on [implementing SELinux on source.android.com][sepolicy-source].
 [libhidl-transport]: https://android.googlesource.com/platform/system/libhidl/+/22a3454d4f78075e261aa64991f75c724a8bd99d/transport/Android.bp#76
 [servicemanagement]: https://android.googlesource.com/platform/system/libhidl/+/7637124c991c36700956159e57f11c755f94f60a/transport/ServiceManagement.cpp#689
 [vintf-source]: https://source.android.com/devices/architecture/vintf
-[sepolicy-source]: https://source.android.com/security/selinux/build#android-o
 [not-full-treble]: https://android.googlesource.com/platform/system/sepolicy/+/0fa3d2766f4d9d84dd01d2e2d75d366734cfcc5f/public/te_macros#462
 [sepolicy-defs]: https://android.googlesource.com/platform/system/sepolicy/+/053cb34130b763d93e2181062ebe1b5f8bf3ad9c/definitions.mk#11
+[sepolicy-source]: https://source.android.com/security/selinux/build#android-o
+[sepolicy-violators]: https://android.googlesource.com/platform/system/sepolicy/+/0fa3d2766f4d9d84dd01d2e2d75d366734cfcc5f/tests/treble_sepolicy_tests.py#285
+[compatible-apilevel]: https://android.googlesource.com/platform/build/+/51b00a10cc3ab5cafb9d90909ef6dda8853738b5/core/config.mk#765
+[rild-mk]: https://android.googlesource.com/platform/hardware/ril/+/1b4e637ead1aff57cf7b9cb142e33dea8e15fe8e/rild/Android.mk#32
+[rild-rc]: https://android.googlesource.com/platform/hardware/ril/+/082e32effc07dddd06b67d2be2c2c6ee554d5d52/rild/rild.rc
+[rild-legacy-rc]: https://android.googlesource.com/platform/hardware/ril/+/082e32effc07dddd06b67d2be2c2c6ee554d5d52/rild/rild.legacy.rc
+[rild-c]: https://android.googlesource.com/platform/hardware/ril/+/082e32effc07dddd06b67d2be2c2c6ee554d5d52/rild/rild.c#38
+[init-actionable]: https://android.googlesource.com/platform/system/core/+/20ac1203a3201ac3e6d05a19325f5569033f3d08/init/action_parser.cpp#37
+[compatible-whitelist]: https://android.googlesource.com/platform/system/core/+/20ac1203a3201ac3e6d05a19325f5569033f3d08/init/stable_properties.h#26
 [sepolicy-ab]: ./../post/gotcha-sepolicy-for-system-as-root-devices/

@@ -48,13 +48,38 @@ The service will be started based on `class_start core` which happens `on boot`.
 
 TODO: Overview of classes
 
+
+| Trigger          | Classes          |
+| ---------------- | ---------------- |
+| on charger       | charger          |
+| on late-fs       | early-hal        |
+| on nonencrypted  | hal, core        |
+| on boot          | hal, core        |
+
 ## Changes with encryption
 With the introduction of system-wide encryption into Android, the init process
 gains a few more tricks:
 - vold.decrypt triggers
 - `class early_hal` for crucial services needed for decryption, e.g. `keymaster`
-  and `gatekeeper` (TODO: Add link to AOSP init.rc for class_start)
+  and `gatekeeper` (TODO: Add link to AOSP `init.rc` for `class_start`)
 - restarting framework, reboot, minimal UI stuff
+- `nonencrypted` trigger, which, despite its name, always gets triggered and
+  which pulls in `class_start main` and `class_start late_start`
+
+```
+on property:vold.decrypt=trigger_restart_min_framework
+    class_start main
+
+on property:vold.decrypt=trigger_restart_framework
+    stop surfaceflinger
+    start surfaceflinger
+    class_start main
+    class_start late_start
+
+on property:vold.decrypt=trigger_shutdown_framework
+    class_reset late_start
+    class_reset main
+```
 
 [fde]: https://source.android.com/security/encryption/full-disk#starting_an_encrypted_device_with_default_encryption
 [fbe]: https://source.android.com/security/encryption/file-based
