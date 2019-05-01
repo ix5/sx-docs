@@ -159,7 +159,7 @@ Wipe `/data`, `/cache` and Dalvik cache in TWRP:
 
 ##### 7.3 Flash dualsim patcher (optional)
 If you have a dualsim device, download the
-[DualSim patcher for any custom ROM](https://forum.xda-developers.com/xperia-xz/how-to/f8332-dualsim-patcher-custom-rom-t3842672).
+[DualSim patcher](https://sx.ix5.org/files/builds/kagura/misc/F8332_dualsim-vendor.zip).
 
 - Transfer the DualSim patcher zip file to the phone's internal storage.
 - Click "Install"-tile and select the DualSim patcher
