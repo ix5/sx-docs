@@ -8,6 +8,13 @@ bref: "Overview of SODP devices"
 toc: true
 ---
 
+### SDM660 devices (ganges board, 2019)
+
+| Device name        | Code name | Product (SS, DS) |
+| ------------------ | --------- | ---------------- |
+| Xperia 10          | Kirin     | i3113, i4113     |
+| Xperia 10 Plus     | Mermaid   | i3213, i4213     |
+
 ### SDM845 devices (tama board, 2018)
 
 | Device name        | Code name | Product (SS, DS) |
@@ -28,9 +35,9 @@ toc: true
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
-| Xperia XZ Premium  | Maple     |                  |
-| XPeria XZ1         | Poplar    |                  |
-| Xperia XZ1 Compact | Lilac     |                  |
+| Xperia XZ Premium  | Maple     | g8131, g8142     |
+| XPeria XZ1         | Poplar    | g8341, g8342     |
+| Xperia XZ1 Compact | Lilac     | g8441            |
 
 ### MSM8996 devices (tone board, 2016)
 
@@ -44,9 +51,9 @@ toc: true
 
 | Device name      | Code name | Product (SS, DS) |
 | ---------------- | --------- | ---------------- |
-| Xperia X         | Suzu      |                  |
-| Xperia X Compact | Kugo      |                  |
-| Xperia Touch     | Blanc     |                  |
+| Xperia X         | Suzu      | f5121, f5122     |
+| Xperia X Compact | Kugo      | f5321            |
+| Xperia Touch     | Blanc     | g1109            |
 
 ---
 
