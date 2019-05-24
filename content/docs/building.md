@@ -35,7 +35,7 @@ chroot build environment instead.
 A build chroot takes about 1-1.5GB of space and will save you from headaches,
 e.g. when Android modules aren't compiled against your host glibc.
 
-Install `debootstrap`, then run this(`bionic` is the ubuntu version codename for
+Install `debootstrap`, then run this (`bionic` is the ubuntu version codename for
 18.04 LTS):
 ```
 debootstrap --variant=buildd --arch=amd64 bionic ~/android/ubuntu-android
@@ -45,9 +45,7 @@ chroot into the newly created builder system, either via `chroot` or just using
 init` in `~/android/build-env`):
 ```
 sudo systemd-nspawn \
---bind=/home/<your-username>/android/build-env/:/home/builder/build-env/ \
   -D /home/<your-username>/android/ubuntu-android
-
 useradd -m -s /bin/bash builder
 # -> No need to add a password, nspawn will log you in automatically
 ```
@@ -57,17 +55,18 @@ useradd -m -s /bin/bash builder
 apt install software-properties-common python
 add-apt-repository universe
 apt update
-apt install bison g++-multilib git gperf libxml2-utils make zlib1g-dev zip liblz4-tool libncurses5
+apt install bison g++-multilib git gperf libxml2-utils make \
+  zlib1g-dev zip liblz4-tool libncurses5
 apt install openjdk-8-jdk
 # Optional:
 apt install ccache
 apt install rsync libssl-dev aapt
 # Kernel recompilation:
-apt install bc autoconf automake autopoint autotools-dev bsdmainutils
-gawk groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool kmod
+apt install bc autoconf automake autopoint autotools-dev bsdmainutils gawk \
+  groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool kmod
 # For selinux:
 apt install setools python-networkx policycoreutils
-# For JACK(it needs curl and lsof)
+# For JACK (it needs curl and lsof)
 apt install curl lsof
 ```
 Cross-reference the needed packages with the
@@ -116,7 +115,7 @@ The `user` target doesn't include root. You'll need to look into
 
 ## Optimize the build
 A full build will take about two to three hours on a beefed-out recent
-system(Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
+system (Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
 cut down for successive builds to around an hour by utilizing `ccache` and
 parallelizing the build.
 
@@ -180,4 +179,6 @@ So put your patches into a git repo and share them with the world.
 <!-- ## Extra References -->
 <!-- [AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists) -->
 
-[ccache-q]: 
+<!--
+[ccache-q]: (Link to ccache deprecation)
+-->
