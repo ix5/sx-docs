@@ -48,13 +48,27 @@ The service will be started based on `class_start core` which happens `on boot`.
 
 TODO: Overview of classes
 
+| Class             | Comment        |
+| ----------------- | -------------- |
+| `core`            | Never shut down after restarting |
+| `main`            | Shut down and then restart after the disk password is entered |
+| `late_start`      | Does not start until after /data has been decrypted and mounted |
 
-| Trigger          | Classes          |
-| ---------------- | ---------------- |
-| on charger       | charger          |
-| on late-fs       | early-hal        |
-| on nonencrypted  | hal, core        |
-| on boot          | hal, core        |
+| Trigger           | Classes        |
+| ----------------- | -------------- |
+| `on charger`      | `charger`      |
+| `on late-fs`      | `early-hal`    |
+| `on nonencrypted` | `hal`, `core`  |
+| `on boot`         | `hal`, `core`  |
+
+## Keywords (selection)
+| Keyword       | Action                 |
+| ------------- | ---------------------- |
+| `start`       | Starts a service, even when it's disabled |
+| `class core`  | Makes a service part of a group.          |
+| `class_start` | Starts a group. Once this group is started, the service is started only if it is enabled (services can be disabled by having `disabled` in the service spec, or `disable <service>`) |
+| `enable`      | Allows a service to be started as part of a `class_start`. If the class is already started, this'll schedule the service to be started |
+| `disable`     | Prevent a service from being started as part of `class_start`. This does not stop the service if it's already running |
 
 ## Changes with encryption
 With the introduction of system-wide encryption into Android, the init process

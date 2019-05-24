@@ -157,15 +157,32 @@ Wipe `/data`, `/cache` and Dalvik cache in TWRP:
 - Click "Install"-tile and select the AOSP ROM file
 - Swipe from left to right to start the flashing procedure.
 
-##### 7.3 Flash dualsim patcher (optional)
+##### 7.3 Fix /dsp file labels
+If you ever installed an Android Oreo-based custom ROM - e.g. OmniROM 8.1 - your
+SELinux file labels for the `dsp` partition will be wrong. For a more detailed
+explanation, see
+[File relabeling for SODP](/info/post/dsp-file-relabling-for-sodp/).
+
+To check whether your labels are wrong, mount the `dsp` partition inside TWRP
+and type `ls -laZ /dsp/`.
+If it shows files with the `qdsp_file` label, do this:
+```
+chcon -R u:object_r:adsprpcd_file:s0 /dsp/
+```
+Check again with `ls -lZ /dsp/` and confirm that all files are labeled
+`adsprpcd_file`.
+
+<!-- 7.4 Fix /persist file labels and permissions -->
+
+##### 7.4 Flash dualsim patcher (optional)
 If you have a dualsim device, download the
-[DualSim patcher](https://sx.ix5.org/files/builds/kagura/misc/F8332_dualsim-vendor.zip).
+[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher.zip).
 
 - Transfer the DualSim patcher zip file to the phone's internal storage.
 - Click "Install"-tile and select the DualSim patcher
 - Swipe from left to right to start the flashing procedure.
 
-##### 7.4 Flash OpenGapps (optional)
+##### 7.5 Flash OpenGapps (optional)
 If you have problems afer flashing GApps, wipe all data and flash the ROM again,
 without GApps.
 
@@ -173,7 +190,7 @@ without GApps.
 - Click "Install"-tile and select the OpenGApps zip file
 - Swipe from left to right to start the flashing procedure.
 
-##### 7.5 Flash Magisk (optional)
+##### 7.6 Flash Magisk (optional)
 Flash [Magisk v17.1 or later](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445).
 Then install the Magisk Manager app. But read carefully which modules are
 compatible!

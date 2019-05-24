@@ -1,5 +1,6 @@
 +++
 title = "Sony/Qualcomm device subsystems"
+slug = "sony-qualcomm-device-subsystems"
 description = "Small glossary"
 date = 2018-12-22T18:07:04+01:00
 draft = false
@@ -12,3 +13,4 @@ draft = false
 - `cdsp` is the term for adsp on newer snapdragon processors
   https://developer.qualcomm.com/docs/snpe/overview.html
   (sdm835 has adsp, 845 and 855 have cdsp)
+- `SLPI` = sensors core (?)
