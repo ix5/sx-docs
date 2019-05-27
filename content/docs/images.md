@@ -42,14 +42,43 @@ gunzip --to-stdout --uncompress boot.img-ramdisk.gz | cpio --extract \
 The ramdisk has a special format named `cpio`. More information on
 [Wikipedia][cpio-wiki] and the [manpage][cpio-manpage].
 
+The exact format of the `cpio` archive is “SV4 with no CRC”. You can verify the
+archive type for future Android versions by doing:
+```
+# gunzip --uncompress boot.img-ramdisk.gz
+# file boot.img-ramdisk
+boot.img-ramdisk: ASCII cpio archive (SVR4 with no CRC)
+```
+To re-pack the cpio archive, move the rootfs files into a subdirectory and run
+the following from there:
+```
+find . | cpio -o -H newc > ../boot.img-ramdisk
+```
+The `-H newc` option creates the SV4 archive type.
+
+Then go up one directory and `gzip`-compress the archive:
+```
+gzip boot.img-ramdisk
+```
+
 ## Re-pack boot.img
 *If you unpacked your ramdisk, first re-create a cpio archive and gzip-compress
-it again.*
+it again, see the previous step.*
 
 Use `mkbootimg` with the appropriate flags. To find out the values for
 `cmdline`, `base` and `pagesize`, take a look at the generated `boot.img-*`
 files, e.g. `boot.img-base` should contain the text `80000000`.
+```
+mkbootimg \
+  --cmdline "$(cat boot.img-cmdline)" \
+  --base "$(cat boot.img-base)" \
+  --pagesize "$(cat boot.img-pagesize)" \
+  --ramdisk "boot.img-ramdisk.gz" \
+  --kernel "boot.img-zImage" \
+  -o boot-repacked.img
+```
 
+Here are some example values:
 ```
 CMDLINE="androidboot.bootdevice=7464900.sdhci msm_rtb.filter=0x3F \
   ehci-hcd.park=3 coherent_pool=8M sched_enable_power_aware=1 \
@@ -58,15 +87,6 @@ CMDLINE="androidboot.bootdevice=7464900.sdhci msm_rtb.filter=0x3F \
   androidboot.selinux=permissive"
 BASE="80000000" 
 PAGESIZE="4096"
-RAMDISK="boot.img-ramdisk.gz"
-KERNEL="boot.img-zImage"
-mkbootimg \
-  --cmdline "$CMDLINE" \
-  --base "$BASE" \
-  --pagesize "$PAGESIZE" \
-  --ramdisk "$RAMDISK" \
-  --kernel "$KERNEL" \
-  -o boot-repacked.img
 ```
 
 The newly packged boot image will be named `boot-repacked.img`(or whatever name
