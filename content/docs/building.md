@@ -50,6 +50,21 @@ useradd -m -s /bin/bash builder
 # -> No need to add a password, nspawn will log you in automatically
 ```
 
+For Android Q, the way `.img` files are mounted during build has changed, e.g.
+`resize2fs` fails with a standard nspawn container.
+
+```
+ln -s /proc/self/mounts /etc/mtab
+```
+And add this to the options of systemd-nspawn:
+```
+    --bind=/dev/loop0:/dev/loop0 \
+    --bind=/dev/loop1:/dev/loop1 \
+    --bind=/dev/loop2:/dev/loop2 \
+    --bind=/dev/loop3:/dev/loop3 \
+```
+(So that enough loop devices are available)
+
 ## Install required packages
 ```
 apt install software-properties-common python
