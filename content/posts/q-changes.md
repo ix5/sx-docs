@@ -31,4 +31,17 @@ See [build/core/ccache.mk][ccache-q]:
 > set the `CCACHE_EXEC` environment variable to the path to your ccache
 > executable.
 
+Install `ccache` and set `export CCACHE_EXEC=/usr/bin/ccache` in your
+`~/.bashrc`.
+
+### Removal of otapckage target
+Seems there is no more `make otapackage` on the master branch, though that seems
+like a small mistake.
+You can still build a flashable zip file via
+```
+make out/target/product/kagura/aosp_f8331-img-eng.builder.zip
+```
+Substitute `kagura`, `f8331`, `eng` and `builder` for your actual image name.
+On Pie, the image used to be called `aosp_f8331-ota-eng.builder.zip`.
+
 [ccache-q]: https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17

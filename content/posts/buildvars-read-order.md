@@ -1,8 +1,8 @@
 ---
-title: "Android Build variable Read Order"
+title: "Android Build Variable Read Order"
 description: ""
 date: 2019-03-18T09:33:13+01:00
-draft: true
+draft: false
 ---
 
 Sony Open Devices Project: Read order of build variables
@@ -33,7 +33,7 @@ Sony Open Devices Project: Read order of build variables
 - (`common-kernel/KernelConfig.mk`)
 - `sepolicy/sepolicy.mk`
 
-TODO: Which gets read first by the build system?
+<!-- TODO: Which gets read first by the build system? -->
 
 ## Internal Order
 
@@ -88,6 +88,6 @@ include $(BUILD_SYSTEM)/product.mk
 include $(BUILD_SYSTEM)/device.mk
 ```
 
-TODO: Nice charts with relations
+**TODO:** Nice charts with relations
 
 [elinux]: https://elinux.org/Android_Device

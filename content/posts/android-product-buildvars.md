@@ -2,7 +2,7 @@
 title: "Android Product Buildvars"
 description: "Some gotchas"
 date: 2019-03-20T21:19:16+01:00
-draft: true
+draft: false
 ---
 
 The following build variables can be set in files inherited from
