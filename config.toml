@@ -13,7 +13,6 @@ docs = "/:title/"
 [params]
   issoURL = "https://comments.ix5.org"
   author = "Felix"
-  # email = "myemail@myaddress.xxx"
   description = "Information about Sony Xperia devices and AOSP"
   subdescription = "Not in any way affiliated with Sony"
 
