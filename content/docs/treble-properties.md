@@ -88,7 +88,7 @@ So, to conclude linker paths stuff:
 More on [linker namespaces at source.android.com][linker-source].
 
 ## vintf - Vendor Interface Manifest
-After creating the device manifest, defining `DEVICE_MANIFEST_FILE` and setting
+After creating the device manifest, define `DEVICE_MANIFEST_FILE` and set
 `PRODUCT_ENFORCE_VINTF_MANIFEST_OVERRIDE := true` as explained in
 [vintf: develop for a new device][vintf-develop]. This will alert you if you
 a mismatch between HALs defined in the *Device Manifest(DM)* and those defined

@@ -176,7 +176,7 @@ Check again with `ls -lZ /dsp/` and confirm that all files are labeled
 
 ##### 7.4 Flash dualsim patcher (optional)
 If you have a dualsim device, download the
-[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher.zip).
+[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher-v2.zip).
 
 - Transfer the DualSim patcher zip file to the phone's internal storage.
 - Click "Install"-tile and select the DualSim patcher
