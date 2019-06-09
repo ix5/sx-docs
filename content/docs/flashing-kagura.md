@@ -44,7 +44,7 @@ folder as fastboot.exe).
 - Download the `.FTF` file for the latest stock firmware.
   It should should be something ending in `.184` or `.192` for your region.
   See this [list of latest stock firmware files](https://forum.xda-developers.com/xperia-xz/how-to/xperia-xz-roll-android-7-0-nougat-39-2-t3510600).
-- Download [AdrianDC's TWRP recovery](https://basketbuild.com/filedl/devs?dev=AdrianDC&dl=AdrianDC/Kagura/TWRP-Recovery/twrp-3.2.1-20171219-boot-kagura.img)
+- Download this [tweaked TWRP recovery](https://sx.ix5.org/files/builds/kagura/misc/twrp-3.2.1-0-kagura-ab-x.img), credits to Artem Labazov(@ab123321)
 - Download Sony OEM binaries for `tone` on Android Pie, Kernel 4.9 from the
   [Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries).  
   The filename will be `SW_binaries_for_Xperia_Android_9.0_2.3.2_v$VERSION_tone.zip`.
@@ -52,9 +52,9 @@ folder as fastboot.exe).
   [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp/)
   <!-- The latest semi-stable build is 2018-11-16(there are no *stable* builds yet). -->
   <!-- It will be marked in [this xda thread](https://forum.xda-developers.com/xperia-xz/development/xz-aosp-pie-builds-t3864985/post78111505) as well. -->
-- Download Magisk 17.3 from
+- Optional: Download the latest stable Magisk from
   [xda: Magisk](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445)
-- Download OpenGApps from
+- Optional: Download OpenGApps from
   [opengapps.org](https://opengapps.org/?arch=arm64&api=9.0&variant=pico).
   You need to chose `Android 9.0`, `ARM64`. You can choose any size variant, I would
   recommend the `pico` one because it has the least bloat.
@@ -104,8 +104,8 @@ You can access fastboot mode by powering down the device completely, then holdin
 turn blue and you can stop holding the volume button.
 
 Flash the TWRP recovery from the command line:
-<pre><code>fastboot flash <span style="color:red">recovery</span> twrp-3.2.1-20171219-boot-kagura.img</code></pre>
-(You need to use AdrianDC's one because the official TWRP builds can not mount /data).
+<pre><code>fastboot flash <span style="color:red">recovery</span> twrp-3.2.1-0-kagura-ab-x.img</code></pre>
+(You need to use this tweaked recovery because the official TWRP builds can not mount /data or handle encryption).
 
 ### 6. Flash OEM binaries
 <!-- Unzip it and flash the resulting `.img` file with fastboot. -->
@@ -136,12 +136,13 @@ Wipe `/data`, `/cache` and Dalvik cache in TWRP:
   (This will keep the files on your internal storage but delete all your app
   data).
 
-  <div class="message">
-  If you are coming from stock firmware, you absolutely need to do this. You might
-  be able to skip this step if you are coming from a previous Pie build, but if
-  you run into problems you need to at least wipe the caches, if not `/data` as
-  well.
-  </div>
+<div class="message">
+Skip this step if you already formatted the internal storage in step 6.</br>
+If you are coming from stock firmware, you absolutely need to do this. You might
+be able to skip this step if you are coming from a previous Pie build, but if
+you run into problems you need to at least wipe the caches, if not `/data` as
+well.
+</div>
 
 ##### 7.2 Flash the AOSP ROM
 
@@ -163,6 +164,12 @@ SELinux file labels for the `dsp` partition will be wrong. For a more detailed
 explanation, see
 [File relabeling for SODP](/info/post/dsp-file-relabling-for-sodp/).
 
+<div class="message">
+<b>New:</b> Simply flash the
+<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
+zip file in TWRP.
+</div>
+
 To check whether your labels are wrong, mount the `dsp` partition inside TWRP
 and type `ls -laZ /dsp/`.
 If it shows files with the `qdsp_file` label, do this:
@@ -176,7 +183,7 @@ Check again with `ls -lZ /dsp/` and confirm that all files are labeled
 
 ##### 7.4 Flash dualsim patcher (optional)
 If you have a dualsim device, download the
-[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher-v2.zip).
+[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher-v3.zip).
 
 - Transfer the DualSim patcher zip file to the phone's internal storage.
 - Click "Install"-tile and select the DualSim patcher
@@ -191,7 +198,7 @@ without GApps.
 - Swipe from left to right to start the flashing procedure.
 
 ##### 7.6 Flash Magisk (optional)
-Flash [Magisk v17.1 or later](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445).
+Flash [Magisk v18.1 or later](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445).
 Then install the Magisk Manager app. But read carefully which modules are
 compatible!
 
@@ -207,6 +214,12 @@ you to install its own app, decline and choose to restart normally.
 On first boot your phone will restart once. This is fully normal and is to be
 expected. After the initial restart your phone will take a good while to finish
 booting up (~5 minutes or more). Leave it alone until done.
+
+<div class="message warning">
+  <h5>Attention!</h5>
+Please also read the
+<a style="color: #1764de;" href="https://sx.ix5.org/bugs-sx">full bug list</a>!
+</div>
 
 ## Optional Goodies
 The included AOSP Camera cannot record video as of now. You can instead try
@@ -229,23 +242,29 @@ If you cannot boot and have Magisk modules installed, it might be that they are
 incompatible with this ROM. Before reporting a bug, please remove all Magisk
 modules(by flashing the Magisk uninstall zip) and try booting again.
 
+##### Encryption does not work
+See "Formatting /data" below.
+
 ##### Formatting /data
 If you still cannot boot the AOSP builds, try formatting your `/data` partition.
-Back up all your photos etc. to your computer as this will wipe your internal
-storage completely.  
 
-- Boot into TWRP recovery
-- Check under the "Mount"-tile that the /data partition is mounted/checked.
-  Otherwise click on /data to mount it. Return to "home screen" via the back
-  button.
-- Click "Wipe" and choose the lower-right button to format /data. Return to
-  "home screen".
+If you ever had encryption turned on while running the stock firmware, you also
+might have to format your internal storage. This is because the stock firmware
+seems to be using a different encryption version or algorithm than the AOSP
+builds. The stock firmware runs encryption by default since Android Nougat.
 
 <div class="message warning">
-  <h5>Attention!</h5>
-Please also read the
-<a style="color: #1764de;" href="https://sx.ix5.org/bugs-sx">full bug list</a>!
+Back up all your photos, apps etc. to your computer as this will <b>wipe your
+internal storage completely!</b>
 </div>
+
+To format your internal storage, download
+[userdata.img](https://sx.ix5.org/files/builds/kagura/misc/userdata.img)
+and flash it using fastboot:
+<pre><code>fastboot flash <span style="color:red">userdata</span> userdata.img</code></pre>
+
+You need to use the fastboot method because wiping in TWRP does not leave enough
+space for the crypto footer, which you need to run Full Disk Encryption(FDE).
 
 ---
 

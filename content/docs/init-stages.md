@@ -94,6 +94,8 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
 ```
+(Gone in master/Q: [Stop using trigger_reset_main][trigger_reset])
 
 [fde]: https://source.android.com/security/encryption/full-disk#starting_an_encrypted_device_with_default_encryption
 [fbe]: https://source.android.com/security/encryption/file-based
+[trigger_reset]: https://android-review.googlesource.com/c/platform/system/vold/+/952637)
