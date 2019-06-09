@@ -5,7 +5,27 @@ date: 2019-03-18T09:33:13+01:00
 draft: false
 ---
 
-Sony Open Devices Project: Read order of build variables
+**Update:**: Just use `make product-graph`.
+Then convert the generated `.dot` file to pdf:
+```
+dot -Tpdf -Nshape=box -o out/products.pdf out/products.dot
+```
+...or svg:
+```
+dot -Tsvg -Nshape=box -o out/products.svg out/products.dot
+```
+
+<!--
+Build output:
+Product graph DOT: out/products.dot for device/sony/kagura/aosp_f8331.mk
+argv: ['build/make/tools/filter-product-graph.py', 'device/sony/kagura/aosp_f8331.mk']
+[100% 8/8] Product graph .dot file: out/products.dot
+Command to convert to pdf: dot -Tpdf -Nshape=box -o out/products.pdf out/products.dot
+Command to convert to svg: dot -Tsvg -Nshape=box -o out/products.svg out/products.dot
+-->
+
+
+## Sony Open Devices Project: Read order of build variables
 
 - `kagura/vendorsetup.sh` (only for `build/envsetup.sh`)
   Sets up the lunch combo, which then sets the environment variables
