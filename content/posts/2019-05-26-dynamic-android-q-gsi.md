@@ -5,6 +5,9 @@ date: 2019-05-27T17:51:12+02:00
 draft: true
 ---
 
+Overview: [Dynamic System Updates](https://developer.android.com/topic/dsu)
+(The feature has been renamed countless times)
+
 ```
 gsi_tool install \
   --gsi-size 2147483648 \
@@ -26,3 +29,5 @@ But it's stuck at `write gsi` forever.
 
 Seems that dynamic partitions are a requirement, may need to investigate that
 and how it affects fastboot, which is supposed to move into userspace somehow.
+
+Also need a different data format for the GSI image.

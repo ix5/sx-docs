@@ -13,4 +13,6 @@ draft = false
 - `cdsp` is the term for adsp on newer snapdragon processors
   https://developer.qualcomm.com/docs/snpe/overview.html
   (sdm835 has adsp, 845 and 855 have cdsp)
-- `SLPI` = sensors core (?)
+- `SLPI` = Sensor Low Power Interface (?)
+- `mpm` = Modem Power Manager
+- `BIMC` = Bus Interface Memory Controller

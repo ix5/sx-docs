@@ -2,7 +2,7 @@
 title: "Persistent Logs"
 description: ""
 date: 2019-05-23T14:25:53+02:00
-draft: true
+draft: false
 ---
 
 - https://android.googlesource.com/platform/system/core/+/refs/tags/android-9.0.0_r39/logd/README.property
