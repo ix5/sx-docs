@@ -79,6 +79,8 @@ vibration(pulses three times)
 ```
 kagura:/ # cat /sys/devices/soc0/soc_id
 246
+kagura:/ # cat /sys/devices/soc0/revision
+3.1
 ```
 
 <!-- ## Leds, thermals, sensors -->

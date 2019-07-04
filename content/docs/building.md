@@ -191,9 +191,10 @@ So put your patches into a git repo and share them with the world.
   `adb push` or even `adb sync` the changes directly to your device
 - Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
 
-<!-- ## Extra References -->
-<!-- [AlaskaLinuxUser videos](https://www.youtube.com/channel/UCnGqG_jyyXmTzdamBpKfeHA/playlists) -->
+## Going further
+To show all available build targets, use `make modules`.
 
-<!--
-[ccache-q]: (Link to ccache deprecation)
--->
+Show commands used live: `make showcommands`.
+
+Good references:  
+[eLinux: The Android Build System](https://elinux.org/Android_Build_System)
