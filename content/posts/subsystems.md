@@ -16,3 +16,4 @@ draft = false
 - `SLPI` = Sensor Low Power Interface (?)
 - `mpm` = Modem Power Manager
 - `BIMC` = Bus Interface Memory Controller
+- `QRTR` = Qualcomm's IPC router for QMI comms

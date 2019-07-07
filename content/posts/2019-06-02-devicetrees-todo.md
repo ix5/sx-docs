@@ -166,6 +166,8 @@ TODO: List of forked HALs that we should update from CAF
 - https://github.com/PixelExperience-Devices/device_xiaomi_tulip/commits/pie/audio
 - https://github.com/enesuzun2002/android_device_samsung_zero-common
 - https://github.com/MoKee/android_device_xiaomi_cepheus
+- https://github.com/motoz2-force/android_device_motorola_nash
+- https://github.com/LineageOS/android_device_huawei_kiwi
 
 ## Misc
 - Re-enable Android Beam on Q

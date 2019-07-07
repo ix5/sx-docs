@@ -3,9 +3,11 @@ title: "Tone Battery & Storage Features"
 slug: "tone-battery-and-storage-features"
 description: ""
 date: 2019-07-04T07:08:19+02:00
+toc: true
 draft: false
 ---
 
+## Battery dump
 ```
 kagura:/ # ls /sys/class/power_supply/battery/
 allow_hvdcp3
@@ -63,6 +65,8 @@ voltage_max_design
 voltage_now
 ```
 
+## BMS dump
+
 ```
 kagura:/ # ls /sys/class/power_supply/bms/
 batt_aging
@@ -96,12 +100,16 @@ voltage_now
 voltage_ocv
 ```
 
+## Storage devices
+
 ```
 kagura:/ # readlink /sys/block/mmcblk0
 ../devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0:0001/block/mmcblk0
 kagura:/ # realpath /sys/block/mmcblk0
 /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0:0001/block/mmcblk0
 ```
+
+## Storage device features
 
 ```
 kagura:/ # ls /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0\:0001/
@@ -141,67 +149,7 @@ subsystem
 type
 uevent
 ```
-
-Pretty neat, gives us all we need: Lifetime-A, Lifetime-B, and pre-EOL info.
-
-According to UFS/MMC specification:
-
-**Device Life Time Set Type A**
-
-> This field provides an estimated indication of the device life time which is
-> reflected by the average wear out of memory of Type B relative to its maximum
-> estimated device life time
-
-| Value  | Description                       |
-| ------ | --------------------------------- |
-| 0x00   | Not Defined                       |
-| 0x01   | 0% - 10% Device Life Time Used    |
-| 0x02   | 10% - 20% Device Life Time Used   |
-| 0x03   | 20% - 30% Device Life Time Used   |
-| 0x04   | 30% - 40% Device Life Time Used   |
-| 0x05   | 40% - 50% Device Life Time Used   |
-| 0x06   | 50% - 60% Device Life Time Used   |
-| 0x07   | 60% - 70% Device Life Time Used   |
-| 0x08   | 70% - 80% Device Life Time Used   |
-| 0x09   | 80% - 90% Device Life Time Used   |
-| 0x0A   | 90% - 100% Device Life Time Used  |
-| 0x0B   | Exceeded Maximum Device Life Time |
-| Others | Reserved                          |
-
-**Device Life Time Set Type B**
-
-> This field provides an estimated indication of the device life time which is
-> reflected by the average wear out of memory of Type A relative to its maximum
-> estimated device life time
-
-| Value  | Description                       |
-| ------ | --------------------------------- |
-| 0x00   | Not Defined                       |
-| 0x01   | 0% - 10% Device Life Time Used    |
-| 0x02   | 10% - 20% Device Life Time Used   |
-| 0x03   | 20% - 30% Device Life Time Used   |
-| 0x04   | 30% - 40% Device Life Time Used   |
-| 0x05   | 40% - 50% Device Life Time Used   |
-| 0x06   | 50% - 60% Device Life Time Used   |
-| 0x07   | 60% - 70% Device Life Time Used   |
-| 0x08   | 70% - 80% Device Life Time Used   |
-| 0x09   | 80% - 90% Device Life Time Used   |
-| 0x0A   | 90% - 100% Device Life Time Used  |
-| 0x0B   | Exceeded Maximum Device Life Time |
-| Others | Reserved                          |
-
-**Pre EOL Information**
-
-> This field provides information about device life time reflected by average
-> reserved blocks.
-
-| Value      | Pre-EOL Info. | Description                     |
-| ---------- | ------------- | ------------------------------- |
-|0x00        | Not Defined   | Not Defined                     |
-|0x01        | Normal        | Normal                          |
-|0x02        | Warning       | Consumed 80% of Reserved Blocks |
-|0x03        | Urgent        |                                 |
-|0x04 – 0xFF | Reserved      |                                 |
+## Block devices
 
 ```
 kagura:/ # ls /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0\:0001/block/mmcblk0/
@@ -287,7 +235,67 @@ subsystem
 ```
 
 ```
-
 kagura:/ # cat /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0\:0001/block/mmcblk0/stat
     2227      191   154756     3016     4937     6565   221592    32364        0    13429    35336
 ```
+
+Pretty neat, gives us all we need: Lifetime-A, Lifetime-B, and pre-EOL info.
+
+According to UFS/MMC specification:
+
+### Device Life Time Set Type A
+
+> This field provides an estimated indication of the device life time which is
+> reflected by the average wear out of memory of Type B relative to its maximum
+> estimated device life time
+
+| Value  | Description                       |
+| ------ | --------------------------------- |
+| 0x00   | Not Defined                       |
+| 0x01   | 0% - 10% Device Life Time Used    |
+| 0x02   | 10% - 20% Device Life Time Used   |
+| 0x03   | 20% - 30% Device Life Time Used   |
+| 0x04   | 30% - 40% Device Life Time Used   |
+| 0x05   | 40% - 50% Device Life Time Used   |
+| 0x06   | 50% - 60% Device Life Time Used   |
+| 0x07   | 60% - 70% Device Life Time Used   |
+| 0x08   | 70% - 80% Device Life Time Used   |
+| 0x09   | 80% - 90% Device Life Time Used   |
+| 0x0A   | 90% - 100% Device Life Time Used  |
+| 0x0B   | Exceeded Maximum Device Life Time |
+| Others | Reserved                          |
+
+### Device Life Time Set Type B
+
+> This field provides an estimated indication of the device life time which is
+> reflected by the average wear out of memory of Type A relative to its maximum
+> estimated device life time
+
+| Value  | Description                       |
+| ------ | --------------------------------- |
+| 0x00   | Not Defined                       |
+| 0x01   | 0% - 10% Device Life Time Used    |
+| 0x02   | 10% - 20% Device Life Time Used   |
+| 0x03   | 20% - 30% Device Life Time Used   |
+| 0x04   | 30% - 40% Device Life Time Used   |
+| 0x05   | 40% - 50% Device Life Time Used   |
+| 0x06   | 50% - 60% Device Life Time Used   |
+| 0x07   | 60% - 70% Device Life Time Used   |
+| 0x08   | 70% - 80% Device Life Time Used   |
+| 0x09   | 80% - 90% Device Life Time Used   |
+| 0x0A   | 90% - 100% Device Life Time Used  |
+| 0x0B   | Exceeded Maximum Device Life Time |
+| Others | Reserved                          |
+
+### Pre EOL Information
+
+> This field provides information about device life time reflected by average
+> reserved blocks.
+
+| Value      | Pre-EOL Info. | Description                     |
+| ---------- | ------------- | ------------------------------- |
+|0x00        | Not Defined   | Not Defined                     |
+|0x01        | Normal        | Normal                          |
+|0x02        | Warning       | Consumed 80% of Reserved Blocks |
+|0x03        | Urgent        |                                 |
+|0x04 – 0xFF | Reserved      |                                 |
