@@ -22,7 +22,7 @@ Then download these additional files:
 
 Install `fastboot` on your computer. Instructions can be found at
 [developer.android.com][dev-fastboot]. An alternative installer can be found at
-[xda: Minimal ADB and Fastboot].
+[xda: Minimal ADB and Fastboot][xda-minimal].
 
 For accessing `fastboot` mode on the device, see [Accessing special
 Modes][specialmodes].
