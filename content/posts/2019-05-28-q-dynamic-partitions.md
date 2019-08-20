@@ -5,8 +5,8 @@ date: 2019-05-29T16:15:09+02:00
 draft: false
 ---
 
-Talk by Google's David Anderson at Linux Plumber's Conf, see [LPC
-Schedule][schedule] for more, [video at YouTube][youtube].
+Talk by Google's David Anderson at Linux Plumber's Conf, see
+[LPC Schedule][schedule] for more, [video at YouTube][youtube].  
 PDF: [Dynamic Partitions][pdf].
 
 Buildvars:
@@ -24,6 +24,7 @@ unaffected.
 ```diff
 -BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 ```
+
 > This flag is not allowed to be true when dynamic partitions are
 > enabled, which mainline devices are expected to do.
 

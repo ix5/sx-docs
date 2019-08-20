@@ -3,9 +3,11 @@ title: "Tone Battery & Storage Features"
 slug: "tone-battery-and-storage-features"
 description: ""
 date: 2019-07-04T07:08:19+02:00
-toc: true
 draft: false
 ---
+
+While researching a bit about the battery management of MSM8996 for implementing
+storage statistics for a [health HAL][health-hal], a few notes:
 
 ## Battery dump
 ```
@@ -241,7 +243,12 @@ kagura:/ # cat /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0\:0001/
 
 Pretty neat, gives us all we need: Lifetime-A, Lifetime-B, and pre-EOL info.
 
-According to UFS/MMC specification:
+---
+
+## UFS/MMC specifications
+
+According to a [spec sheet from Kingston][kingston] [^1], see chapter 5.17
+"Device Life time" and 5.18 "Pre EOL Information".
 
 ### Device Life Time Set Type A
 
@@ -292,10 +299,15 @@ According to UFS/MMC specification:
 > This field provides information about device life time reflected by average
 > reserved blocks.
 
-| Value      | Pre-EOL Info. | Description                     |
-| ---------- | ------------- | ------------------------------- |
-|0x00        | Not Defined   | Not Defined                     |
-|0x01        | Normal        | Normal                          |
-|0x02        | Warning       | Consumed 80% of Reserved Blocks |
-|0x03        | Urgent        |                                 |
-|0x04 – 0xFF | Reserved      |                                 |
+| Value       | Pre-EOL Info. | Description                     |
+| ----------- | ------------- | ------------------------------- |
+| 0x00        | Not Defined   | Not Defined                     |
+| 0x01        | Normal        | Normal                          |
+| 0x02        | Warning       | Consumed 80% of Reserved Blocks |
+| 0x03        | Urgent        |                                 |
+| 0x04 – 0xFF | Reserved      |                                 |
+
+[health-hal]: https://github.com/ix5/vendor-sony-oss-health/
+[kingston]: https://www.datasheets.com/datasheet/EMMC08G-W100-A06U-Kingston%20Technology-62609778
+
+[^1]: Spec sheet "Embedded Multi-Media Card" - EMMC08G-W100-A06U, Kingston Technology Company, Inc. - 2015-1-22
