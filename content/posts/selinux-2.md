@@ -1,44 +1,33 @@
-+++
-title = "SElinux on Android: Part 2"
-description = "Treble and onward: Security changes"
-date = 2018-12-22T18:07:04+01:00
-draft = true
-+++
+---
+title: "SElinux on Android: Part 2"
+description: "Intermediate concepts"
+date: 2019-03-06T18:07:04+01:00
+slug: selinux-android-part-2-intermediate-concepts
+draft: true
+---
 
 ## Stuff:
-- sepolicy split
-  - `PRODUCT_x` vars
-  - move into /system/etc/selinux/
-  - move into /vendor/etc/selinux/
-  - now 2 policies(instead of one binary `sepolicy` file in root dir,
-    definitions from one are no longer accessible from the other!
-  - build system change: vendor_service_contexts to vndservice_contexts
-- how public and vendor/private dirs are fused now
-- move from binary to .cil format
-- ld.config.28.txt changes
-- macros for treble support and why to avoid them
+- reading denials, audit2allow
+- better tools: sesearch, semanage, matchpathcon
+- label types: properties, seapp(later), files, capabilities, binder(later), services(later), sockets, attributes, file types, domains, devices, services, ...
+- working with aosp policy, private/public/vendor
+- neverallows
+- macros
+- `appdomain` and `untrusted_app`
+- difference between `file_labels` and `genfs_contexts`(and limitations of the
+  latter)
 
-```
-# Platform witout a vendor partition
-TARGET_COPY_OUT_VENDOR := system/vendor
-# Force split
-# (not working yet without real split vendor part)
-#BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+`_contexts` syntax(no macros!) -> m4defs limitations -> wrong! see
+system/sepolicy/README:
+> Additionally, OEMs can specify BOARD_SEPOLICY_M4DEFS to pass arbitrary m4
+> definitions during the build. A definition consists of a string in the form of
+> macro-name=value. Spaces must NOT be present. This is useful for building
+> modular policies, policy generation, conditional file paths, etc. It is
+> supported in the following file types:
+> - All *.te and SE Linux policy files as passed to checkpolicy
+> - file_contexts
+> - service_contexts
+> - property_contexts
+> - keys.conf
 
-# Test split sepolicy on older devices(kinda pointless, but good to test):
-PRODUCT_SEPOLICY_SPLIT_OVERRIDE := true
-
-# Test full treble(this will most likely result in some failures, because
-FULL_TREBLE also changes other parts like `ld.config.txt`):
-PRODUCT_FULL_TREBLE_OVERRIDE := true
-
-# Change to permissive to test for failures:
-BOARD_USE_ENFORCING_SELINUX := false
-
-# (not working without real split vendor part because symlinks and ld.config)
-BOARD_VNDK_VERSION := current
-PRODUCT_SHIPPING_API_LEVEL ?= 26
-PRODUCT_USE_VNDK_OVERRIDE := true
-# Include vndk/vndk-sp/ll-ndk modules
-PRODUCT_PACKAGES += vndk_package
-```
+[Part Three: Treble and onward: Security changes][??????????????????????????????TODO].
