@@ -73,6 +73,8 @@ apt update
 apt install bison g++-multilib git gperf libxml2-utils make \
   zlib1g-dev zip liblz4-tool libncurses5
 apt install openjdk-8-jdk
+# Might be needed on Android 10:
+apt install flex
 # Optional:
 apt install ccache
 apt install rsync libssl-dev aapt
@@ -116,6 +118,9 @@ git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-
 </code>
 instead.  After you run <code>repo_update.sh</code> also run
 <code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
+<br>
+<b>For Android Q:</b> Use the <code>ix5-customizations-10</code> branch and
+<code>q_repo_update.sh</code> instead.
 </div>
 
 ## Prepare build environment
@@ -153,13 +158,25 @@ On Android Q, you need to install the <code>ccache</code> package and set
 reason for this is that Google no longer ships a prebuilt <code>ccache</code>
 with Android.  
 For more info, see <a style="color: #1764de;"href="/info/post/android-q-changes">Android Q changes</a> and 
-<a style="color: #1764de;"href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
+<a style="color: #1764de;" href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
 build/core/ccache.mk</a>.
 </div>
 
 To use parallel compilation, you need to find out how many threads your CPU has
 via `nproc`. Then use that number for `make -j<nr-of-threads>`. For most
 computers it will be the number of CPU cores times 2, e.g. "8" for a 4-core CPU.
+
+You can also set `export WITHOUT_CHECK_API=true` in your `~/.bashrc` to skip the
+metalava checks which take up a lot of RAM. Obviously, you should run the
+metalava checks when you change any Java code yourself, but you can save a bit
+of time if you skip them for routine builds.
+
+<div class="message warning">
+If you're on AOSP Android Q, you need to manually cherry-pick
+<a style="color: #1764de;" href="https://android-review.googlesource.com/#/c/1112165">Bring back env flag to skip checkapi</a>.
+On LineageOS and on current (as of 2019-09-07) <code>master</code>, the CL has
+been merged already.
+</div>
 
 ## Building
 Run `make -j <nr-of-threads>`. If everything went smoothly, you'll have a folder
