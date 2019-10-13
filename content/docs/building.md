@@ -142,7 +142,12 @@ parallelizing the build.
 It is recommendable to use a ccache size of around 50-100GB, depending on
 whether you plan to build different ROMS or for multiple devices.
 ```
-prebuilds/misc/linux-x86/ccache/ccache -M 50G
+# On Android Pie and before:
+_CCACHE=prebuilds/misc/linux-x86/ccache/ccache
+# On Android Q:
+_CCACHE=/usr/bin/ccache
+# Set ccache size:
+$_CCACHE -M 50G
 ```
 Then set the environment variable with `export USE_CCACHE=1`. This variable
 needs to be set anew every time you open a new terminal, so it is
