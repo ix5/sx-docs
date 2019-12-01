@@ -59,6 +59,13 @@ folder as fastboot.exe).
   You need to chose `Android 9.0`, `ARM64`. You can choose any size variant, I would
   recommend the `pico` one because it has the least bloat.
 
+<div class="message warning">
+For Android 10 builds, use the
+<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/aosp-10/">aosp-10 folder</a>
+and flash the Kernel 4.9 Sony OEM binaries.</br>
+Do not use the Kernel 4.14/Q binaries yet!
+</div>
+
 ### 3. Unlock Bootloader
 
 You need an [unlocked bootloader](https://developer.sony.com/develop/open-devices/get-started/unlock-bootloader).
