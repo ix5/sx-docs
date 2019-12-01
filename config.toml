@@ -30,3 +30,9 @@ docs = "/:title/"
     name = "Disclaimer"
     weight = -100
     url = "/disclaimer/"
+
+# Needed sice 0.60.0 or so
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
