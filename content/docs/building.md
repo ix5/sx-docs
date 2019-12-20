@@ -2,14 +2,14 @@
 title = "Building Android"
 description = "How to build AOSP for Xperia devices"
 date = 2018-10-19T22:14:54+02:00
-weight = 10
+weight = 15
 draft = false
 bref = "How to build AOSP for Xperia devices"
 toc = true
 +++
 
 This guide will asume you follow the
-[official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0),
+[official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-android-10-0-0),
 but add some extra tips.
 
 ## Initialize your build directory
@@ -116,11 +116,12 @@ Clone the Sony `local_manifests` git repo as instructed and run
 <code>
 git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations'
 </code>
-instead.  After you run <code>repo_update.sh</code> also run
+instead.  After you run <code>repo_update.sh</code>, also run
 <code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
 <br>
 <b>For Android Q:</b> Use the <code>ix5-customizations-10</code> branch and
-<code>q_repo_update.sh</code> instead.
+<code>q_repo_update.sh</code> instead. Because the tone devices are still on
+Kernel 4.9, you also need to run <code>q_4.9_repo_update.sh</code>.
 </div>
 
 ## Prepare build environment
