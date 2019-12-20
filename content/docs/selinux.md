@@ -2,7 +2,7 @@
 title = "SELinux"
 description = "How to configure"
 date = 2018-12-08T22:15:22+02:00
-weight = 15
+weight = 18
 draft = false
 bref = "How to configure"
 toc = true
