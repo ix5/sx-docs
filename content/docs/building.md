@@ -131,8 +131,27 @@ Select your device from the list. It will look like `aosp_f83xx-...` where
 `userdebug` builds, see [Choose a target](https://source.android.com/setup/build/building#choose-a-target).  
 For your own usage, `userdebug` is most likely what you want.
 
-The `user` target doesn't include root. You'll need to look into
-`vendorsetup.sh` for your device if you want to use it.
+The `user` target is meant for public releases and doesn't include root. You'll
+need to look into `vendorsetup.sh` (`AndroidProducts.mk` for Android Q) - and
+perhaps add it for your device - if you want to use it.
+
+## Build & Flash
+```
+make bootimage systemimage
+```
+In case your build stops at about 90% with this error, just re-start the
+build[^metalava].
+```
+[ 93% 12745/13686] //frameworks/base:hiddenapi-lists-docs Metalava [common]
+FAILED: out/soong/[...]hiddenapi-lists-docs-stubs.srcjar
+```
+
+Then, use `fastboot` to flash the generated images
+```
+cd out/target/product/kagura
+fastboot flash boot boot.img
+fastboot flash system system.img
+```
 
 ## Optimize the build
 A full build will take about two to three hours on a beefed-out recent
@@ -144,11 +163,11 @@ It is recommendable to use a ccache size of around 50-100GB, depending on
 whether you plan to build different ROMS or for multiple devices.
 ```
 # On Android Pie and before:
-_CCACHE=prebuilds/misc/linux-x86/ccache/ccache
+_CCACHE_EXEC=prebuilds/misc/linux-x86/ccache/ccache
 # On Android Q:
-_CCACHE=/usr/bin/ccache
+_CCACHE_EXEC=/usr/bin/ccache
 # Set ccache size:
-$_CCACHE -M 50G
+$_CCACHE_EXEC -M 50G
 ```
 Then set the environment variable with `export USE_CCACHE=1`. This variable
 needs to be set anew every time you open a new terminal, so it is
@@ -160,9 +179,10 @@ directory (or `/home/builder/.bashrc` if you're in a chroot).
 
 <div class="message warning">
 On Android Q, you need to install the <code>ccache</code> package and set
-<code>CCACHE_EXEC</code> manually to e.g. <code>/usr/bin/ccache</code>. The
-reason for this is that Google no longer ships a prebuilt <code>ccache</code>
-with Android.  
+<code>CCACHE_EXEC</code> in your <code>.bashrc</code> manually to e.g.
+<code>/usr/bin/ccache</code>. The reason for this is that Google no longer ships
+a prebuilt <code>ccache</code> with Android.
+<br>
 For more info, see <a style="color: #1764de;"href="/info/post/android-q-changes">Android Q changes</a> and 
 <a style="color: #1764de;" href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
 build/core/ccache.mk</a>.
@@ -221,3 +241,6 @@ Show commands used live: `make showcommands`.
 
 Good references:  
 [eLinux: The Android Build System](https://elinux.org/Android_Build_System)
+
+[^metalava]: Android's metalava takes up enormous amounts of RAM. It attempts to
+  verify the whole Android API at once and is badly designed.

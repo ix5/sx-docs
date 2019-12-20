@@ -52,6 +52,9 @@ need to create a fake treble build.
 Because the tone devices are still on Kernel 4.9, you also need to run
 `q_4.9_repo_update.sh`.
 
+You will also need to download the Android 9, Kernel 4.9 Software Binaries. Do
+not use the Kernel 4.14 binaries!
+
 ### device-sony-customization
 Then, create the folder `device/sony/customization` inside your build
 environment.
@@ -90,14 +93,14 @@ $ file SW_binaries_for_Xperia_Android_10.0.7.1_r1_v2a_tama.img
 ### Sparse Images & Loop Mount
 You can un-sparse the image using the [simg2img][simg2img][^simg2img-intree] tool. Run
 `/path/to/simg2img SW_<name>.img swbins-unsparse.img` and you will receive a
-regular loop image of an ext2 file system.
+regular loop image of an ext4 file system.
 ```
 $ file swbins-unsparse.img
  ↳ swbins-unsparse.img: Linux rev 1.0 ext4 filesystem data, \
    [..] volume name "odm" (extents) (large files) (huge files)
 ```
 
-You can then mount that image using `loop`:
+You can then mount that image using `loop`[^udisksctl]:
 ```
 sudo mount -o loop swbins-unsparse.img /mnt/
 ```
@@ -107,7 +110,7 @@ there:
 cd device/sony/odm
 mkdir blobs
 sudo cp -r /mnt/* blobs/
-# Delete ext2 metadata
+# Delete ext4 metadata
 sudo rm -rf blobs/lost+found/
 # Don't forget the colon
 sudo chown -R $(whoami): blobs/
@@ -121,7 +124,7 @@ make bootimage systemimage vendorimage
 ```
 
 In case your build stops at about 90% with this error, just re-start the
-build.[^metalava]
+build[^metalava].
 ```
 [ 93% 12745/13686] //frameworks/base:hiddenapi-lists-docs Metalava [common]
 FAILED: out/soong/[...]hiddenapi-lists-docs-stubs.srcjar
