@@ -151,6 +151,10 @@ subsystem
 type
 uevent
 ```
+
+Pretty neat, gives us all we need: Lifetime-A(`0x02`), Lifetime-B(`0x02`), and
+pre-EOL info(`01`).
+
 ## Block devices
 
 ```
@@ -240,8 +244,6 @@ subsystem
 kagura:/ # cat /sys/devices/platform/soc/7464900.sdhci/mmc_host/mmc0/mmc0\:0001/block/mmcblk0/stat
     2227      191   154756     3016     4937     6565   221592    32364        0    13429    35336
 ```
-
-Pretty neat, gives us all we need: Lifetime-A, Lifetime-B, and pre-EOL info.
 
 ---
 
