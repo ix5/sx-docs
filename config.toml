@@ -36,3 +36,12 @@ docs = "/:title/"
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.highlight]
+      codeFences = true
+      guessSyntax = false
+      lineNos = false
+      noClasses = true
+      # See https://xyproto.github.io/splash/docs/all.html
+      # and https://github.com/alecthomas/chroma
+      style = "pygments"
+      tabWidth = 4
