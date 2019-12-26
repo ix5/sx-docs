@@ -8,14 +8,24 @@ bref: "Overview of SODP devices"
 toc: true
 ---
 
-### SDM660 devices (ganges board, 2019)
+### Snapdragon 855 devices (kumano board, 2019)
+Internal SoC codename: `sm8150`
+
+| Device name        | Code name | Product (SS, DS) |
+| ------------------ | --------- | ---------------- |
+| Xperia 1           | Griffin   | j8110, j9110     |
+| Xperia 5           | Bahamut   | j8210, j9210     |
+
+### Snapdragon 660 devices (ganges board, 2019)
+Internal SoC codename: `sdm660`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia 10          | Kirin     | i3113, i4113     |
 | Xperia 10 Plus     | Mermaid   | i3213, i4213     |
 
-### SDM845 devices (tama board, 2018)
+### Snapdragon 845 devices (tama board, 2018)
+Internal SoC codename: `sdm845`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -23,7 +33,8 @@ toc: true
 | Xperia XZ2 Compact | Apollo    | h8314, h8324     |
 | Xperia XZ3         | Akatsuki  | h8416, h9436     |
 
-### SDM630 devices (nile board, 2018)
+### Snapdragon 630 devices (nile board, 2018)
+Internal SoC codename: `sdm630`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -31,7 +42,8 @@ toc: true
 | Xperia XA2 Ultra   | Discovery | h3213, h4213     |
 | Xperia XA2 Plus    | Voyager   | h3413, h4413     |
 
-### MSM8998 devices (yoshino board, 2017)
+### Snapdragon 835 devices (yoshino board, 2017)
+Internal SoC codename: `msm8998`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -39,7 +51,8 @@ toc: true
 | XPeria XZ1         | Poplar    | g8341, g8342     |
 | Xperia XZ1 Compact | Lilac     | g8441            |
 
-### MSM8996 devices (tone board, 2016)
+### Snapdragon 820 devices (tone board, 2016)
+Internal SoC codename: `msm8996`
 
 | Device name          | Code name | Product (SS, DS) |
 | -------------------- | --------- | ---------------- |
@@ -47,7 +60,8 @@ toc: true
 | Xperia XZ            | Kagura    | f8331, f8332     |
 | Xperia XZs           | Keyaki    | g8231, g8232     |
 
-### MSM8956 devices (loire board, 2016)
+### Snapdragon 650 devices (loire board, 2016)
+Internal SoC codename: `msm8956`, sometimes `msm8954`
 
 | Device name      | Code name | Product (SS, DS) |
 | ---------------- | --------- | ---------------- |

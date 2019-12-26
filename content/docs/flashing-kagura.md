@@ -48,16 +48,18 @@ folder as fastboot.exe).
 - Download Sony OEM binaries for `tone` on Android Pie, Kernel 4.9 from the
   [Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries).  
   The filename will be `SW_binaries_for_Xperia_Android_9.0_2.3.2_v$VERSION_tone.zip`.
-- Download the latest AOSP build from
-  [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp/)
+- Download the latest AOSP 10 build from
+  [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp-10/)
   <!-- The latest semi-stable build is 2018-11-16(there are no *stable* builds yet). -->
   <!-- It will be marked in [this xda thread](https://forum.xda-developers.com/xperia-xz/development/xz-aosp-pie-builds-t3864985/post78111505) as well. -->
 - Optional: Download the latest stable Magisk from
   [xda: Magisk](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445)
 - Optional: Download OpenGApps from
   [opengapps.org](https://opengapps.org/?arch=arm64&api=9.0&variant=pico).
-  You need to chose `Android 9.0`, `ARM64`. You can choose any size variant, I would
+  You need to chose <strike>Android 9.0, ARM64</strike>. You can choose any size variant, I would
   recommend the `pico` one because it has the least bloat.
+  **TODO:** Currently you have to rely on beta 10.x OpenGApps builds from
+  [sourceforge][gapps-beta], see [the GitHub PR][gapps-10-pull]
 
 <div class="message warning">
 For Android 10 builds, use the
@@ -277,3 +279,6 @@ space for the crypto footer, which you need to run Full Disk Encryption(FDE).
 
 *A big thanks to [StaticGTF](https://forum.xda-developers.com/member.php?u=3928215)
 for writing large parts of this guide!*
+
+[gapps-beta]: https://sourceforge.net/projects/opengapps/files/arm64/beta/
+[gapps-10-pull]: https://github.com/opengapps/opengapps/pull/773

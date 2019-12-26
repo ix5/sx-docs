@@ -4,7 +4,7 @@ description: "How to build GSI support on tone devices"
 date: 2019-12-20T16:55:47+01:00
 weight: 18
 draft: false
-bref: ""
+bref: "How to build GSI support on tone devices"
 toc: true
 ---
 
@@ -61,7 +61,7 @@ environment.
 
 It needs to contain two files:
 
-`Customization.mk:`
+`Customization.mk:` (note the uppercase `C`!)
 ```
 BUILD_KERNEL := false
 # Include buildvar whether to build a fake treble build or not
@@ -117,7 +117,29 @@ sudo chown -R $(whoami): blobs/
 ```
 
 ### Build it!
-Now, run the build commands:
+First, because building the kernel on Android Q from inside the Android tree is
+quite complicated, we use a script to build them instead.
+```
+cd kernel/sony/msm-4.9/common-kernel
+```
+Edit `build-kernels-gcc.sh` and uncomment/edit the `Override` lines so the section
+looks like this
+```
+# Override:
+TONE="kagura"
+PLATFORMS="tone"
+```
+This will save you from building the kernel for *all* Sony devices and only
+build for the Xperia XZ ("kagura").
+
+Then, build the kernel with patched `dtb`:
+```
+bash build-kernels-gcc.sh
+```
+After this has finished, you should have a file named `kernel-dtb-kagura` in
+your `kernel/sony/msm-4.9/common-kernel` folder.
+
+Now, go back to your Android root dir and run the build commands:
 ```
 source build/envsetup.sh && lunch aosp_f8331-userdebug
 make bootimage systemimage vendorimage
@@ -141,6 +163,15 @@ fastboot flash oem vendor.img
 Do not flash Sony’s software binary image again now, all the needed blobs are
 already included in <code>vendor.img</code> for you!
 </div>
+
+### Going back to regular builds
+You need to unset `PRODUCT_FAKE_TREBLE_BUILD` in `customization-noproduct.mk`
+and:
+- Undo the `revert: liblights: Migrate to kernel 4.14 LED class for RGB
+  tri-led` commit in `device/sony/common` in case you want to build for 4.14
+  devices like the `tama` or `kumano` platform
+- Undo `dtsi: tone: conjure oem into /vendor` in `kernel/sony/msm-4.9/kernel` in
+  case you want to build non-treble `tone` builds again
 
 <div class="message">
 After you've flashed your fake treble build, you need to re-flash the regular
