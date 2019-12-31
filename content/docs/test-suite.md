@@ -15,3 +15,5 @@ Sound
 Bluetooth
 Wifi
 Battery
+
+TODO: Better link to CTS and VTS excerpts

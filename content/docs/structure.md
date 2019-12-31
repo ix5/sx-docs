@@ -79,6 +79,37 @@ You will need to include your own vendor directory,
 see [this commit](https://git.ix5.org/felix/device-sony-common/commit/b115cc3f7f98c1d26a6bd8b84422706128e3d0b7)
 for an example.
 
+### Everything together
+```
+/home/user
+└── android-build-dir
+    ├── .repo
+    │   ├── local_manifests
+    │   │   ├── qcom.xml
+    │   │   └── oss.xml
+    │   └── manifest.xml
+    ├── bionic
+    ├── build
+    ├── device
+    │   └── sony
+    │       ├── common
+    │       ├── tone
+    │       └── kagura
+    ├── hardware
+    ├── kernel
+    │   └── sony
+    │       └── msm-4.9
+    │           ├── kernel
+    │           └── common-kernel
+    ├── [...]
+    └── out
+        └── target
+            └── product
+                └── kagura
+                    ├── boot.img
+                    └── system.img
+```
+
 ### Caveats
 
 - Use the appropriate branch for your things at all times!
