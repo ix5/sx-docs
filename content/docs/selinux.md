@@ -1,12 +1,12 @@
-+++
-title = "SELinux"
-description = "How to configure"
-date = 2018-12-08T22:15:22+02:00
-weight = 18
-draft = false
-bref = "How to configure"
-toc = true
-+++
+---
+title: "SELinux"
+description: "How to configure"
+date: 2018-12-08T22:15:22+02:00
+weight: 18
+draft: false
+bref: "How to configure"
+toc: true
+---
 
 *Sorry this is such a mess, this is more of a braindump...*
 

@@ -1,12 +1,12 @@
-+++
-title = "Building Android"
-description = "How to build AOSP for Xperia devices"
-date = 2018-10-19T22:14:54+02:00
-weight = 15
-draft = false
-bref = "How to build AOSP for Xperia devices"
-toc = true
-+++
+---
+title: "Building Android"
+description: "How to build AOSP for Xperia devices"
+date: 2018-10-19T22:14:54+02:00
+weight: 15
+draft: false
+bref: "How to build AOSP for Xperia devices"
+toc: true
+---
 
 This guide will asume you follow the
 [official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-android-10-0-0),

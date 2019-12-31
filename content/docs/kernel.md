@@ -1,12 +1,12 @@
-+++
-title = "Kernel Compilation"
-description = ""
-date = 2018-10-19T22:15:22+02:00
-weight = 20
-draft = true
-bref = "Outside of the Android tree"
-toc = false
-+++
+---
+title: "Kernel Compilation"
+description: ""
+date: 2018-10-19T22:15:22+02:00
+weight: 20
+draft: true
+bref: "Outside of the Android tree"
+toc: false
+---
 
 *In case you do not have a computer powerful enough to compile all of Android,
 but still want to dabble in kernel matters, you can compile the (Android) Linux

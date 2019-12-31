@@ -1,12 +1,12 @@
-+++
-title = "Handling Android Images"
-description = ".img, sparse images, ramdisks"
-date = 2018-10-19T22:14:54+02:00
-weight = 20
-draft = false
-bref = "Dealing with .img, sparse images, ramdisks"
-toc = true
-+++
+---
+title: "Handling Android Images"
+description: ".img, sparse images, ramdisks"
+date: 2018-10-19T22:14:54+02:00
+weight: 20
+draft: false
+bref: "Dealing with .img, sparse images, ramdisks"
+toc: true
+---
 
 ## Unpack boot.img
 See [stackoverflow](https://unix.stackexchange.com/questions/64628/how-to-extract-boot-img/459881).

@@ -1,12 +1,12 @@
-+++
-title = "Sony DRM"
-description = ""
-date = 2018-10-19T22:26:47+02:00
-weight = 20
-draft = true
-bref = ""
-toc = true
-+++
+---
+title: "Sony DRM"
+description: ""
+date: 2018-10-19T22:26:47+02:00
+weight: 20
+draft: true
+bref: ""
+toc: true
+---
 
 <!-- TODO: Correct this so that it's actually correct about SODP -->
 

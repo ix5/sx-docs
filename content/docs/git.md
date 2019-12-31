@@ -1,12 +1,12 @@
-+++
-title = "Git tricks"
-description = ""
-date = 2018-11-19T22:26:47+02:00
-weight = 20
-draft = true
-bref = ""
-toc = false
-+++
+---
+title: "Git tricks"
+description: ""
+date: 2018-11-19T22:26:47+02:00
+weight: 20
+draft: true
+bref: ""
+toc: false
+---
 
 <!-- ## Un-fuck git -->
 ## How to fix issues with git and repo

@@ -1,12 +1,12 @@
-+++
-title = "De-Googling"
-description = "Remove Google bloat"
-date = 2018-10-19T22:14:54+02:00
-weight = 20
-draft = false
-bref = "Remove Google bloat"
-toc = false
-+++
+---
+title: "De-Googling"
+description: "Remove Google bloat"
+date: 2018-10-19T22:14:54+02:00
+weight: 20
+draft: false
+bref: "Remove Google bloat"
+toc: false
+---
 
 ## GApps
 All you need for basic functionality is:

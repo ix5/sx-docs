@@ -1,12 +1,12 @@
-+++
-title = "Security"
-description = "Security, verified boot and encryption"
-date = 2018-10-19T22:15:22+02:00
-weight = 20
-draft = false
-bref = "Security, verified boot and encryption"
-toc = true
-+++
+---
+title: "Security"
+description: "Security, verified boot and encryption"
+date: 2018-10-19T22:15:22+02:00
+weight: 20
+draft: false
+bref: "Security, verified boot and encryption"
+toc: true
+---
 
 Android has a lot of security features built in. However, when testing and
 debugging those are really inconvenient to developers. As an end user, you

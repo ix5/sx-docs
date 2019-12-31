@@ -1,12 +1,12 @@
-+++
-title = "Flashing AOSP on Xperia XZ"
-description = "Definitve guide"
-date = 2018-10-19T22:26:47+02:00
-weight = 10
-draft = false
-bref = "Definitve guide"
-toc = false
-+++
+---
+title: "Flashing AOSP on Xperia XZ"
+description: "Definitve guide"
+date: 2018-10-19T22:26:47+02:00
+weight: 10
+draft: false
+bref: "Definitve guide"
+toc: true
+---
 
 Follow these steps closely. Do not leave out a step and do them in the correct order.
 
