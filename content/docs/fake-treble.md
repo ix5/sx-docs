@@ -164,6 +164,17 @@ Do not flash Sony’s software binary image again now, all the needed blobs are
 already included in <code>vendor.img</code> for you!
 </div>
 
+### Compatible GSIs
+You need to use system-as-root, `arm64_ab` GSIs since this is now the default
+for Android 10.
+
+Since SELinux is in enforcing mode, badly-built GSIs will fail to run. You can
+set it to permissive by changing the commandline:
+```
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+```
+or set `BOARD_USE_ENFORCING_SELINUX := true` in `Customization.mk`.
+
 ### Going back to regular builds
 You need to unset `PRODUCT_FAKE_TREBLE_BUILD` in `customization-noproduct.mk`
 and:
