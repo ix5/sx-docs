@@ -48,7 +48,7 @@ Internal SoC codename: `msm8998`
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia XZ Premium  | Maple     | g8131, g8142     |
-| XPeria XZ1         | Poplar    | g8341, g8342     |
+| Xperia XZ1         | Poplar    | g8341, g8342     |
 | Xperia XZ1 Compact | Lilac     | g8441            |
 
 ### Snapdragon 820 devices (tone board, 2016)

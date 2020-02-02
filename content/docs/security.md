@@ -77,7 +77,9 @@ avc: denied { action } for pid=...
 Then read this guide:
 [How to write sepolicy to fix a denial](https://gist.github.com/MSF-Jarvis/ec52b48eb2df1688b7cbe32bcd39ee5f).
 
-**Priv-app permissions**: Privileged apps residing in `/system/priv-app` can
+## Priv-app permissions
+
+Privileged apps residing in `/system/priv-app` can
 have access to system functions which normal apps(e.g. from the Play Store) can
 not access. They need to declare which elevated privileges they want, and the
 system developer maker needs to declare which permissions should be granted to
@@ -88,7 +90,13 @@ Google's apps demand ever increasing power over the system. You should ask the
 developers of your GApps variant to fix these issues instead of asking your ROM
 maker to disable privapp-permissions.
 
-<mark>For developers:</mark> Disable privapp-permissions-enforcing by ripping out the following block:
+<mark>For developers:</mark> Disable privapp-permissions-enforcing by changing
+the following:
 ```
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 ```
+to
+`ro.control_privapp_permissions=log`.
+
+For more information, see
+[Privileged Permission Whitelisting](https://source.android.com/devices/tech/config/perms-whitelist).
