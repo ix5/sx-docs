@@ -2,7 +2,7 @@
 title: "Applying Single CAF Commits"
 description: ""
 date: 2019-06-04T14:25:45+02:00
-draft: true
+draft: false
 ---
 
 Normally, git either fetches all remote branches or only a specific branch with

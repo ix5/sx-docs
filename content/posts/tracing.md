@@ -106,6 +106,15 @@ For more info, check [Android source: ftrace][src-android-ftrace] and
 ### (Addendum)
 Idea: `echo 1 > /sys/kernel/debug/clk/debug_suspend`
 
-[^1]: See the [documentation in wakeup.c](https://github.com/sonyxperiadev/kernel/blob/aosp/LE.UM.2.3.2.r1.4/drivers/base/power/wakeup.c#L490-L525)
+Force a device to go to sleep:
+```
+adb shell dumpsys battery unplug
+adb shell dumpsys deviceidle step
+```
+from [stackoverflow][so-sleep].
+
 [src-android-ftrace]: https://source.android.com/devices/tech/debug/ftrace
 [jvns-ftrace]: https://jvns.ca/blog/2017/03/19/getting-started-with-ftrace/
+[so-sleep]: https://stackoverflow.com/questions/3417308/force-an-android-phone-to-sleep-in-order-to-test#40465627
+
+[^1]: See the [documentation in wakeup.c](https://github.com/sonyxperiadev/kernel/blob/aosp/LE.UM.2.3.2.r1.4/drivers/base/power/wakeup.c#L490-L525)
