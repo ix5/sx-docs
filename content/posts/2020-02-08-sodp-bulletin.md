@@ -48,10 +48,15 @@ Not affected, we don't have or even ship the bolero codec
 **msm: kgsl: Verify the offset of the profiling buffer**  
 [source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=fb37ff](https://source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=fb37ff663a3d28e3a07549b074c54feb3e4376b5)  
 Fixed for 4.9 via 232r1-security-caf  
-Already merged in 4.14
+Already merged in 4.14 via "Fast forward Adreno driver to LA.UM.8.1.r1-11600-sm8150.0"
 
 **msm: kgsl: Use a bitmap allocator for global addressing**  
 [source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=a8acbcb0](https://source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=a8acbcb0)  
+Fixed for 4.9 via 232r1-security-caf  
+Already merged in 4.14 via "Fast forward Adreno driver to LA.UM.8.1.r1-11600-sm8150.0"
+
+**msm: kgsl: Execute user profiling commands in an IB**  
+[source.codeaurora.org/quic/la/kernel/msm-4.4/commit/?id=1aa9c6](https://source.codeaurora.org/quic/la/kernel/msm-4.4/commit/?id=1aa9c68484c49a7357c0835b38fa1581bb7d6865)  
 Fixed for 4.9 via 232r1-security-caf  
 Already merged in 4.14 via "Fast forward Adreno driver to LA.UM.8.1.r1-11600-sm8150.0"
 
