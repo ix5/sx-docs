@@ -25,6 +25,9 @@ include a second instance of the telephony-related HALs.
 
 Download: [sony-dualsim-patcher-v4.zip at sx.ix5.org][download]
 
+To view the actual inner workings, [take a look at the source][source].
+Particularly interesting is [the script that does the heavy lifting][script].
+
 ## Changelog
 
 - Version 4: Fix issues with A/B devices, Android 10 compat
@@ -33,3 +36,5 @@ Download: [sony-dualsim-patcher-v4.zip at sx.ix5.org][download]
 - Version 1: Initial release
 
 [download]: https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher-v4.zip
+[source]: https://git.ix5.org/felix/dualsim-patcher
+[script]: https://git.ix5.org/felix/dualsim-patcher/src/branch/master/tmp/patch_dualsim.sh
