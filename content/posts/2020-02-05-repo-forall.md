@@ -18,4 +18,17 @@ repo forall -p -c \
     2>/dev/null"
 ```
 
+Another variant, suggested by [Jean-Baptiste Queru][jbq] back in the day of 4.x:
+```
+repo forall -c '
+if git rev-parse android-4.0.3_r1 >/dev/null 2>&1
+then
+git log --oneline --no-merges android-4.0.3_r1..android-4.0.4_r1.1
+else
+git log --oneline --no-merges android-4.0.4_r1.1
+fi
+' | cat
+```
+
 [gerrit-git-repo]: https://gerrit.googlesource.com/git-repo
+[jbq]: https://groups.google.com/forum/#!msg/android-building/0DtsHawjs4k/And8o3Dni_UJ
