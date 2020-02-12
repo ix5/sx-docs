@@ -13,14 +13,31 @@ This guide will asume you follow the
 but add some extra tips.
 
 ## Initialize your build directory
-Create a `~/android/build-env` folder, `cd` into it and run the provided
-`repo init` command (assuming you installed `repo` into `~/.local/bin/repo`).
+Create a `~/android/build-env` folder, `cd` into it.
 
+## Using the repo tool
+Download and install the [repo][git-repo] tool, either via your package manager
+or directly from Google.
+Instead of copying the file, it's better to symlink:
+```
+mkdir -p ~/.local/bin
+# Add ~/.local/bin to PATH
+echo "export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
+# Symlink
+ln -sf ~/android/.repo/repo/repo ~/.local/bin/repo
+# Check:
+readlink $(which repo)
+# -> /home/builder/android/.repo/repo/repo
+```
+
+Then, run the `repo init` command:
 ```
 repo init -u https://android.googlesource.com/platform/manifest \
-  -b android-9.0.0_r21 -g default,-x86,-mips,-darwin,-notdefault
+  -b android-10.0.0_r29 -g default,-x86,-mips,-darwin,-notdefault
 ```
-(use the appropriate branch tag instead of `r21`)
+Use the appropriate branch tag instead of `_r29`. For an overview of currently
+published tags, see [Codenames, Tags and Numbers][codenames]. Most often, you'll
+want to pick the latest Pixel tag, e.g. the Pixel 4.
 
 ## Ubuntu chroot
 
@@ -75,7 +92,10 @@ apt install bison g++-multilib git gperf libxml2-utils make \
 apt install openjdk-8-jdk
 # Might be needed on Android 10:
 apt install flex
-# Optional:
+
+# The following dependencies are all optional:
+##############################################
+# Faster recompilation
 apt install ccache
 apt install rsync libssl-dev aapt
 # Kernel recompilation:
@@ -83,14 +103,12 @@ apt install bc autoconf automake autopoint autotools-dev bsdmainutils gawk \
   groff-base libarchive-zip-perl libpipeline1 libtimedate-perl libtool kmod
 # For selinux:
 apt install setools python-networkx policycoreutils
-# For JACK (it needs curl and lsof)
-apt install curl lsof
 ```
 Cross-reference the needed packages with the
 [official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-p-9-0-0)
 should this document be out of date.
 
-*If you're building in a chroot:*
+**If you're building in a chroot:**
 Exit out of the build system by typing `exit` (and pressing `Ctrl-]` three times
 for `nspawn`), then re-launch your build system and log in as your builder user.
 If you want to share your own ccache etc. with your build environment, `bind`
@@ -99,12 +117,9 @@ the appropriate directories.
 sudo systemd-nspawn \
 --bind=/home/<your-username>/android/build-env/:/home/builder/build-env/ \
   --bind=/home/<your-username>/.ccache/:/home/builder/.ccache/ \
-  --bind=/home/<your-username>/.local/bin/repo:/usr/local/bin/repo \
-  --bind=/home/<your-username>/.repoconfig/:/home/builder/.repoconfig/ \
   -D /home/<your-username>/android/ubuntu-android \
   --user=builder
 ```
-(Assuming you installed `repo` into `~/.local/bin/repo`).
 
 ## Applying needed patches
 
@@ -244,3 +259,6 @@ Good references:
 
 [^metalava]: Android's metalava takes up enormous amounts of RAM. It attempts to
   verify the whole Android API at once and is badly designed.
+
+[git-repo]: https://gerrit.googlesource.com/git-repo/
+[codenames]: https://source.android.com/setup/start/build-numbers#source-code-tags-and-builds
