@@ -1,5 +1,5 @@
 ---
-title: "Universal Sony DualSIM Patcher"
+title: "Universal Sony Dual-SIM Patcher"
 slug: "dualsim-patcher"
 description: ""
 date: 2020-01-10T17:23:28+01:00
@@ -16,16 +16,17 @@ We need to patch some props in /system/build.prop (or /system/vendor/build.prop,
 persist.vendor.radio.multisim.config=dsds
 ro.telephony.default_network=9,1 # (or 9,0, or 9,9, depending on the device)
 ro.product.name=<dualsim device name>
+persist.vendor.radio.block_allow_data=0 # for kumano devices
 ```
-
-And some others.
+and substitute all occurrences of the device variant name, e.g. `f8331`, with
+the dual-SIM variant name (`f8332`).
 
 We also need to patch the vintf manifest at `/vendor/etc/vintf/manifest.xml` to
 include a second instance of the telephony-related HALs. See the added `slot2`
 and new instances from the `_ss` to the `_ds` variants here:
 
-- `android.hardware.radio`: [single-sim][radio_ss] vs [dual-sim][radio_ds]
-- `vendor.qti.hardware.radio`: [single-sim][qti_ss] vs [dual-sim][qti_ds].
+- `android.hardware.radio`: [single-SIM][radio_ss] vs [dual-SIM][radio_ds]
+- `vendor.qti.hardware.radio`: [single-SIM][qti_ss] vs [dual-SIM][qti_ds].
 
 To view the actual inner workings, [take a look at the source][source].
 Particularly interesting is [the script that does the heavy lifting][script].
