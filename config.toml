@@ -7,8 +7,8 @@ Paginate = 20
 staticDir2 = "content/files"
 
 [permalinks]
-posts = "/post/:title/"
-docs = "/:title/"
+posts = "/post/:slug/"
+docs = "/:slug/"
 
 [params]
   issoURL = "https://comments.ix5.org"
