@@ -3,10 +3,8 @@ title: "Android Q: Compiling Kernels in-tree"
 description: ""
 date: 2019-08-17T22:52:49+02:00
 draft: false
+slug: android-q-compiling-kernels-in-tree
 ---
-<!-- TODO: slugs are ignored for posts
-slug: q-kernel-compile-intree
--->
 
 ## TL;DR - Kernel fixes
 For an example of how to update your kernel makefile for Q, see

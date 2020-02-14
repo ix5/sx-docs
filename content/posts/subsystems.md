@@ -1,10 +1,11 @@
-+++
-title = "Sony/Qualcomm device subsystems"
-slug = "sony-qualcomm-device-subsystems"
-description = "Small glossary"
-date = 2018-12-22T18:07:04+01:00
-draft = false
-+++
+---
+title: "Sony/Qualcomm device subsystems"
+slug: "sony-qualcomm-device-subsystems"
+aliases: ["/post/sony/qualcomm-device-subsystems"]
+description: "Small glossary"
+date: 2018-12-22T18:07:04+01:00
+draft: false
+---
 
 - `lpass` = Low-Power Audio SubSystem
 - `mpss` = audio memory stuff for adsp
