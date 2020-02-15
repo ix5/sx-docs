@@ -18,17 +18,17 @@ docs = "/:slug/"
 
 [[menu.main]]
     name = "Docs"
-    weight = -100
+    weight = 1
     url = "/"
 
 [[menu.main]]
     name = "Posts"
-    weight = -100
+    weight = 2
     url = "/posts/"
 
 [[menu.main]]
     name = "Disclaimer"
-    weight = -100
+    weight = 10
     url = "/disclaimer/"
 
 # Needed sice 0.60.0 or so
