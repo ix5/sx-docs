@@ -4,17 +4,17 @@ title = "Sony Xperia Corner"
 theme = "kube"
 Paginate = 20
 
-staticDir2 = "content/files"
+#staticDir2 = "content/files"
 
 [permalinks]
-posts = "/post/:slug/"
-docs = "/:slug/"
+    posts = "/post/:slug/"
+    docs = "/:slug/"
 
 [params]
-  issoURL = "https://comments.ix5.org"
-  author = "Felix"
-  description = "Information about Sony Xperia devices and AOSP"
-  subdescription = "Not in any way affiliated with Sony"
+    issoURL = "https://comments.ix5.org"
+    author = "Felix"
+    description = "Information about Sony Xperia devices and AOSP"
+    subdescription = "Not in any way affiliated with Sony"
 
 [[menu.main]]
     name = "Docs"
