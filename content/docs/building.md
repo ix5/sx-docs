@@ -198,7 +198,8 @@ On Android Q, you need to install the <code>ccache</code> package and set
 <code>/usr/bin/ccache</code>. The reason for this is that Google no longer ships
 a prebuilt <code>ccache</code> with Android.
 <br>
-For more info, see <a style="color: #1764de;"href="/info/post/android-q-changes">Android Q changes</a> and 
+For more info, see
+<a style="color: #1764de;"href="{{< ref "2019-03-16-q-changes.md" >}}">Android Q changes</a> and 
 <a style="color: #1764de;" href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
 build/core/ccache.mk</a>.
 </div>

@@ -171,7 +171,7 @@ well.
 If you ever installed an Android Oreo-based custom ROM - e.g. OmniROM 8.1 - your
 SELinux file labels for the `dsp` partition will be wrong. For a more detailed
 explanation, see
-[File relabeling for SODP](/info/post/dsp-file-relabling-for-sodp/).
+[File relabeling for SODP]({{< ref "dsp-relabel.md" >}}).
 
 <div class="message">
 <b>New:</b> Simply flash the

@@ -82,5 +82,5 @@ The exact reasons and procedure are described in
 [swbins16]: https://developer.sony.com/file/download/software-binaries-for-aosp-oreo-android-8-1-kernel-4-4-tone-v16/
 [dev-fastboot]: https://developer.android.com/studio/releases/platform-tools.html#downloads
 [xda-minimal]: https://forum.xda-developers.com/showthread.php?t=2317790
-[specialmodes]: /info/sony-devices/#accessing-special-modes
-[relabel]: /info/post/dsp-file-relabling-for-sodp/
+[specialmodes]: {{< ref "sony-devices" >}}/#accessing-special-modes
+[relabel]: {{< ref "dsp-relabel.md" >}}
