@@ -5,11 +5,17 @@ date: 2020-02-20T20:50:46+01:00
 draft: false
 ---
 
-`PREBUILT_SHARED_LIBRARY` is deprecated. Define `LOCAL_MODULE_CLASS` and call
-`BUILD_PREBUILT` instead.
+Sometimes, you want to use a library or an APK file that someone else already
+built and maybe signed for you. Android calls these "prebuilts".
 
-Current supported prebuilt types:  
-[build/soong/androidmk/cmd/androidmk/android.go][androidmk-q]:
+Current supported prebuilt types:
+- Shared (C/C++) library
+- Static (C/C++) library
+- Binary (executable)
+- Java library
+- `/etc/` file
+
+See [build/soong/androidmk/cmd/androidmk/android.go][androidmk-q]:
 ```
 var prebuiltTypes = map[string]string{
     "SHARED_LIBRARIES": "cc_prebuilt_library_shared",
@@ -32,7 +38,13 @@ var prebuiltTypes = map[string]string{
 }
 ```
 
-## Binary
+<div class="message">
+<code>PREBUILT_SHARED_LIBRARY</code> is deprecated. Define
+<code>LOCAL_MODULE_CLASS</code> and call <code>BUILD_PREBUILT</code> instead.
+</div>
+
+### Binary
+Using `make` syntax:
 ```
 include $(CLEAR_VARS)
 LOCAL_MODULE := myexec
@@ -62,7 +74,8 @@ cc_prebuilt_binary {
 }
 ```
 
-## (Shared) library
+### (Shared) library
+Using `make` syntax:
 ```
 include $(CLEAR_VARS)
 LOCAL_MODULE := libmyexample
@@ -94,7 +107,8 @@ cc_prebuilt_library_shared {
 //cc_prebuilt_library_static {
 ```
 
-# App
+### App
+Using `make` syntax:
 ```
 include $(CLEAR_VARS)
 LOCAL_MODULE := MyApp
@@ -119,6 +133,30 @@ android_app_import {
     },
     apk: "MyApp.apk",
     presigned: true,
+}
+```
+
+### /etc file
+Using `make` syntax:
+```
+include $(CLEAR_VARS)
+LOCAL_MODULE := privapp-permissions-myapp.xml
+LOCAL_SRC_FILES := privapp-permissions-myapp.xml
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+# Optional, else just goes into /system/etc
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/permissions
+LOCAL_PROPRIETARY_MODULE := true
+include $(BUILD_PREBUILT)
+```
+and in `blueprint` format:
+```
+prebuilt_etc {
+    name: "privapp-permissions-myapp.xml",
+    src: "privapp-permissions-myapp.xml",
+    // Optional
+    sub_dir: "permissions",
+    vendor: true,
 }
 ```
 
