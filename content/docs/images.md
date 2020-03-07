@@ -45,9 +45,9 @@ The ramdisk has a special format named `cpio`. More information on
 The exact format of the `cpio` archive is “SV4 with no CRC”. You can verify the
 archive type for future Android versions by doing:
 ```
-# gunzip --uncompress boot.img-ramdisk.gz
-# file boot.img-ramdisk
-boot.img-ramdisk: ASCII cpio archive (SVR4 with no CRC)
+$ gunzip --uncompress boot.img-ramdisk.gz
+$ file boot.img-ramdisk
+# boot.img-ramdisk: ASCII cpio archive (SVR4 with no CRC)
 ```
 To re-pack the cpio archive, move the rootfs files into a subdirectory and run
 the following from there:

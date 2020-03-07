@@ -17,12 +17,15 @@ for writing large parts of this guide!*
 In order to install this ROM, you will need a working computer environment to
 install the latest FTFs, recoveries and the OEM binaries.
 
-Download and install the following components to your computer:
+There are numerous other guides out there on how to set up fastboot, but this
+should be enough for most.
+
+**On Windows:** Download and install the following components to your computer:
 
 - Minimal ADB and Fastboot from
   [xda: Minimal ADB and Fastboot](https://forum.xda-developers.com/showthread.php?t=2317790)
 - Androxyde's FlashTool from:
-  [xda: FlashTool](https://forum.xda-developers.com/showthread.php?t=920746)
+  [xda: FlashTool][flashtool-xda]
 
 You will also need to install these drivers for your phone:
 
@@ -34,6 +37,14 @@ The drivers are located in the FlashTool installation folder. You will probably
 need to reboot your computer with disabled driver signature verification in
 order to install these drivers.
 
+**On Linux:**
+Download Androxyde's FlashTool from: [xda: FlashTool][flashtool-xda].
+
+Then, install the`fastboot` and `adb` tools via your distro's package manager.
+
+- On Ubuntu: `apt install android-tools-adb android-tools-fastboot`
+- On Arch Linux: `pacman -Syu android-tools`.
+
 ### 2. Download necessary files
 
 Make sure you have all the files needed before starting this process. Best
@@ -44,6 +55,8 @@ folder as fastboot.exe).
 - Download the `.FTF` file for the latest stock firmware.
   It should should be something ending in `.184` or `.192` for your region.
   See this [list of latest stock firmware files](https://forum.xda-developers.com/xperia-xz/how-to/xperia-xz-roll-android-7-0-nougat-39-2-t3510600).
+  You can also use the tool `XperiFirm` for downloading, which is included with
+  `FlashTool`.
 - Download this [tweaked TWRP recovery](https://sx.ix5.org/files/builds/kagura/misc/twrp-3.2.1-0-kagura-ab-x.img), credits to Artem Labazov(@ab123321)
 - Download Sony OEM binaries for `tone` on Android Pie, Kernel 4.9 from the
   [Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries).  
@@ -146,11 +159,10 @@ Wipe `/data`, `/cache` and Dalvik cache in TWRP:
   data).
 
 <div class="message">
-Skip this step if you already formatted the internal storage in step 6.</br>
 If you are coming from stock firmware, you absolutely need to do this. You might
-be able to skip this step if you are coming from a previous Pie build, but if
-you run into problems you need to at least wipe the caches, if not `/data` as
-well.
+be able to skip this step if you are upgrading from a previous Pie or Q build,
+but if you run into problems you need to at least wipe the caches, if not
+`/data` as well.
 </div>
 
 ##### 7.2 Flash the AOSP ROM
@@ -168,11 +180,20 @@ well.
 - Swipe from left to right to start the flashing procedure.
 
 ##### 7.3 Fix /dsp file labels
+<div class="message">
+This only for Android Pie builds. Android 10 does not need this fix any more.
+</div>
+
 If you ever installed an Android Oreo-based custom ROM - e.g. OmniROM 8.1 - your
 SELinux file labels for the `dsp` partition will be wrong. For a more detailed
 explanation, see
 [File relabeling for SODP]({{< ref "dsp-relabel.md" >}}).
 
+Simply flash the
+<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
+zip file in TWRP.
+
+<!--
 <div class="message">
 <b>New:</b> Simply flash the
 <a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
@@ -187,12 +208,13 @@ chcon -R u:object_r:adsprpcd_file:s0 /dsp/
 ```
 Check again with `ls -lZ /dsp/` and confirm that all files are labeled
 `adsprpcd_file`.
+-->
 
 <!-- 7.4 Fix /persist file labels and permissions -->
 
 ##### 7.4 Flash dualsim patcher (optional)
 If you have a dualsim device, download the
-[DualSim patcher](https://sx.ix5.org/files/builds/sony/sony-dualsim-patcher-v3.zip).
+[DualSim patcher]({{<ref "2020-01-10-dualsim-patcher.md" >}}).
 
 - Transfer the DualSim patcher zip file to the phone's internal storage.
 - Click "Install"-tile and select the DualSim patcher
@@ -215,14 +237,16 @@ compatible!
 - Click "Install"-tile and select the Magisk zip file
 - Swipe from left to right to start the flashing procedure.
 
+If you are using Magisk, your phone will restart once on first boot. This is
+fully normal and is to be expected.
+
 ### 8. Reboot
 
 Go back to the TWRP home screen and select "Reboot". If TWRP prompts
 you to install its own app, decline and choose to restart normally.
 
-On first boot your phone will restart once. This is fully normal and is to be
-expected. After the initial restart your phone will take a good while to finish
-booting up (~5 minutes or more). Leave it alone until done.
+Your phone will take a good while to finish booting up (~5 minutes or more).
+Leave it alone until done.
 
 <div class="message warning">
   <h5>Attention!</h5>
@@ -231,8 +255,8 @@ Please also read the
 </div>
 
 ## Optional Goodies
-The included AOSP Camera cannot record video as of now. You can instead try
-OpenCamera, Snap Camera(from LineageOS), or one of the numerous
+<!-- The included AOSP Camera cannot record video as of now. -->
+You can try OpenCamera, Snap Camera(from LineageOS), or one of the numerous
 [Google Camera ports](https://www.celsoazevedo.com/files/android/google-camera/).
 
 ## Troubleshooting
@@ -282,3 +306,4 @@ for writing large parts of this guide!*
 
 [gapps-beta]: https://sourceforge.net/projects/opengapps/files/arm64/beta/
 [gapps-10-pull]: https://github.com/opengapps/opengapps/pull/773
+[flashtool-xda]: https://forum.xda-developers.com/showthread.php?t=920746

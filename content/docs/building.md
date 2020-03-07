@@ -129,14 +129,13 @@ Clone the Sony `local_manifests` git repo as instructed and run
 <div class="message focus">
 <b>Felix:</b> If you want to recreate my own builds, use
 <code>
-git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations'
+git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-customizations-10'
 </code>
-instead.  After you run <code>repo_update.sh</code>, also run
-<code>ix5_repo_update.sh</code>. This will fetch my newest changes as well.
+instead. After you run <code>repo_update.sh</code>, also run
+<code>q_repo_update.sh</code>. This will fetch my newest changes as well.
 <br>
-<b>For Android Q:</b> Use the <code>ix5-customizations-10</code> branch and
-<code>q_repo_update.sh</code> instead. Because the tone devices are still on
-Kernel 4.9, you also need to run <code>q_4.9_repo_update.sh</code>.
+<b>For Android Pie and ealier:</b> Use the <code>ix5-customizations</code> branch and
+<code>ix5_repo_update.sh</code> instead.
 </div>
 
 ## Prepare build environment
