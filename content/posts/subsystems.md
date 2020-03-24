@@ -20,9 +20,14 @@ draft: false
 - `QRTR` = Qualcomm's IPC router for QMI comms
 - `vidc` = v4l en-/decoders, now called `venus`. Kernel driver.
   See [lwn][lwn-vidc], [venus][venus-kernel]
-- `fpc` = Fast Power Collapse, not "fingerprint"
+- `fpc` = Fast Power Collapse, else "Fingerprint controller"
 - `tlmm` = TOP Level Mode Multiplexer, see [msm-pinctrl][tlmm]
 - `MPM` = MSM sleep Power Manager
+- `PIL` = Peripheral Image Loader
+  > used for loading QDSP6v5 (Hexagon) firmware images for modem subsystems into
+  > memory and preparing the subsystem's processor to execute code. It's also
+  > responsible for shutting down the processor when it's not needed.
+- `NoC` = Network-on-Chip
 
 More information, collected unofficially: [Qualcomm Kernel][osmocom]
 

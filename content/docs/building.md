@@ -149,6 +149,12 @@ The `user` target is meant for public releases and doesn't include root. You'll
 need to look into `vendorsetup.sh` (`AndroidProducts.mk` for Android Q) - and
 perhaps add it for your device - if you want to use it.
 
+## Build kernels
+On Android Q, you need to use a script to build the kernel images. Navigate into
+<code>kernel/sony/msm-4.9/common-kernel</code> and run
+<code>build-kernels-gcc.sh</code>. If building for a Kernel 4.14 device, go
+into <code>kernel/sony/msm-<b>4.14</b>/common-kernel</code> instead.
+
 ## Build & Flash
 ```
 make bootimage systemimage
