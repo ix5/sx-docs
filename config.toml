@@ -4,8 +4,6 @@ title = "Sony Xperia Corner"
 theme = "kube"
 Paginate = 20
 
-#staticDir2 = "content/files"
-
 [permalinks]
     posts = "/post/:slug/"
     docs = "/:slug/"
@@ -27,9 +25,9 @@ Paginate = 20
     url = "/posts/"
 
 [[menu.main]]
-    name = "Disclaimer"
+    name = "About"
     weight = 10
-    url = "/disclaimer/"
+    url = "/about/"
 
 # Needed sice 0.60.0 or so
 [markup]
