@@ -28,6 +28,10 @@ draft: false
   > memory and preparing the subsystem's processor to execute code. It's also
   > responsible for shutting down the processor when it's not needed.
 - `NoC` = Network-on-Chip
+- Clock ending in `_a`: Always-on RPM set clock
+- `IBS` = Instruction Based Sampling, could also be In-Band Switching 
+- `HBM` = If in display context: High Brightness mode, else High Bandwidth
+  Memory
 
 More information, collected unofficially: [Qualcomm Kernel][osmocom]
 

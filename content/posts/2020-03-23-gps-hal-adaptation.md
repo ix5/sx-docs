@@ -7,6 +7,17 @@ draft: false
 
 <!--
 
+#############################################
+# TODO
+#############################################
+
+Use header exports instead of dedicated header libs, also keep existing
+#include paths instead of requiring modifications
+-> Also update now obsolete commit ids to appropriate ones
+
+#############################################
+
+
 (Mostly done I think)
 
 Methodology: What is needed? Has anyone else done this work (for us) already?
@@ -401,6 +412,14 @@ it, according to Google.
 Those changes in the hardware repos need to be reflected in the device trees as
 well. [Add GPS+location soong namespaces][dt-common-namesp] and
 [Update GNSS package list][dt-common-pkg].
+
+## Sepolicy
+The uprevisioned service binary needs an SELinux label:
+`sepolicy/vendor/file_contexts`:
+```
+-/(system/vendor|vendor)/bin/hw/android\.hardware\.gnss@1\.1-service-qti   u:object_r:hal_gnss_qti_exec:s0
++/(system/vendor|vendor)/bin/hw/android\.hardware\.gnss@2\.0-service-qti   u:object_r:hal_gnss_qti_exec:s0
+```
 
 ## Finishing
 So, what‘s left? Cleaning up and crafting proper commits, documentation,

@@ -49,8 +49,10 @@ After you run `repo_update.sh`, also run `q_repo_update.sh`. Then, run
 `treble_repo_update.sh`. These scripts will fetch all the relevant patches you
 need to create a fake treble build.
 
+<!--
 Because the tone devices are still on Kernel 4.9, you also need to run
 `q_4.9_repo_update.sh`.
+-->
 
 You will also need to download the Android 9, Kernel 4.9 Software Binaries. Do
 not use the Kernel 4.14 binaries!
@@ -72,6 +74,13 @@ include device/sony/customization/customization-noproduct.mk
 ```
 # Fake treble builds for kagura
 PRODUCT_FAKE_TREBLE_BUILD := true
+```
+
+If you want to build a vendor-only OTA package, add this to
+`customization-noproduct.mk`:
+```
+# Skip adding system to ota
+PRODUCT_BUILD_SYSTEM_IMAGE := false
 ```
 
 ### device-sony-odm
@@ -156,33 +165,50 @@ Flash the resulting files in
 `out/target/product/kagura/`:
 ```
 fastboot flash boot boot.img
-fastboot flash system system.img
 fastboot flash oem vendor.img
 ```
+<!-- fastboot flash system system.img -->
+
 <div class="message warning">
 Do not flash Sony’s software binary image again now, all the needed blobs are
 already included in <code>vendor.img</code> for you!
 </div>
 
+### OTA
+To create a flashable zip file, use `make otapackage`. You can install the
+resulting zip file in `out/target/product/kagura` via TWRP or any other
+recovery.
+
+```
+adb push out/target/product/kagura/aosp_f8331-ota-eng*.zip /sdcard/
+```
+
 ### Compatible GSIs
 You need to use system-as-root, `arm64_ab` GSIs since this is now the default
 for Android 10.
+
+Use `fastboot flash system <my-gsi.img>`.
 
 Since SELinux is in enforcing mode, badly-built GSIs will fail to run. You can
 set it to permissive by changing the commandline:
 ```
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 ```
-or set `BOARD_USE_ENFORCING_SELINUX := true` in `Customization.mk`.
+or set `BOARD_USE_ENFORCING_SELINUX := false` in `Customization.mk`.
 
 ### Going back to regular builds
-You need to unset `PRODUCT_FAKE_TREBLE_BUILD` in `customization-noproduct.mk`
-and:
+You need to:
+
+- Unset `PRODUCT_FAKE_TREBLE_BUILD` in `customization-noproduct.mk`
+- Unset `PRODUCT_BUILD_SYSTEM_IMAGE` in `customization-noproduct.mk`
+- Undo `dtsi: tone: conjure oem into /vendor` in `kernel/sony/msm-4.9/kernel` in
+  case you want to build non-treble `tone` builds again
+
+<!--
 - Undo the `revert: liblights: Migrate to kernel 4.14 LED class for RGB
   tri-led` commit in `device/sony/common` in case you want to build for 4.14
   devices like the `tama` or `kumano` platform
-- Undo `dtsi: tone: conjure oem into /vendor` in `kernel/sony/msm-4.9/kernel` in
-  case you want to build non-treble `tone` builds again
+-->
 
 <div class="message">
 After you've flashed your fake treble build, you need to re-flash the regular

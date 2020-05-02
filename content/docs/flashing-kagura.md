@@ -291,13 +291,46 @@ Back up all your photos, apps etc. to your computer as this will <b>wipe your
 internal storage completely!</b>
 </div>
 
+<!--
 To format your internal storage, download
 [userdata.img](https://sx.ix5.org/files/builds/kagura/misc/userdata.img)
 and flash it using fastboot:
 <pre><code>fastboot flash <span style="color:red">userdata</span> userdata.img</code></pre>
+-->
+
+For 32Gb (single-SIM) devices, use this command:
+```
+fastboot format:ext4:0x58dffc000 userdata
+```
+
+For 64Gb (dual-SIM) devices, use:
+```
+fastboot format:ext4:0xcd5bfc000 userdata
+```
 
 You need to use the fastboot method because wiping in TWRP does not leave enough
-space for the crypto footer, which you need to run Full Disk Encryption(FDE).
+space for the crypto footer (needs to be 32Mb), which you need to run Full Disk
+Encryption (FDE).
+
+Method for calculating needed hex values for `fastboot format`, including space
+for the crypto footer:
+```make
+# Single-SIM:
+# Reserve space for data encryption (23857201152-16384)
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 23857184768
+# Dual-SIM:
+# Reserve space for data encryption (55125737472-16384)
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 55125721088
+```
+Then use python to calculate the hex values:
+```
+$ python
+hex(23857184768)
+ '0x58dffc000'
+hex(55125721088)
+ '0xcd5bfc000'
+```
+
 
 ---
 

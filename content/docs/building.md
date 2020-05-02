@@ -255,6 +255,15 @@ So put your patches into a git repo and share them with the world.
   `adb push` or even `adb sync` the changes directly to your device
 - Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
 
+<!--
+## Disabling signature verification
+- Disable in TWRP
+```
+make avbtool -j
+avbtool make_vbmeta_image --flag 2 --output vbmeta.img
+```
+-->
+
 ## Going further
 To show all available build targets, use `make modules`.
 
