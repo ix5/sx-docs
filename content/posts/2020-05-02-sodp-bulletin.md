@@ -44,7 +44,7 @@ Already fixed in 4.14 in kernel-techpack-audio via f2a2905f "asoc: msm-pcm: Add 
 **net: qrtr: Handle error from skb_put_padto**
 [source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=870f0](https://source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=870f0ba0fc05bc6ebac1486b39dc9d94c993eafb)  
 4.9: TODO  
-4.14: TODO
+4.14: Fixed in 4ef3e1d net: qrtr: Handle error from skb_put_padto
 
 **vdec: Set correct output buffer size: dynamic meta mode**
 [source.codeaurora.org/quic/le/platform/hardware/qcom/media/commit/?id=9e80e](https://source.codeaurora.org/quic/le/platform/hardware/qcom/media/commit/?id=9e80e1db4b56b42f9150d4d51166560d10839f5f)  
