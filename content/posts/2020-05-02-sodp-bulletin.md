@@ -29,7 +29,7 @@ Already merged in 4.14 via b3cdc9dadb7ae "treewide: Linux 4.14.154"
 **asoc: msm-pcm: Added lock in controls put() and get()**  
 [source.codeaurora.org/quic/la/kernel/msm-4.4/commit?id=1c9afa](https://source.codeaurora.org/quic/la/kernel/msm-4.4/commit?id=1c9afab264e3cafa461d746e9dcfd3c0487754cb)  
 4.9: TODO  
-4.14: TODO
+4.14: Fixed in 85a97521 "asoc: msm-pcm: Added lock in controls put() and get()"
 
 **soc: msm-pcm: Add mutex lock to protect prvt data**  
 [source.codeaurora.org/quic/la/kernel/msm-4.4/commit/?id=42ffbf](https://source.codeaurora.org/quic/la/kernel/msm-4.4/commit/?id=42ffbf03ec54dc14824d078f36c350b24c217f8d)
@@ -38,8 +38,8 @@ Already fixed in 4.14 in kernel-techpack-audio via f2a2905f "asoc: msm-pcm: Add 
 
 **msm: camera: context: Add null check on context pointer**  
 [source.codeaurora.org/quic/la/kernel/msm-4.9/commit/?id=9910e8](https://source.codeaurora.org/quic/la/kernel/msm-4.9/commit/?id=9910e89b27224fbddbf7d15d307597e13d9b9258)  
-4.9: TODO  
-4.14: TODO
+4.9: Fixed in 9910e89b "msm: camera: context: Add null check on context pointer"
+4.14: Fixed. Driver was copied. History was lost.
 
 **net: qrtr: Handle error from skb_put_padto**  
 [source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=870f0](https://source.codeaurora.org/quic/la/kernel/msm-4.14/commit/?id=870f0ba0fc05bc6ebac1486b39dc9d94c993eafb)  
@@ -49,7 +49,7 @@ Already fixed in 4.14 in kernel-techpack-audio via f2a2905f "asoc: msm-pcm: Add 
 **vdec: Set correct output buffer size: dynamic meta mode**  
 [source.codeaurora.org/quic/le/platform/hardware/qcom/media/commit/?id=9e80e](https://source.codeaurora.org/quic/le/platform/hardware/qcom/media/commit/?id=9e80e1db4b56b42f9150d4d51166560d10839f5f)  
 4.9: TODO  
-4.14: TODO
+4.14: Fixed in 6babf936 "vdec: Set correct output buffer size: dynamic meta mode" on branch LA.UM.8.2.1.r1
 
 ## Framework and System
 Patched via sync of latest AOSP sources.
