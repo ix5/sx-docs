@@ -12,11 +12,6 @@ is that it uses keymaster 4, whereas apollo and akari use km3.
 Some other thoughts led us to align the GIC (*Global Interrupt Controller*)
 driver with the upstream version: [Update GIC to 8.2 tag][obi_gic].
 
-More tracing:
-```
-adb shell "echo 1 > /sys/module/msm_show_resume_irq/parameters/debug_mask"
-```
-
 Unrelated nile/ganges debugging: Calls seem to come in from modem via glink:
 ```
 [  546.912583] GICv3: gic_show_resume_irq: 20 triggered glink-native
@@ -116,4 +111,29 @@ I may be a little wrong in pasting code from a node with `interrupt-parent=<&int
 **Person B:**
 Since the interrupt is referred to in that map for example
 
+### Further IRQ tracing on tama/apollo
+
+More tracing:
+```
+adb shell "echo 1 > /sys/module/msm_show_resume_irq/parameters/debug_mask"
+```
+
+```
+echo 'irq == 16' > /d/tracing/events/irq/irq_handler_entry/filter
+echo 1 > /d/tracing/events/irq/irq_handler_entry/enable
+```
+
+```
+echo 1 > /d/tracing/tracing_on
+tail -f /d/tracing/trace
+```
+
+### Show resume IRQ
+Need [spmi: pmic-arb: support show_resume_irq][resume_irq-rebased].
+```
+adb root
+adb shell "echo 1 > /sys/module/msm_show_resume_irq/parameters/debug_mask"
+```
+
 [obi_gic]: https://github.com/oshmoun/kernel/commit/28caf42bacdd57971df80f1844cfcccd267cb0c9
+[resume_irq-rebased]: https://github.com/ix5/kernel-sony/commit/f29fdc761e2c7f7caaa68555ebdbc8923d942fe0

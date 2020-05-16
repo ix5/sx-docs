@@ -9,7 +9,7 @@ Reference: [2020-02-01 Google Bulletin][bulletin]
 
 ## Kernel
 
-**ANDROID: binder: synchronize_rcu() when using POLLFREE**
+**ANDROID: binder: synchronize_rcu() when using POLLFREE**  
 [android.googlesource.com/kernel/common/+/5eeb2ca0](https://android.googlesource.com/kernel/common/+/5eeb2ca0)  
 Already merged in 4.9  
 Already merged in 4.14
