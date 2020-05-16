@@ -1,6 +1,6 @@
 baseURL = "https://sx.ix5.org/info/"
 languageCode = "en-us"
-title = "Sony Xperia Corner"
+title = "Open Devices Corner"
 theme = "kube"
 Paginate = 20
 
@@ -11,7 +11,7 @@ Paginate = 20
 [params]
     issoURL = "https://comments.ix5.org"
     author = "Felix"
-    description = "Information about Sony Xperia devices and AOSP"
+    description = "Information about Sony Xperia Open Devices and AOSP"
     subdescription = "Not in any way affiliated with Sony"
 
 [[menu.main]]

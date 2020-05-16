@@ -1,4 +1,4 @@
-## Sony Xperia Corner Docs
+## Open Devices Corner - Docs
 
 (not in any way affiliated with Sony)
 
