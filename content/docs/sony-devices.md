@@ -8,6 +8,13 @@ bref: "Overview of SODP devices"
 toc: true
 ---
 
+### Snapdragon 665 devices (seine board, 2020)
+Internal SoC codename: `sdm660`/`sm6125`
+
+| Device name        | Code name | Product (SS, DS) |
+| ------------------ | --------- | ---------------- |
+| Xperia 10 Mk II    | pdx201    | xqau51, xqau52   |
+
 ### Snapdragon 855 devices (kumano board, 2019)
 Internal SoC codename: `sm8150`
 
