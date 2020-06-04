@@ -2,12 +2,19 @@
 title: "Android Q: Dynamic Partitions"
 description: ""
 date: 2019-05-29T16:15:09+02:00
+slug: "android-q-dynamic-partitions"
 draft: false
 ---
 
 Talk by Google's David Anderson at Linux Plumber's Conf, see
 [LPC Schedule][schedule] for more, [video at YouTube][youtube].  
 PDF: [Dynamic Partitions][pdf].
+
+---
+
+**Update:** See [Dynamic Partitions: Take Two](/info/post/dynamic-partitions-take-two/).
+
+---
 
 Buildvars:
 ```

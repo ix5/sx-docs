@@ -115,7 +115,8 @@ app_domain(modemconfig_app)
 ---
 
 For more information, see the AOSP sources: [keys.conf][keys],
-[mac_permissions.xml][perms], [seapp_contexts][contexts].
+[mac_permissions.xml][perms], [seapp_contexts][contexts],
+[post_process_mac_perms][post].
 
 Thanks Luk for the inspiration, see [this commit][modemconf] and [this gist][gist].
 
@@ -126,3 +127,4 @@ Thanks Luk for the inspiration, see [this commit][modemconf] and [this gist][gis
 [contexts]: https://android.googlesource.com/platform/system/sepolicy/+/refs/tags/android-10.0.0_r35/private/seapp_contexts
 [vendorpriv]: https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-10.0.0_r35/core/res/AndroidManifest.xml#2123
 [privapp]: https://source.android.com/devices/tech/config/perms-whitelist
+[post]: https://android.googlesource.com/platform/system/sepolicy/+/refs/tags/android-10.0.0_r35/tools/post_process_mac_perms

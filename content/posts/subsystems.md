@@ -14,7 +14,7 @@ draft: false
 - `cdsp` is the term for adsp on newer snapdragon processors
   https://developer.qualcomm.com/docs/snpe/overview.html
   (sdm835 has adsp, 845 and 855 have cdsp)
-- `SLPI` = Sensor Low Power Interface (?)
+- `SLPI` = Sensor Low Power Island
 - `mpm` = Modem Power Manager
 - `BIMC` = Bus Interface Memory Controller
 - `QRTR` = Qualcomm's IPC router for QMI comms
@@ -32,6 +32,8 @@ draft: false
 - `IBS` = Instruction Based Sampling, could also be In-Band Switching 
 - `HBM` = If in display context: High Brightness mode, else High Bandwidth
   Memory
+- `SPMI` = System Power Management Interface - see [inclusion commit][spmi]
+- `PMIC` = Power management integrated circuit
 
 More information, collected unofficially: [Qualcomm Kernel][osmocom]
 
@@ -39,3 +41,4 @@ More information, collected unofficially: [Qualcomm Kernel][osmocom]
 [venus-kernel]: https://github.com/torvalds/linux/blob/d8924c0d76aaa52e4811b5c64115d9a7f36cc73a/Documentation/devicetree/bindings/media/qcom%2Cvenus.txt
 [tlmm]: https://android.googlesource.com/kernel/msm/+/android-wear-5.0.2_r0.1/Documentation/devicetree/bindings/pinctrl/msm-pinctrl.txt
 [osmocom]: https://osmocom.org/projects/quectel-modems/wiki/Qualcomm_Kernel
+[spmi]: https://github.com/torvalds/linux/commit/5a86bf343976b9c8ab2f240bc866451fa67e5573
