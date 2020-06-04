@@ -104,6 +104,17 @@ kagura:/ # cat /sys/devices/soc0/revision
 3.1
 ```
 
+**Mount pstore:**
+```
+# Don't forget the - dash!
+mount -t pstore - /sys/fs/pstore
+```
+
+**Get MCC/MNC:**
+```
+cat /data/vendor/radio/iccid*
+```
+
 <!-- ## Leds, thermals, sensors -->
 
 <!-- ## Camera -->
