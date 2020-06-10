@@ -33,21 +33,24 @@ readlink $(which repo)
 Then, run the `repo init` command:
 ```
 repo init -u https://android.googlesource.com/platform/manifest \
-  -b android-10.0.0_r29 -g default,-x86,-mips,-darwin,-notdefault
+  -b android-10.0.0_r39 -g default,-x86,-mips,-darwin,-notdefault
 ```
-Use the appropriate branch tag instead of `_r29`. For an overview of currently
+Use the appropriate branch tag instead of `_r39`. For an overview of currently
 published tags, see [Codenames, Tags and Numbers][codenames]. Most often, you'll
 want to pick the latest Pixel tag, e.g. the Pixel 4.
 
 ## Ubuntu chroot
 
-<div class="message success">
+<div class="message focus">
 Since Google use Ubuntu as a reference build environment, it is advisable you use it as well to avoid incompatibility problems.
 <b>If you're on Ubuntu already, you can skip this step.</b>
 </div>
 
 If you're on another system like Fedora or Arch Linux, you can set up a Ubuntu
 chroot build environment instead.
+
+Another alternative to nspawn is to use `docker`, see
+[Sony AOSP on docker](https://github.com/chris42/android_build).
 
 A build chroot takes about 1-1.5GB of space and will save you from headaches,
 e.g. when Android modules aren't compiled against your host glibc.
@@ -134,15 +137,20 @@ git clone https://git.ix5.org/felix/local-manifests-ix5 local_manifests -b 'ix5-
 instead. After you run <code>repo_update.sh</code>, also run
 <code>q_repo_update.sh</code>. This will fetch my newest changes as well.
 <br>
+<!--
 <b>For Android Pie and ealier:</b> Use the <code>ix5-customizations</code> branch and
 <code>ix5_repo_update.sh</code> instead.
+-->
 </div>
 
 ## Prepare build environment
-Run `source build/envsetup.sh` inside your build environment and then `lunch`.
-Select your device from the list. It will look like `aosp_f83xx-...` where
-`f83xx` is the model number of your device. You can choose between `eng` and
-`userdebug` builds, see [Choose a target](https://source.android.com/setup/build/building#choose-a-target).  
+Run `source build/envsetup.sh` inside your build environment and then `lunch
+aosp_f8331-userdebug`.
+
+You can also run `lunch` without any arguments to get a list of all available
+build targets. They will look like `aosp_f83xx-...` where `f83xx` is the model
+number of your device. You can choose between `eng` and `userdebug` builds, see
+[Choose a target](https://source.android.com/setup/build/building#choose-a-target).  
 For your own usage, `userdebug` is most likely what you want.
 
 The `user` target is meant for public releases and doesn't include root. You'll
@@ -156,9 +164,14 @@ On Android Q, you need to use a script to build the kernel images. Navigate into
 into <code>kernel/sony/msm-<b>4.14</b>/common-kernel</code> instead.
 
 ## Build & Flash
+For legacy non-A/B devices like the Xperia XZ, run this command:
 ```
 make bootimage systemimage
 ```
+
+Newer devices require building for more partitions, like `vendor`, `dtbo`,
+`product`, vbmeta` and others.
+
 In case your build stops at about 90% with this error, just re-start the
 build[^metalava].
 ```
@@ -173,6 +186,9 @@ fastboot flash boot boot.img
 fastboot flash system system.img
 ```
 
+Do not forget to flash the appropriate Software Binaries to the `oem` partition
+as well!
+
 ## Optimize the build
 A full build will take about two to three hours on a beefed-out recent
 system (Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
@@ -183,7 +199,7 @@ It is recommendable to use a ccache size of around 50-100GB, depending on
 whether you plan to build different ROMS or for multiple devices.
 ```
 # On Android Pie and before:
-_CCACHE_EXEC=prebuilds/misc/linux-x86/ccache/ccache
+_CCACHE_EXEC=prebuilts/misc/linux-x86/ccache/ccache
 # On Android Q:
 _CCACHE_EXEC=/usr/bin/ccache
 # Set ccache size:
@@ -233,10 +249,10 @@ flash`
 
 ## Distributing
 If you want to share the fruits of your labor, you can create compressed
-flashable .zip files. Use `make otapackage` instead of `make`. This will create
-a flashable zip file in `out/target/product/<device-codename>` named something
-like `aosp_f8331-ota-eng.hostname-2018-10-19`. You can flash this file via `adb
-sideload` or use a custom recovery like TWRP.
+flashable .zip files. Use `make otapackage` instead of `make systemimage [...]`.
+This will create a flashable zip file in `out/target/product/<device-codename>`
+named something like `aosp_f8331-ota-eng.hostname-2018-10-19`. You can flash
+this file via `adb sideload` or use a custom recovery like TWRP.
 
 <!--
 Create the directory `dist_output` and use `make dist DIST_DIR=dist_output -j
@@ -247,20 +263,20 @@ sideload` or use a custom recovery like TWRP.
 
 After you have tested your build on your own device, you can share the file
 freely, given that it contains free/libre software under the GPL and other free
-licenses. The license also means you have to divulge your build sources.
-So put your patches into a git repo and share them with the world.
+licenses. Anything GPL-licensed also demands you have to divulge your build
+sources. So put your patches into a git repo and share them with the world.
 
 ## Speedier development
 - Use `m module.name -j $(nproc)` to only rebuild a single module. You can then
   `adb push` or even `adb sync` the changes directly to your device
-- Use `make bootimage` to re-generate kernel and ramdisk(`boot.img`)
+- Use `make bootimage` to re-generate kernel and ramdisk (`boot.img`)
 
 <!--
 ## Disabling signature verification
 - Disable in TWRP
 ```
 make avbtool -j
-avbtool make_vbmeta_image --flag 2 --output vbmeta.img
+avbtool make_vbmeta_image -\-flag 2 -\-output vbmeta.img
 ```
 -->
 

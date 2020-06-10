@@ -13,6 +13,17 @@ Follow these steps closely. Do not leave out a step and do them in the correct o
 *A big thanks to [StaticGTF](https://forum.xda-developers.com/member.php?u=3928215)
 for writing large parts of this guide!*
 
+## TL;DR
+For people who know what they are doing:
+
+1. Flash latest stock image, then unlock bootloader
+2. Download v9 binaries from [developer.sony.com](https://developer.sony.com/file/download/software-binaries-for-aosp-pie-android-9-0-kernel-4-9-tone/),
+   Flash binaries image via fastboot to `oem` partition
+4. Flash this [tweaked TWRP recovery](https://sx.ix5.org/files/builds/kagura/misc/twrp-3.2.1-0-kagura-ab-x.img), credits to Artem Labazov(@ab123321)
+3. Flash latest build from [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp-10/) from inside TWRP
+
+That's it.
+
 ### 1. Computer Setup
 In order to install this ROM, you will need a working computer environment to
 install the latest FTFs, recoveries and the OEM binaries.
@@ -59,8 +70,10 @@ folder as fastboot.exe).
   `FlashTool`.
 - Download this [tweaked TWRP recovery](https://sx.ix5.org/files/builds/kagura/misc/twrp-3.2.1-0-kagura-ab-x.img), credits to Artem Labazov(@ab123321)
 - Download Sony OEM binaries for `tone` on Android Pie, Kernel 4.9 from the
-  [Sony Software Binaries page](https://developer.sony.com/develop/open-devices/downloads/software-binaries).  
-  The filename will be `SW_binaries_for_Xperia_Android_9.0_2.3.2_v$VERSION_tone.zip`.
+  [Sony Software Binaries page](https://developer.sony.com/file/download/software-binaries-for-aosp-pie-android-9-0-kernel-4-9-tone/).  
+  The filename will be
+  `SW_binaries_for_Xperia_Android_9.0_2.3.2_v$VERSION_tone.zip`, where
+  `$VERSION` is currently v9.
 - Download the latest AOSP 10 build from
   [sx.ix5.org](https://sx.ix5.org/files/builds/kagura/aosp-10/)
   <!-- The latest semi-stable build is 2018-11-16(there are no *stable* builds yet). -->
@@ -74,12 +87,14 @@ folder as fastboot.exe).
   **TODO:** Currently you have to rely on beta 10.x OpenGApps builds from
   [sourceforge][gapps-beta], see [the GitHub PR][gapps-10-pull]
 
+<!--
 <div class="message warning">
 For Android 10 builds, use the
 <a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/aosp-10/">aosp-10 folder</a>
 and flash the Kernel 4.9 Sony OEM binaries.</br>
 Do not use the Kernel 4.14/Q binaries yet!
 </div>
+-->
 
 ### 3. Unlock Bootloader
 
@@ -136,9 +151,8 @@ Extract the Sony OEM Binaries zip-archive that contains the image-file needed fo
 Flash Sony's OEM binaries with this CLI command: (Note that the destination differs between the recovery and oem!)
 <pre><code>fastboot flash <span style="color:red">oem</span> SW_binaries_for_Xperia_Android_9.0_2.3.2_v3_tone.img</code></pre>
 <!--
-Flash oem binaries version 1: Version 2 is buggy, and *calling does not work.*
 Download oem version 1 from the
-[Sony Software Binaries Archives](https://developer.sony.com/file/download/software-binaries-for-aosp-pie-android-9-0-kernel-4-9-tone-v1/)
+[Sony Software Binaries Archives](https://developer.sony.com/file/download/software-binaries-for-aosp-pie-android-9-0-kernel-4-9-tone/)
 -->
 
 ### 7. TWRP Recovery operations

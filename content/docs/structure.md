@@ -44,6 +44,7 @@ Every directory with an `Android.mk` or `Android.bp` file in it will get conside
 Most interesting to new developers might be the `frameworks`, `hardware`,
 `kernel` and `packages` folders.
 
+<!--
 ### Overlays
 You can change e.g. `frameworks/base` manually and edit xml files there or add a
 default wallpaper. But this means you have to fork the whole framework. It is
@@ -78,6 +79,7 @@ directory instead of directly modifying `device/sony/common`.
 You will need to include your own vendor directory,
 see [this commit](https://git.ix5.org/felix/device-sony-common/commit/b115cc3f7f98c1d26a6bd8b84422706128e3d0b7)
 for an example.
+-->
 
 ### Everything together
 ```
@@ -131,6 +133,3 @@ for an example.
   [repo_update.sh](https://github.com/sonyxperiadev/repo_update)
   from sonyxperiadev for inspiration.
 - Use overlays instead of modifying android_frameworks_base
-- If you want to theme, it may be easier to create a magisk module or substratum
-  theme than to recompile your whole build. Also look into Runtime Resource
-  Overlays(RROs).

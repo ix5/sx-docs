@@ -41,7 +41,7 @@ Internal SoC codename: `sdm845`
 | Xperia XZ3         | Akatsuki  | h8416, h9436     |
 
 ### Snapdragon 630 devices (nile board, 2018)
-Internal SoC codename: `sdm630`
+Internal SoC codename: `sdm660` (yes, not 630)
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
