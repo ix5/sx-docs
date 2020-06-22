@@ -1,6 +1,6 @@
 ---
 title: "{{ replace (replaceRE "[0-9]{4}-[0-9]{2}-[0-9]{2}-(.+)" "$1" .Name | title) "-" " " }}"
-slug: "{{ replaceRE "[0-9]{4}-[0-9]{2}-[0-9]{2}-(.+)" "$1" .Name }}
+slug: "{{ replaceRE "[0-9]{4}-[0-9]{2}-[0-9]{2}-(.+)" "$1" .Name }}"
 description: ""
 date: {{ .Date }}
 draft: true
