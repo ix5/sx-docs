@@ -62,7 +62,7 @@ Let‘s take as given that we need to bump our OSS location and gps HALs.
 We want the `sm8150` future-oriented version of our HALs, so we head to the
 CodeAurora Forum git repos and fetch the latest 8.1 tags:
 [platform/hardware/qcom/gps][qcom-gps-caf-8.1] and
-[platform/vendor/qcom-opensource/location][oss-loc-caf-8.1]. using tag
+[platform/vendor/qcom-opensource/location][oss-loc-caf-8.1] using tag
 `LA.UM.8.1.r1-14500-sm8150.0`. You can search for tags at the repo’s
 [/refs][oss-loc-refs] node.
 
@@ -160,7 +160,7 @@ These bringup tweaks are fairly tame and self-explanatory:
 
 ## QMI and proprietary headers
 Since Qualcomm wants to keep their chip and core firmware and software internals
-secret, they device all sorts of idiosyncratic schemes and data formats to
+secret, they devise all sorts of idiosyncratic schemes and data formats to
 interface with their chips. One of those formats is a sort of messaging
 protocol called `QMI`, a form of IPC. `QMI` stands for "Qualcomm MSM Interface".
 For more information, see the entry on
