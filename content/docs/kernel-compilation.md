@@ -78,7 +78,7 @@ For easier reference, here's an overview:
 | Xperia 10 Plus       | `aosp_ganges_mermaid_defconfig`  |
 | Xperia 1             | `aosp_kumano_griffin_defconfig`  |
 | Xperia 5             | `aosp_kumano_bahamut_defconfig`  |
-| Xperia 10 Mk II      | `aosp_seine_pdx201_defconfig`    |
+| Xperia 10 II         | `aosp_seine_pdx201_defconfig`    |
 
 ### Configure kernel
 ```

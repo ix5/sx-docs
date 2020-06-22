@@ -16,7 +16,7 @@ Platform: `seine`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
-| Xperia 10 Mk II    | pdx201    | xqau51, xqau52   |
+| Xperia 10 II       | pdx201    | xqau51, xqau52   |
 
 ### Snapdragon 855 devices (kumano board, 2019)
 Internal SoC codename: `sm8150`
