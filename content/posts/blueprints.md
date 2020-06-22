@@ -19,6 +19,10 @@ You can then copy the binary from `out/soong/host/linux-x86/bin/androidmk` to
 your `~/.local/bin/` to use it outside the AOSP tree. Beware that the tool is
 constantly being updated, so you might need to re-build it from time to time.
 
+For the internal workings, and to get a mapping of make and soong variables, see
+the source code inside [cmd/androidmk/android.go][source].
+
 See this question about [androidmk on StackOverflow][so-androidmk].
 
 [so-androidmk]: https://stackoverflow.com/questions/51207766/where-can-i-find-androidmk-tool-to-convert-android-mk-to-android-bp
+[source]: https://android.googlesource.com/platform/build/soong/+/refs/tags/android-10.0.0_r39/androidmk/cmd/androidmk/android.go#43
