@@ -81,20 +81,9 @@ folder as fastboot.exe).
 - Optional: Download the latest stable Magisk from
   [xda: Magisk](https://forum.xda-developers.com/apps/magisk/official-magisk-v7-universal-systemless-t3473445)
 - Optional: Download OpenGApps from
-  [opengapps.org](https://opengapps.org/?arch=arm64&api=9.0&variant=pico).
-  You need to chose <strike>Android 9.0, ARM64</strike>. You can choose any size variant, I would
+  [opengapps.org](https://opengapps.org/?arch=arm64&api=10.0&variant=pico).
+  You need to chose Android 10.0, ARM64. You can choose any size variant, I would
   recommend the `pico` one because it has the least bloat.
-  **TODO:** Currently you have to rely on beta 10.x OpenGApps builds from
-  [sourceforge][gapps-beta], see [the GitHub PR][gapps-10-pull]
-
-<!--
-<div class="message warning">
-For Android 10 builds, use the
-<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/aosp-10/">aosp-10 folder</a>
-and flash the Kernel 4.9 Sony OEM binaries.</br>
-Do not use the Kernel 4.14/Q binaries yet!
-</div>
--->
 
 ### 3. Unlock Bootloader
 
@@ -351,6 +340,4 @@ hex(55125721088)
 *A big thanks to [StaticGTF](https://forum.xda-developers.com/member.php?u=3928215)
 for writing large parts of this guide!*
 
-[gapps-beta]: https://sourceforge.net/projects/opengapps/files/arm64/beta/
-[gapps-10-pull]: https://github.com/opengapps/opengapps/pull/773
 [flashtool-xda]: https://forum.xda-developers.com/showthread.php?t=920746

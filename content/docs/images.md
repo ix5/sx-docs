@@ -9,11 +9,13 @@ toc: true
 ---
 
 ## Unpack boot.img
-See [stackoverflow](https://unix.stackexchange.com/questions/64628/how-to-extract-boot-img/459881).
+Get `android_bootimg_tools` and extract to `~/.local/bin`:
 
-Get `android_bootimg_tools` and extract to `~/.local/bin`:  
 `wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/android-serialport-api/android_bootimg_tools.tar.gz /tmp/tools.tar.gz`  
 `tar xzvf /tmp/tools.tar.gz -C ~/.local/bin/`  
+
+Make sure `~/.local/bin` is in your `PATH`.
+
 You will now have the `mkbootimg` and `unpackbootimg` programs available.
 
 Copy the boot.img you want to disect into your local folder and run
@@ -29,6 +31,8 @@ You will now have the following files inside the `boot/` folder:
 
 The `boot.img-zImage` file is the kernel.
 
+Source: [stackoverflow](https://unix.stackexchange.com/questions/64628/how-to-extract-boot-img/459881).
+
 ## Unpack ramdisk
 
 *This is only necessary if you want to change files inside your boot.img. If you
@@ -38,16 +42,6 @@ only want to use a different kernel, you can skip this step.*
 ```
 gunzip --to-stdout --uncompress boot.img-ramdisk.gz | cpio --extract \
   --make-directories --no-absolute-filenames
-```
-The ramdisk has a special format named `cpio`. More information on
-[Wikipedia][cpio-wiki] and the [manpage][cpio-manpage].
-
-The exact format of the `cpio` archive is “SV4 with no CRC”. You can verify the
-archive type for future Android versions by doing:
-```
-$ gunzip --uncompress boot.img-ramdisk.gz
-$ file boot.img-ramdisk
-# boot.img-ramdisk: ASCII cpio archive (SVR4 with no CRC)
 ```
 To re-pack the cpio archive, move the rootfs files into a subdirectory and run
 the following from there:
@@ -61,13 +55,26 @@ Then go up one directory and `gzip`-compress the archive:
 gzip boot.img-ramdisk
 ```
 
+---
+
+The ramdisk has a special format named `cpio`. More information on
+[Wikipedia][cpio-wiki] and the [manpage][cpio-manpage].
+
+The exact format of the `cpio` archive is “SV4 with no CRC”. You can verify the
+archive type for future Android versions by doing:
+```
+$ gunzip --uncompress boot.img-ramdisk.gz
+$ file boot.img-ramdisk
+# boot.img-ramdisk: ASCII cpio archive (SVR4 with no CRC)
+```
+
 ## Re-pack boot.img
 *If you unpacked your ramdisk, first re-create a cpio archive and gzip-compress
 it again, see the previous step.*
 
 Use `mkbootimg` with the appropriate flags. To find out the values for
 `cmdline`, `base` and `pagesize`, take a look at the generated `boot.img-*`
-files, e.g. `boot.img-base` should contain the text `80000000`.
+files, e.g. `boot.img-base` should contain a number like `80000000`.
 ```
 mkbootimg \
   --cmdline "$(cat boot.img-cmdline)" \
@@ -75,6 +82,35 @@ mkbootimg \
   --pagesize "$(cat boot.img-pagesize)" \
   --ramdisk "boot.img-ramdisk.gz" \
   --kernel "boot.img-zImage" \
+  -o boot-repacked.img
+```
+
+For newer devices, the bootloader expects you to set an OS version and a
+security patch level in the bootimage. These values should match the system or
+vendor image values. The patch level corresponds to the AOSP
+Security bulletins, e.g. [2020-06-05][bulletin].
+```
+export OS_VERSION=10
+export OS_PATCH_LEVEL='2020-06-05'
+mkbootimg \
+  --cmdline
+  --id \
+  [...] \
+  --os_version $OS_VERSION \
+  --os_patch_level $OS_PATCH_LEVEL
+  -o boot-repacked.img
+```
+
+If you are constructing a boot image from scratch, you also need to set kernel
+tags offset and ramdisk offset, which can be taken from the device
+`BoardConfig.mk` or `PlatformConfig.mk`.
+```
+export BOARD_KERNEL_TAGS_OFFSET=0x01E00000
+export BOARD_RAMDISK_OFFSET=0x02000000
+mkbootimg \
+  [...] \
+  --ramdisk_offset $BOARD_RAMDISK_OFFSET \
+  --tags_offset $BOARD_KERNEL_TAGS_OFFSET \
   -o boot-repacked.img
 ```
 
@@ -89,35 +125,38 @@ BASE="80000000"
 PAGESIZE="4096"
 ```
 
-The newly packged boot image will be named `boot-repacked.img`(or whatever name
+The newly packged boot image will be named `boot-repacked.img` (or whatever name
 you chose for `-o`).
 
 ## Gotchas
 In case you compiled your own kernel, don't forget to think about `.dtb` files!
-Many older devices(e.g. the Xperia XZ) need the
-[Device Tree Binaries("dtb")][dtb] appended to the kernel `zImage`.
+Many older devices (e.g. the Xperia XZ) need the
+[Device Tree Binaries][dtb] (`dtb`) appended to the kernel `zImage`.
 
-<!-- TODO: List the flags here -->
+<!--
+TODO: List the flags here
 
-<!-- ## Handling sparse images -->
-<!-- What is a sparse image? -->
-<!-- simg2img -->
+## Handling sparse images
+What is a sparse image?
+simg2img
 
-<!-- ## Filesystems -->
-<!-- ext4, ext2, exfat, ntfs, fat, fuse, permissions -->
+## Filesystems
+ext4, ext2, exfat, ntfs, fat, fuse, permissions
 
-<!-- ## Partitions -->
-<!-- FOTAKernel, boot, system, vendor, oem/odm, dsp, frp, modem -->
+## Partitions
+FOTAKernel, boot, system, vendor, oem/odm, dsp, frp, modem
 
-<!-- ## Tools -->
-<!-- - `adb`, `fastboot` -->
-<!-- - `android_bootimg_tools` -->
-<!-- - `android-simg2img` -->
-<!-- - `smali`/`baksmali` -->
-<!-- - `sdat2img` -->
-<!-- - `vdexExtractor` -->
-<!-- - `apktool` -->
+## Tools
+- `adb`, `fastboot`
+- `android_bootimg_tools`
+- `android-simg2img`
+- `smali`/`baksmali`
+- `sdat2img`
+- `vdexExtractor`
+- `apktool`
+-->
 
 [cpio-wiki]: https://en.wikipedia.org/wiki/Cpio
 [cpio-manpage]: https://www.gnu.org/software/cpio/manual/cpio.html
 [dtb]: https://elinux.org/Device_Tree_Reference
+[bulletin]: https://source.android.com/security/bulletin/2020-06-01

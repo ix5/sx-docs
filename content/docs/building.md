@@ -1,6 +1,7 @@
 ---
 title: "Building Android"
 description: "How to build AOSP for Xperia devices"
+slug: "building-android"
 date: 2018-10-19T22:14:54+02:00
 weight: 15
 draft: false
@@ -159,9 +160,10 @@ perhaps add it for your device - if you want to use it.
 
 ## Build kernels
 On Android Q, you need to use a script to build the kernel images. Navigate into
-<code>kernel/sony/msm-4.9/common-kernel</code> and run
-<code>build-kernels-gcc.sh</code>. If building for a Kernel 4.14 device, go
-into <code>kernel/sony/msm-<b>4.14</b>/common-kernel</code> instead.
+`kernel/sony/msm-4.9/common-kernel` and run `build-kernels-gcc.sh`.  
+If building for a Kernel 4.14 device, go into
+`kernel/sony/msm-<b>4.14</b>/common-kernel` and use `build-kernels-clang.sh`
+instead.
 
 ## Build & Flash
 For legacy non-A/B devices like the Xperia XZ, run this command:
@@ -186,11 +188,13 @@ fastboot flash boot boot.img
 fastboot flash system system.img
 ```
 
+For 4.14 devices, also flash the other partitions like `vendor`, `dtbo` etc.
+
 Do not forget to flash the appropriate Software Binaries to the `oem` partition
 as well!
 
 ## Optimize the build
-A full build will take about two to three hours on a beefed-out recent
+A full build will take about two to three hours[^time] on a beefed-out recent
 system (Core i7 8th gen 4 cores, 16GB RAM, good SSD). That time can however be
 cut down for successive builds to around an hour by utilizing `ccache` and
 parallelizing the build.
@@ -211,7 +215,8 @@ advisable to put `export USE_CCACHE=1` at the end of your `.bashrc` in your home
 directory (or `/home/builder/.bashrc` if you're in a chroot).
 
 `ccache` compression might also save a lot of disk space for you. Set
-`export CCACHE_COMPRESS=1` in your `.bashrc`.
+`export CCACHE_COMPRESS=1` in your `.bashrc`. This cuts ccache disk usage down
+to about 5GB per device, but may incur some performance penalty.
 
 <div class="message warning">
 On Android Q, you need to install the <code>ccache</code> package and set
@@ -241,18 +246,16 @@ On LineageOS and on current (as of 2019-09-07) <code>master</code>, the CL has
 been merged already.
 </div>
 
-## Building
-Run `make -j <nr-of-threads>`. If everything went smoothly, you'll have a folder
-named `out/target/product/<device-codename>/` with `boot.img`, `recovery.img`
-and `system.img`. You can then flash these files onto your device with `fastboot
-flash`
-
 ## Distributing
 If you want to share the fruits of your labor, you can create compressed
 flashable .zip files. Use `make otapackage` instead of `make systemimage [...]`.
 This will create a flashable zip file in `out/target/product/<device-codename>`
 named something like `aosp_f8331-ota-eng.hostname-2018-10-19`. You can flash
 this file via `adb sideload` or use a custom recovery like TWRP.
+
+If you intend to share your builds publicly, you should generate and guard your
+own set of signing keys. See [Signing builds for release][signing] for more
+information.
 
 <!--
 Create the directory `dist_output` and use `make dist DIST_DIR=dist_output -j
@@ -290,6 +293,8 @@ Good references:
 
 [^metalava]: Android's metalava takes up enormous amounts of RAM. It attempts to
   verify the whole Android API at once and is badly designed.
+[^time]: On Android Q, this time goes up to five hours for me.
 
 [git-repo]: https://gerrit.googlesource.com/git-repo/
 [codenames]: https://source.android.com/setup/start/build-numbers#source-code-tags-and-builds
+[signing]: https://source.android.com/devices/tech/ota/sign_builds

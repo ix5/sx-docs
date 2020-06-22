@@ -1,5 +1,6 @@
 ---
 title: "Sony Devices"
+slug: "sony-devices"
 description: "Overview of SODP devices"
 date: 2019-02-10T21:21:51+01:00
 weight: 20
@@ -11,12 +12,16 @@ toc: true
 ### Snapdragon 665 devices (seine board, 2020)
 Internal SoC codename: `sdm660`/`sm6125`
 
+Platform: `seine`
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia 10 Mk II    | pdx201    | xqau51, xqau52   |
 
 ### Snapdragon 855 devices (kumano board, 2019)
 Internal SoC codename: `sm8150`
+
+Platform: `kumano`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -26,6 +31,8 @@ Internal SoC codename: `sm8150`
 ### Snapdragon 660 devices (ganges board, 2019)
 Internal SoC codename: `sdm660`
 
+Platform: `ganges`
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia 10          | Kirin     | i3113, i4113     |
@@ -33,6 +40,8 @@ Internal SoC codename: `sdm660`
 
 ### Snapdragon 845 devices (tama board, 2018)
 Internal SoC codename: `sdm845`
+
+Platform: `tama`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -43,6 +52,8 @@ Internal SoC codename: `sdm845`
 ### Snapdragon 630 devices (nile board, 2018)
 Internal SoC codename: `sdm660` (yes, not 630)
 
+Platform: `nile`
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia XA2         | Pioneer   | h3113, h4113     |
@@ -51,6 +62,8 @@ Internal SoC codename: `sdm660` (yes, not 630)
 
 ### Snapdragon 835 devices (yoshino board, 2017)
 Internal SoC codename: `msm8998`
+
+Platform: `yoshino`
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -61,6 +74,8 @@ Internal SoC codename: `msm8998`
 ### Snapdragon 820 devices (tone board, 2016)
 Internal SoC codename: `msm8996`
 
+Platform: `tone`
+
 | Device name          | Code name | Product (SS, DS) |
 | -------------------- | --------- | ---------------- |
 | Xperia X Performance | Dora      | f8131, f8132     |
@@ -69,6 +84,8 @@ Internal SoC codename: `msm8996`
 
 ### Snapdragon 650 devices (loire board, 2016)
 Internal SoC codename: `msm8956`, sometimes `msm8954`
+
+Platform: `loire`
 
 | Device name      | Code name | Product (SS, DS) |
 | ---------------- | --------- | ---------------- |
