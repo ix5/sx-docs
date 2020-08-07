@@ -1,5 +1,6 @@
 ---
 title: "About"
+slug: "about"
 description: ""
 date: 2018-11-05T23:35:35+01:00
 weight: 20
@@ -12,9 +13,13 @@ Sony Xperia line of Android devices, for which the official
 [Sony Open Devices Project](https://developer.sony.com/develop/open-devices/)
 provides sources and guidance.
 
+For more information about the project, please visit the
+[Open Devices Project community page](https://opendevices.ix5.org).
+
 [Felix Elsner](https://ix5.org) maintains the site. Its sources are available on
 [GitHub](https://github.com/ix5/sx_docs), including the
-[theme used](https://github.com/ix5/hugo_theme_kube).
+[theme used](https://github.com/ix5/hugo_theme_kube) - please open Pull Requests
+for any improvements you'd like to see!
 
 ## Disclaimer
-This site is not in any way affiliated with Sony.
+This page is neither affiliated with nor endorsed by Sony or any of its subsidiaries.

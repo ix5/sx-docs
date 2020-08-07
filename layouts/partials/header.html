@@ -13,7 +13,7 @@
       <ul>
        {{ $currentPage := . }}
        {{ range .Site.Menus.main }}
-    <li><a href="{{ .URL }}" {{if  $currentPage.IsMenuCurrent "main" . }} class="active"{{end}}>{{ .Name }}</a></li>
+    <li><a href="{{ .URL }}" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} class="active"{{end}}>{{ .Name }}</a></li>
     {{end}}
       </ul>
     </nav>
@@ -21,7 +21,7 @@
       <ul>
         {{ range .Site.Menus.extra }}
           <li>
-            <a href="{{ .Permalink }}">{{ .Name }}</a>
+            <a href="{{ .URL }}">{{ .Name }} <img src="{{ $.Site.BaseURL }}/img/outgoing.svg" /></a>
           </li>
         {{ end }}
       </ul>

@@ -11,23 +11,25 @@ Paginate = 20
 [params]
     issoURL = "https://comments.ix5.org"
     author = "Felix"
-    description = "Information about Sony Xperia Open Devices and AOSP"
+    description = "Guides and Resources for Sony Xperia™ & AOSP"
     subdescription = "Not in any way affiliated with Sony"
 
-[[menu.main]]
+[menu]
+  [[menu.main]]
     name = "Docs"
     weight = 1
     url = "/"
-
-[[menu.main]]
+  [[menu.main]]
     name = "Posts"
     weight = 2
     url = "/posts/"
-
-[[menu.main]]
+  [[menu.main]]
     name = "About"
     weight = 10
     url = "/about/"
+  [[menu.extra]]
+    name = "Community Page"
+    url = "https://opendevices.ix5.org"
 
 # Needed sice 0.60.0 or so
 [markup]

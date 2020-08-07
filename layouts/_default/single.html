@@ -1,0 +1,20 @@
+{{ define "title"}} {{ .Title}} {{end}}
+{{ define "header"}} {{ partial "header" .}} {{end}}
+
+{{ define "main" }}
+
+<div id="hero" class="wrap">
+  <h1>{{.Title }}</h1>
+    <p>{{.Params.description}}</p>
+</div>
+
+<div id="post-box">
+<div id="post" itemprop="articleBody">
+
+    {{.Content | safeHTML}}
+</div>
+</div>
+{{ end }}
+{{ define "footer" }}
+  {{ partial "footer" . }}
+{{ end }}
