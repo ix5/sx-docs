@@ -125,10 +125,24 @@ sudo systemd-nspawn \
   --user=builder
 ```
 
+## Local manifests
+Clone the Sony `local_manifests` git repo as instructed.
+For legacy devices, meaning `loire` and `tone`, you need to checkout the
+`android-10_legacy` branch of `local_manifests`. For recent devices have to
+use the `master` branch.
+
+```
+git clone https://github.com/sonyxperiadev/local_manifests .repo/local_manifests
+cd .repo/local_manifests
+# For recent devices:
+git checkout master
+# For legacy devices
+git checkout android-10_legacy
+```
+
 ## Applying needed patches
 
-Clone the Sony `local_manifests` git repo as instructed and run
-`repo_update.sh`. Your build directory will now be ready for a first build.
+Run `repo_update.sh`. Your build directory will now be ready for a first build.
 
 <div class="message focus">
 <b>Felix:</b> If you want to recreate my own builds, use
@@ -146,7 +160,11 @@ instead. After you run <code>repo_update.sh</code>, also run
 
 ## Prepare build environment
 Run `source build/envsetup.sh` inside your build environment and then `lunch
-aosp_f8331-userdebug`.
+aosp_<product>-userdebug`.
+
+To find out the product name of your device for `aosp_<product>-userdebug`, see
+the [Sony Devices overview]({{<ref "sony-devices.md" >}}). E.g. for a single-SIM
+("SS") Xperia XZ, choose `aosp_f8331`, for a dual-SIM XZ, choose `aosp_f8332`.
 
 You can also run `lunch` without any arguments to get a list of all available
 build targets. They will look like `aosp_f83xx-...` where `f83xx` is the model
@@ -162,8 +180,8 @@ perhaps add it for your device - if you want to use it.
 On Android Q, you need to use a script to build the kernel images. Navigate into
 `kernel/sony/msm-4.9/common-kernel` and run `build-kernels-gcc.sh`.  
 If building for a Kernel 4.14 device, go into
-`kernel/sony/msm-<b>4.14</b>/common-kernel` and use `build-kernels-clang.sh`
-instead.
+<code>kernel/sony/msm-<b>4.14</b>/common-kernel</code> and use
+`build-kernels-clang.sh` instead.
 
 ## Build & Flash
 For legacy non-A/B devices like the Xperia XZ, run this command:
@@ -172,7 +190,7 @@ make bootimage systemimage
 ```
 
 Newer devices require building for more partitions, like `vendor`, `dtbo`,
-`product`, vbmeta` and others.
+`product`, `vbmeta` and others.
 
 In case your build stops at about 90% with this error, just re-start the
 build[^metalava].
@@ -190,8 +208,8 @@ fastboot flash system system.img
 
 For 4.14 devices, also flash the other partitions like `vendor`, `dtbo` etc.
 
-Do not forget to flash the appropriate Software Binaries to the `oem` partition
-as well!
+Do not forget to flash the appropriate [Software Binaries][swbins] to the `oem`
+partition as well!
 
 ## Optimize the build
 A full build will take about two to three hours[^time] on a beefed-out recent
@@ -272,7 +290,9 @@ sources. So put your patches into a git repo and share them with the world.
 ## Speedier development
 - Use `m module.name -j $(nproc)` to only rebuild a single module. You can then
   `adb push` or even `adb sync` the changes directly to your device
-- Use `make bootimage` to re-generate kernel and ramdisk (`boot.img`)
+- Use `make bootimage` to re-generate kernel and ramdisk only (`boot.img`)
+- Use `adb push` or `adb sync` instead of flashing full images. N.b.: This is
+  only possible with disabled vbmeta.
 
 <!--
 ## Disabling signature verification
@@ -298,3 +318,4 @@ Good references:
 [git-repo]: https://gerrit.googlesource.com/git-repo/
 [codenames]: https://source.android.com/setup/start/build-numbers#source-code-tags-and-builds
 [signing]: https://source.android.com/devices/tech/ota/sign_builds
+[swbins]: https://developer.sony.com/develop/open-devices/downloads/software-binaries

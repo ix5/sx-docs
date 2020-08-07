@@ -11,11 +11,29 @@ toc: true
 
 TODO: Use generated defconfig fragments, dtbo, stuff
 
-https://developer.sony.com/develop/open-devices/guides/kernel-compilation-guides/how-to-build-and-flash-a-linux-kernel-from-sony-copyleft-archives
+Sony link: [How to build and flash a Linux Kernel from the Copyleft Archives][sony]
 
+### Download cross compiler
+
+### Export cross compiler
+
+### Download kernel source
 ```
 git clone https://github.com/sonyxperiadev/kernel-copyleft
 cd kernel-copyleft
-git branch -r
-git checkout
 ```
+
+### Identify defconfig
+
+### Configure kernel
+
+### Build kernel
+
+### Build bootimage and dtboimage
+
+See also: [Handling Android Images]({{<ref "images.md" >}}).
+
+### Download fastboot
+
+### Flash via fastboot
+[sony]: https://developer.sony.com/develop/open-devices/guides/kernel-compilation-guides/how-to-build-and-flash-a-linux-kernel-from-sony-copyleft-archives

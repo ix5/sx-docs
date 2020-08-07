@@ -14,6 +14,8 @@ Internal SoC codename: `sdm660`/`sm6125`
 
 Platform: `seine`
 
+Latest Open Devices Kernel: 4.14
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia 10 II       | pdx201    | xqau51, xqau52   |
@@ -22,6 +24,8 @@ Platform: `seine`
 Internal SoC codename: `sm8150`
 
 Platform: `kumano`
+
+Latest Open Devices Kernel: 4.14
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -33,6 +37,8 @@ Internal SoC codename: `sdm660`
 
 Platform: `ganges`
 
+Latest Open Devices Kernel: 4.14
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia 10          | Kirin     | i3113, i4113     |
@@ -42,6 +48,8 @@ Platform: `ganges`
 Internal SoC codename: `sdm845`
 
 Platform: `tama`
+
+Latest Open Devices Kernel: 4.14
 
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
@@ -54,6 +62,8 @@ Internal SoC codename: `sdm660` (yes, not 630)
 
 Platform: `nile`
 
+Latest Open Devices Kernel: 4.14
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
 | Xperia XA2         | Pioneer   | h3113, h4113     |
@@ -65,9 +75,11 @@ Internal SoC codename: `msm8998`
 
 Platform: `yoshino`
 
+Latest Open Devices Kernel: 4.14
+
 | Device name        | Code name | Product (SS, DS) |
 | ------------------ | --------- | ---------------- |
-| Xperia XZ Premium  | Maple     | g8131, g8142     |
+| Xperia XZ Premium  | Maple     | g8141, g8142     |
 | Xperia XZ1         | Poplar    | g8341, g8342     |
 | Xperia XZ1 Compact | Lilac     | g8441            |
 
@@ -75,6 +87,8 @@ Platform: `yoshino`
 Internal SoC codename: `msm8996`
 
 Platform: `tone`
+
+Latest Open Devices Kernel: 4.9
 
 | Device name          | Code name | Product (SS, DS) |
 | -------------------- | --------- | ---------------- |
@@ -86,6 +100,8 @@ Platform: `tone`
 Internal SoC codename: `msm8956`, sometimes `msm8954`
 
 Platform: `loire`
+
+Latest Open Devices Kernel: 4.9
 
 | Device name      | Code name | Product (SS, DS) |
 | ---------------- | --------- | ---------------- |
