@@ -20,6 +20,9 @@ Latest Open Devices Kernel: 4.14
 | ------------------ | --------- | ---------------- |
 | Xperia 10 II       | pdx201    | xqau51, xqau52   |
 
+**Peculiarities:** First platform with [Dynamic Android Partitions][dap], A/B,
+has DTBO partition.
+
 ### Snapdragon 855 devices (kumano board, 2019)
 Internal SoC codename: `sm8150`
 
@@ -32,6 +35,8 @@ Latest Open Devices Kernel: 4.14
 | Xperia 1           | Griffin   | j8110, j9110     |
 | Xperia 5           | Bahamut   | j8210, j9210     |
 
+**Peculiarities:** A/B, has DTBO partition.
+
 ### Snapdragon 660 devices (ganges board, 2019)
 Internal SoC codename: `sdm660`
 
@@ -43,6 +48,8 @@ Latest Open Devices Kernel: 4.14
 | ------------------ | --------- | ---------------- |
 | Xperia 10          | Kirin     | i3113, i4113     |
 | Xperia 10 Plus     | Mermaid   | i3213, i4213     |
+
+**Peculiarities:** A/B.
 
 ### Snapdragon 845 devices (tama board, 2018)
 Internal SoC codename: `sdm845`
@@ -57,6 +64,8 @@ Latest Open Devices Kernel: 4.14
 | Xperia XZ2 Compact | Apollo    | h8314, h8324     |
 | Xperia XZ3         | Akatsuki  | h8416, h9436     |
 
+**Peculiarities:** A/B, has DTBO partition.
+
 ### Snapdragon 630 devices (nile board, 2018)
 Internal SoC codename: `sdm660` (yes, not 630)
 
@@ -69,6 +78,8 @@ Latest Open Devices Kernel: 4.14
 | Xperia XA2         | Pioneer   | h3113, h4113     |
 | Xperia XA2 Ultra   | Discovery | h3213, h4213     |
 | Xperia XA2 Plus    | Voyager   | h3413, h4413     |
+
+**Peculiarities:** A/B.
 
 ### Snapdragon 835 devices (yoshino board, 2017)
 Internal SoC codename: `msm8998`
@@ -83,6 +94,8 @@ Latest Open Devices Kernel: 4.14
 | Xperia XZ1         | Poplar    | g8341, g8342     |
 | Xperia XZ1 Compact | Lilac     | g8441            |
 
+**Peculiarities:** A/B, apart from maple.
+
 ### Snapdragon 820 devices (tone board, 2016)
 Internal SoC codename: `msm8996`
 
@@ -96,6 +109,8 @@ Latest Open Devices Kernel: 4.9
 | Xperia XZ            | Kagura    | f8331, f8332     |
 | Xperia XZs           | Keyaki    | g8231, g8232     |
 
+**Peculiarities:** Legacy.
+
 ### Snapdragon 650 devices (loire board, 2016)
 Internal SoC codename: `msm8956`, sometimes `msm8954`
 
@@ -108,6 +123,8 @@ Latest Open Devices Kernel: 4.9
 | Xperia X         | Suzu      | f5121, f5122     |
 | Xperia X Compact | Kugo      | f5321            |
 | Xperia Touch     | Blanc     | g1109            |
+
+**Peculiarities:** Legacy.
 
 ---
 
@@ -158,3 +175,5 @@ cat /data/vendor/radio/iccid*
 
 <!-- ## Firmware -->
 <!-- TERM=xterm mono UnSIN.exe file.sin -->
+
+[dap]: https://source.android.com/devices/tech/ota/dynamic_partitions

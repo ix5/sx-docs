@@ -24,6 +24,8 @@ For people who know what they are doing:
 
 That's it.
 
+## Detailed Steps
+
 ### 1. Computer Setup
 In order to install this ROM, you will need a working computer environment to
 install the latest FTFs, recoveries and the OEM binaries.
@@ -51,7 +53,7 @@ order to install these drivers.
 **On Linux:**
 Download Androxyde's FlashTool from: [xda: FlashTool][flashtool-xda].
 
-Then, install the`fastboot` and `adb` tools via your distro's package manager.
+Then, install the `fastboot` and `adb` tools via your distro's package manager.
 
 - On Ubuntu: `apt install android-tools-adb android-tools-fastboot`
 - On Arch Linux: `pacman -Syu android-tools`.
@@ -189,12 +191,10 @@ This only for Android Pie builds. Android 10 does not need this fix any more.
 
 If you ever installed an Android Oreo-based custom ROM - e.g. OmniROM 8.1 - your
 SELinux file labels for the `dsp` partition will be wrong. For a more detailed
-explanation, see
+explanation and Download, see
 [File relabeling for SODP]({{< ref "dsp-relabel.md" >}}).
 
-Simply flash the
-<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
-zip file in TWRP.
+Simply flash the DSP label fixer zip file in TWRP.
 
 <!--
 <div class="message">
