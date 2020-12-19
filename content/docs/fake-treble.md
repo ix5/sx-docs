@@ -36,6 +36,8 @@ Most steps in the [regular Android build guide](../building-android/) and the
 [official Sony build guide][sony-buildguide]
 apply here as well.
 
+## How-To
+
 ### local_manifests
 
 Clone my own `local_manifests` instead of Sony’s:
@@ -201,7 +203,7 @@ You need to:
 
 - Unset `PRODUCT_FAKE_TREBLE_BUILD` in `customization-noproduct.mk`
 - Unset `PRODUCT_BUILD_SYSTEM_IMAGE` in `customization-noproduct.mk`
-- Undo `dtsi: tone: conjure oem into /vendor` in `kernel/sony/msm-4.9/kernel` in
+- Revert `dtsi: tone: conjure oem into /vendor` in `kernel/sony/msm-4.9/kernel` in
   case you want to build non-treble `tone` builds again
 
 <!--
@@ -216,7 +218,79 @@ Software Binaries to the <code>oem</code> partition if you want to return to
 regular builds.
 </div>
 
-### Not a Lawyer
+## Explanation
+
+The fake treble methodology relies on some patches on top of the SODP repos.
+
+### git scripts
+Here is an example of picking git patches, see
+[q_repo_update](https://git.ix5.org/felix/ix5_repo_update/src/commit/2134e86de59f0e4519428d82270715064365f7e6/q_repo_update.sh#L234-L247):
+
+```
+
+pushd $ANDROOT/device/sony/tone
+LINK="https://git.ix5.org/felix/device-sony-tone"
+(git remote --verbose | grep -q $LINK) || git remote add ix5 $LINK
+do_if_online git fetch ix5
+
+# git checkout 'disable-verity-no-forceencrypt'
+# Change forceencrypt to encryptable for userdata
+apply_commit af592265685fddf24100cbc1fdcdcb5bfd2260c1
+# Disable dm-verity
+apply_commit b611c8d91a374f246be393d89f20bbf3fc2ab9f7
+
+# git checkout 'treble-odm-3'
+# Use oem as /vendor
+apply_commit 796ff85b93d28a301cce7bd6b3e0852a35180e04
+
+popd
+```
+
+This piece of code could be simplified as:
+```
+cd device/sony/tone
+
+git fetch https://git.ix5.org/felix/device-sony-tone \
+  'disable-verity-no-forceencrypt'
+# Change forceencrypt to encryptable for userdata
+git cherry-pick af592265685fddf24100cbc1fdcdcb5bfd2260c1
+# Disable dm-verity
+git cherry-pick b611c8d91a374f246be393d89f20bbf3fc2ab9f7
+
+git fetch https://git.ix5.org/felix/device-sony-tone \
+   'treble-odm-3'\
+# Use oem as /vendor
+git cherry-pick 796ff85b93d28a301cce7bd6b3e0852a35180e04
+```
+
+So it enters the `device/sony/tone` repository, fetches several branches from
+the ix5 git repos and applies the needed commits.
+
+For example, the treble patches for tone devices:
+[branch](https://git.ix5.org/felix/device-sony-tone/commits/branch/treble-odm-3) -
+[Use oem as vendor](https://git.ix5.org/felix/device-sony-tone/commit/796ff85b93d28a301cce7bd6b3e0852a35180e04).
+
+This patch modifies the `fstab` file used to mount partitions by Android, sets
+the size of the fake `vendor` partition to the size of the real `oem` partition,
+sets `TARGET_COPY_OUT_VENDOR` and checks whether `PRODUCT_FAKE_TREBLE_BUILD` is
+set.
+
+### Another example
+
+Same for the needed `dtsi` changes:
+[treble_repo_update](https://git.ix5.org/felix/ix5_repo_update/src/commit/2134e86de59f0e4519428d82270715064365f7e6/treble_repo_update.sh#L76) -
+[dtsi: Conjure oem into vendor](https://git.ix5.org/felix/ix5_repo_update/src/commit/2134e86de59f0e4519428d82270715064365f7e6/patches/dtsi-tone-conjure-oem-into-vendor.patch).
+
+This changes the early-mount arguments so that the kernel treats the `oem`
+partition correctly on early bootup.
+
+### More
+
+This same methodology applies to the rest of the needed commits. Should they be
+out of date, please fetch them, resolve the git conflicts yourself, and maybe
+send a pull request so that others might benefit.
+
+## Not a Lawyer
 
 You should decide for youself whether this approach falls within the purview of
 the blobs EULA. In the EU, you might have some more rights than in other areas

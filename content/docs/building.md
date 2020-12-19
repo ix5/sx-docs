@@ -183,6 +183,16 @@ If building for a Kernel 4.14 device, go into
 <code>kernel/sony/msm-<b>4.14</b>/common-kernel</code> and use
 `build-kernels-clang.sh` instead.
 
+Edit `build-kernels-{gcc,clang}.sh` and change the list of platforms in the
+script so that it looks like this:
+```
+# Override:
+TONE="kagura"
+PLATFORMS="tone"
+```
+This will save you from building the kernel for *all* Sony devices and only
+build for the Xperia XZ ("kagura").
+
 ## Build & Flash
 For legacy non-A/B devices like the Xperia XZ, run this command:
 ```
