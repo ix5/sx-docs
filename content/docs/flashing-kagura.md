@@ -98,7 +98,7 @@ If your bootloader is already unlocked, you can skip ahead to the next step.
 
 <div class="message warning">
   <h5>Warning!</h5>
-  <a style="color: #1764de;" href="https://forum.xda-developers.com/crossdevice-dev/sony/universal-dirtycow-based-ta-backup-t3514236">
+  <a href="https://forum.xda-developers.com/crossdevice-dev/sony/universal-dirtycow-based-ta-backup-t3514236">
   Back up your Trim Area("TA") partition
   </a> before unlocking the booatloader. You cannot undo an unlock and your
   DRM keys, possibly along with your warranty, will be lost forever!
@@ -199,7 +199,7 @@ Simply flash the DSP label fixer zip file in TWRP.
 <!--
 <div class="message">
 <b>New:</b> Simply flash the
-<a style="color: #1764de;" href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
+<a href="https://sx.ix5.org/files/builds/kagura/misc/dsp-label-fixer.zip">DSP label fixer</a>
 zip file in TWRP.
 </div>
 
@@ -254,7 +254,7 @@ Leave it alone until done.
 <div class="message warning">
   <h5>Attention!</h5>
 Please also read the
-<a style="color: #1764de;" href="https://sx.ix5.org/bugs-sx">full bug list</a>!
+<a href="https://sx.ix5.org/bugs-sx">full bug list</a>!
 </div>
 
 ## Optional Goodies

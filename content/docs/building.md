@@ -253,8 +253,8 @@ On Android Q, you need to install the <code>ccache</code> package and set
 a prebuilt <code>ccache</code> with Android.
 <br>
 For more info, see
-<a style="color: #1764de;"href="{{< ref "2019-03-16-q-changes.md" >}}">Android Q changes</a> and 
-<a style="color: #1764de;" href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
+<a href="{{< ref "2019-03-16-q-changes.md" >}}">Android Q changes</a> and 
+<a href="https://android.googlesource.com/platform/build/+/refs/tags/android-q-preview-1/core/ccache.mk#17">
 build/core/ccache.mk</a>.
 </div>
 
@@ -269,7 +269,7 @@ of time if you skip them for routine builds.
 
 <div class="message warning">
 If you're on AOSP Android Q, you need to manually cherry-pick
-<a style="color: #1764de;" href="https://android-review.googlesource.com/#/c/1112165">Bring back env flag to skip checkapi</a>.
+<a href="https://android-review.googlesource.com/#/c/1112165">Bring back env flag to skip checkapi</a>.
 On LineageOS and on current (as of 2019-09-07) <code>master</code>, the CL has
 been merged already.
 </div>
