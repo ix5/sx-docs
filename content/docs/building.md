@@ -202,12 +202,16 @@ make bootimage systemimage
 Newer devices require building for more partitions, like `vendor`, `dtbo`,
 `product`, `vbmeta` and others.
 
-In case your build stops at about 90% with this error, just re-start the
-build[^metalava].
+In case your build stops at about 90% with this error, most of the time you
+should be fine by just restarting the
+build with `-j 1`[^metalava].
 ```
 [ 93% 12745/13686] //frameworks/base:hiddenapi-lists-docs Metalava [common]
 FAILED: out/soong/[...]hiddenapi-lists-docs-stubs.srcjar
 ```
+
+However, if this still fails, try cherry-picking
+[this patch from LineageOS][heapsize]. See also [this reddit post][reddit]
 
 Then, use `fastboot` to flash the generated images
 ```
@@ -322,10 +326,14 @@ Good references:
 [eLinux: The Android Build System](https://elinux.org/Android_Build_System)
 
 [^metalava]: Android's metalava takes up enormous amounts of RAM. It attempts to
-  verify the whole Android API at once and is badly designed.
+  verify the whole Android API at once and is badly designed. If it is run in
+  parallel to other processes, it will frequently go OOM. By restarting the
+  process, metalava will be the only one running and hopefully succeed.
 [^time]: On Android Q, this time goes up to five hours for me.
 
 [git-repo]: https://gerrit.googlesource.com/git-repo/
 [codenames]: https://source.android.com/setup/start/build-numbers#source-code-tags-and-builds
 [signing]: https://source.android.com/devices/tech/ota/sign_builds
 [swbins]: https://developer.sony.com/develop/open-devices/downloads/software-binaries
+[heapsize]: https://review.lineageos.org/c/LineageOS/android_build_soong/+/266411
+[reddit]: https://old.reddit.com/r/LineageOS/comments/fgbs5v/how_to_deal_with_outofmemoryerror_when_building/
