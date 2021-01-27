@@ -9,6 +9,21 @@ bref: "Overview of SODP devices"
 toc: true
 ---
 
+### Snapdragon 865 devices (edo board, 2020)
+Internal SoC codename: `sm8250`
+
+Platform: `edo`
+
+Latest Open Devices Kernel: 4.19
+
+| Device name        | Code name | Product (SS, DS) |
+| ------------------ | --------- | ---------------- |
+| Xperia 1 II        | pdx203    | xqat51, xqat52   |
+| Xperia 5 II        | pdx206    | xqas52           |
+
+**Peculiarities:** [Dynamic Android Partitions][dap], A/B,
+has DTBO partition.
+
 ### Snapdragon 665 devices (seine board, 2020)
 Internal SoC codename: `sdm660`/`sm6125`
 
