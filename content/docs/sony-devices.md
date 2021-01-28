@@ -191,4 +191,106 @@ cat /data/vendor/radio/iccid*
 <!-- ## Firmware -->
 <!-- TERM=xterm mono UnSIN.exe file.sin -->
 
+## Misc
+
+**Mapping device - target:**
+```
+pdx203    | xqat51, xqat52
+pdx206    | xqas52
+pdx201    | xqau51, xqau52
+griffin   | j8110, j9110
+bahamut   | j8210, j9210
+kirin     | i3113, i4113
+mermaid   | i3213, i4213
+akari     | h8216, h8266
+apollo    | h8314, h8324
+akatsuki  | h8416, h9436
+pioneer   | h3113, h4113
+discovery | h3213, h4213
+voyager   | h3413, h4413
+maple     | g8141, g8142
+poplar    | g8341, g8342
+lilac     | g8441
+dora      | f8131, f8132
+kagura    | f8331, f8332
+keyaki    | g8231, g8232
+suzu      | f5121, f5122
+kugo      | f5321
+blanc     | g1109
+```
+
+**List of all targets - both SS/DS:**
+```
+find . -iname 'aosp_*.mk' | cut -d '/' -f 3 | cut -d '.' -f 1
+aosp_h8216
+aosp_h8266
+aosp_h8416
+aosp_h9436
+aosp_h8314
+aosp_h8324
+aosp_g1109
+aosp_h3213
+aosp_h4213
+aosp_f8131
+aosp_f8132
+aosp_f8331
+aosp_f8332
+aosp_g8231
+aosp_g8232
+aosp_i3113
+aosp_i4113
+aosp_f5321
+aosp_g8441
+aosp_g8141
+aosp_g8142
+aosp_i3213
+aosp_i4213
+aosp_h3113
+aosp_h4113
+aosp_g8341
+aosp_g8342
+aosp_f5121
+aosp_f5122
+aosp_h3413
+aosp_h4413
+aosp_j8210
+aosp_j9210
+aosp_j8110
+aosp_j9110
+aosp_xqau51
+aosp_xqau52
+aosp_f8331
+aosp_f8332
+aosp_xqat51
+aosp_xqat52
+aosp_xqas52
+```
+
+**List of all targets - only one per device:**
+```
+xqat51
+xqas52
+xqau51
+j8110
+j8210
+i3113
+i3213
+h8216
+h8314
+h8416
+h3113
+h3213
+h3413
+g8141
+g8341
+g8441
+f8131
+f8331
+g8231
+f5121
+f5321
+g1109
+```
+Single-SIM preferred for this list.
+
 [dap]: https://source.android.com/devices/tech/ota/dynamic_partitions
