@@ -109,7 +109,7 @@ Latest Open Devices Kernel: 4.14
 | Xperia XZ1         | Poplar    | g8341, g8342     |
 | Xperia XZ1 Compact | Lilac     | g8441            |
 
-**Peculiarities:** A/B, apart from maple.
+**Peculiarities:** Separate `/vendor` partition on poplar and lilac. No A/B.
 
 ### Snapdragon 820 devices (tone board, 2016)
 Internal SoC codename: `msm8996`
