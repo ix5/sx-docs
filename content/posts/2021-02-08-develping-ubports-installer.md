@@ -89,8 +89,20 @@ const getIndex = () => api.get("/index.json").then(({ data }) => data);
 Now the installer fetches your local configs and you can test whether it
 succeeds.
 
+### Further ideas
+
+This post was inspired by my quest to update the installer configs for the
+[Xperia XZ and X Performance][xz] and hunting down [a pernicious bug][bug].
+I validated [my fix][pr] and went on to also [add the XZ][mr] to the
+[official Ubuntu Touch device list][devices].
+
 [installer]: https://github.com/ubports/ubports-installer
 [configs]: https://github.com/ubports/installer-configs
 [pkg]: https://github.com/ubports/ubports-installer/blob/95745e519351adc3189e7e285a553bc6c1e5100a/package.json#L27-L35
 [api]: https://github.com/ubports/ubports-installer/blob/95745e519351adc3189e7e285a553bc6c1e5100a/src/core/api.js#L25
 [json]: https://github.com/ubports/ubports-installer/blob/95745e519351adc3189e7e285a553bc6c1e5100a/src/core/api.js#L33
+[xz]: https://github.com/ubports/installer-configs/pull/75
+[bug]: https://github.com/ubports/ubports-installer/issues/1754
+[pr]: https://github.com/ubports/ubports-installer/pull/1786
+[mr]: https://gitlab.com/ubports/infrastructure/devices.ubuntu-touch.io/-/merge_requests/56
+[devices]: https://devices.ubuntu-touch.io/
