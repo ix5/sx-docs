@@ -143,6 +143,12 @@ Latest Open Devices Kernel: 4.9
 
 ---
 
+## Basebands
+See `ro.baseband` or `ro.boot.baseband`.
+- `mdm`: External Modem
+- `msm`/`sdm`: Internal Modem
+- `apq`: No Modem
+
 # Internals
 
 ## Accessing special modes
