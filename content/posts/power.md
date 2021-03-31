@@ -1,19 +1,28 @@
-+++
-title = "Power Management"
-description = ""
-date = 2018-12-22T18:07:04+01:00
-draft = true
-+++
+---
+title: "QuicK: Debugging Power Management"
+date: 2021-03-31
+draft: false
+---
 
-# Debugging stuff
+Quick reference over battery-related debugging, mainly for myself.
+
+### adb
 
 ```
 adb shell dumpsys battery unplug
 adb shell dumpsys deviceidle step
 ```
 
-https://stackoverflow.com/questions/3417308/force-an-android-phone-to-sleep-in-order-to-test
+Link: StackOverflow: [Force Android to sleep](https://stackoverflow.com/questions/3417308/force-an-android-phone-to-sleep-in-order-to-test)
 
-`echo 1 > /sys/power/pm_print_times`
+### Kernel
 
-`adb connect xxxx; adb wait-for-device; adb shell "echo mem > /sys/power/state"`
+```sh
+echo 1 > /sys/power/pm_print_times
+```
+
+```sh
+adb connect xxxx
+adb wait-for-device
+adb shell "echo mem > /sys/power/state"
+```
