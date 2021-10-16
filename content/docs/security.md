@@ -75,7 +75,7 @@ logcat` and watch out for lines that look like this:
 avc: denied { action } for pid=...
 ```
 Then read this guide:
-[How to write sepolicy to fix a denial](https://gist.github.com/MSF-Jarvis/ec52b48eb2df1688b7cbe32bcd39ee5f).
+[How to write sepolicy to fix a denial](https://lineageos.org/engineering/HowTo-SELinux/).
 
 ## Priv-app permissions
 
