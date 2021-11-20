@@ -1,5 +1,5 @@
 ---
-title: "QuicK: Debugging Power Management"
+title: "Quick: Debugging Power Management"
 date: 2021-03-31
 draft: false
 ---
