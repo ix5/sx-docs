@@ -5,8 +5,14 @@ date: 2018-10-19T22:26:47+02:00
 weight: 10
 draft: false
 bref: "Definitve guide"
+slug: flashing-aosp-on-xperia-xz
 toc: true
 ---
+
+<div class="message warning">
+The builds for the Xperia XZ will no longer be updated. This guide is severely
+out of date (as of 2022). The builds should still work, but proceed with caution.
+</div>
 
 Follow these steps closely. Do not leave out a step and do them in the correct order.
 

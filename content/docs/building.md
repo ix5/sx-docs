@@ -9,6 +9,11 @@ bref: "How to build AOSP for Xperia devices"
 toc: true
 ---
 
+<div class="message warning">
+The builds for the Xperia XZ will no longer be updated. This guide is severely
+out of date (as of 2022) and will most likely no longer work. Proceed with caution.
+</div>
+
 This guide will asume you follow the
 [official Sony build guide](https://developer.sony.com/develop/open-devices/guides/aosp-build-instructions/build-aosp-android-android-10-0-0),
 but add some extra tips.
